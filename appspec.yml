@@ -1,2 +1,12 @@
 version: 1.0
 os: linux
+files:
+   - source: /
+     destination: /var/www/html
+permissions:
+   - object: /var/www/html
+     pattern: "**"
+     owner: ec2-user
+     mode: 755
+     type:
+       - file
