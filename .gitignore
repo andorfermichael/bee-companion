@@ -7,3 +7,6 @@ dist
 
 # IDE
 .idea
+
+# Config
+dbconfig.json
