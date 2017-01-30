@@ -298,6 +298,10 @@ module.exports = function (env) {
             ],
             customAttrAssign: [/\)?\]?=/]
           },
+          context: helpers.root('client'),
+          output: {
+            path: helpers.root('dist')
+          }
 
         }
       }),

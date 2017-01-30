@@ -203,7 +203,10 @@ module.exports = function (options) {
       new LoaderOptionsPlugin({
         debug: true,
         options: {
-
+          context: helpers.root('client'),
+          output: {
+            path: helpers.root('dist')
+          }
         }
       }),
 
