@@ -1,15 +1,17 @@
 {
-  "name": "angular2-webpack-starter",
-  "version": "5.4.1",
-  "description": "An Angular 2 Webpack Starter kit featuring Angular 2 (Router, Http, Forms, Services, Tests, E2E, Coverage), Karma, Protractor, Jasmine, Istanbul, TypeScript, and Webpack by AngularClass",
+  "name": "bee-companion",
+  "version": "0.0.1",
+  "description": "Support Beekeepers",
   "keywords": [
-    "angular2",
-    "webpack",
-    "typescript"
+    "bee",
+    "beekeeper",
+    "supporter"
   ],
-  "author": "Patrick Stapleton <patrick@angularclass.com>",
-  "homepage": "https://github.com/angularclass/angular2-webpack-starter",
-  "license": "MIT",
+  "author": "Michael Andorfer <mandorfer.mmt-b2014@fh-salzburg.ac.at>",
+  "contributors": [
+    "Nicola Deufemia <ndeufemia.mmt-b2014@fh-salzburg.ac.at"
+  ],
+  "homepage": "bee-companion.com",
   "scripts": {
     "build:aot:prod": "npm run clean:dist && npm run clean:aot && webpack --config config/webpack.prod.js  --progress --profile --bail",
     "build:aot": "npm run build:aot:prod",
@@ -28,14 +30,10 @@
     "clean:dist": "npm run rimraf -- dist",
     "clean:install": "npm set progress=false && npm install",
     "clean": "npm cache clean && npm run rimraf -- node_modules doc coverage dist compiled dll",
-    "docker": "docker",
     "docs": "npm run typedoc -- --options typedoc.json --exclude '**/*.spec.ts' ./src/",
     "e2e:live": "npm-run-all -p -r server:prod:ci protractor:live",
     "e2e:travis": "npm-run-all -p -r server:prod:ci protractor:delay",
     "e2e": "npm-run-all -p -r server:prod:ci protractor",
-    "github-deploy:dev": "webpack --config config/webpack.github-deploy.js --progress --profile --env.githubDev",
-    "github-deploy:prod": "webpack --config config/webpack.github-deploy.js --progress --profile --env.githubProd",
-    "github-deploy": "npm run github-deploy:dev",
     "lint": "npm run tslint \"src/**/*.ts\"",
     "postinstall": "npm run webdriver:update",
     "postversion": "git push && git push --tags",
@@ -84,8 +82,11 @@
     "http-server": "^0.9.0",
     "ie-shim": "^0.1.0",
     "jasmine-core": "^2.5.2",
+    "pg": "^6.1.2",
+    "pg-hstore": "^2.3.2",
     "reflect-metadata": "^0.1.9",
     "rxjs": "~5.0.2",
+    "sequelize": "^3.30.0",
     "zone.js": "~0.7.4"
   },
   "devDependencies": {
@@ -152,10 +153,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/angularclass/angular2-webpack-starter.git"
+    "url": "https://github.com/mandorfer/bee-companion.git"
   },
   "bugs": {
-    "url": "https://github.com/angularclass/angular2-webpack-starter/issues"
+    "url": "https://github.com/mandorfer/bee-companion/issues"
   },
   "engines": {
     "node": ">= 4.2.1",
