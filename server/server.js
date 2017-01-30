@@ -4,6 +4,8 @@ var history = require('connect-history-api-fallback');
 var morgan  = require('morgan');
 var bodyParser = require('body-parser');
 
+var beekeepers = require('./routes/beekeepers');
+
 // Express App
 var app = express();
 
@@ -26,8 +28,8 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
 });
 
 // your api middleware
-var api = require('./test_api')();
-app.use('/api', api);
+
+app.use('/api', beekeepers);
 
 app.listen(PORT, function() {
   console.log('Listen on http://localhost:' + PORT + ' in ' + NODE_ENV);
