@@ -1,0 +1,12 @@
+# Dependencies
+node_modules
+
+# Build
+dll
+dist
+
+# IDE
+.idea
+
+# Config
+dbconfig.json
