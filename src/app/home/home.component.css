@@ -1,11 +1,10 @@
 /*styles for home content only*/
-.main-icon > img {
-    width: 24px;
-    height: 24px;
-}
 
-.header-icons-right > img:not(:last-child) {
-    margin: 0 10px 0 0;
+header {
+    height: 150px;
+    width: 100%;
+    position: relative;
+    text-align: center;
 }
 
 main {
@@ -13,13 +12,6 @@ main {
     position: relative;
     height: auto;
     padding-bottom: 4px;
-}
-
-header {
-    height: 150px;
-    width: 100%;
-    position: relative;
-    text-align: center;
 }
 
 main .main-content {
@@ -59,22 +51,4 @@ footer:before {
 
 footer .row {
     padding-top: 10px;
-}
-
-.bc-header-logo > img {
-    width: 144px;
-    height: 100px;
-    margin-top: 25px;
-}
-
-.header-icons-left {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-}
-
-.header-icons-right {
-    position: absolute;
-    right: 10px;
-    top: 10px;
 }
