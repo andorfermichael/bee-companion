@@ -1,13 +1,13 @@
-.main-icon > img {
+.main-icon img {
     width: 24px;
     height: 24px;
 }
 
-.header-icons-right > img:not(:last-child) {
+.header-icons-right a:not(:last-child) img {
     margin: 0 10px 0 0;
 }
 
-.bc-header-logo > img {
+.bc-header-logo img {
     width: 144px;
     height: 100px;
     margin-top: 25px;

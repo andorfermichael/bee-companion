@@ -11,7 +11,6 @@ main {
     width: 100%;
     position: relative;
     height: auto;
-    padding-bottom: 4px;
 }
 
 main .main-content {
@@ -41,14 +40,11 @@ footer {
 }
 
 footer:before {
+    content: '';
     position: absolute;
     top: 0;
     height: 4px;
     background-color: yellow;
     width: 100%;
     left: 0;
-}
-
-footer .row {
-    padding-top: 10px;
 }

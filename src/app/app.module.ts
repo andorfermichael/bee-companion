@@ -28,6 +28,7 @@ import { HomeComponent } from './home';
 import { AboutComponent } from './about';
 import { NavComponent } from './+nav';
 import { HeaderComponent } from './+header';
+import { FooterComponent } from './+footer';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
@@ -57,6 +58,7 @@ type StoreType = {
     HomeComponent,
     NavComponent,
     HeaderComponent,
+    FooterComponent,
     NoContentComponent,
     XLargeDirective
   ],

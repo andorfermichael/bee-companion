@@ -1,0 +1,18 @@
+.row {
+    padding-top: 10px;
+}
+
+.nav-link {
+    display: inline-block;
+    padding: 0 1em;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.right-nav {
+	text-align: right;
+}
+
+.left-nav {
+	text-align: left;
+}
