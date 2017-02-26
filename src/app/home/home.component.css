@@ -24,19 +24,14 @@ main .main-content {
     background-size: cover;
 }
 
-.nav-link {
-    display: inline-block;
-    padding: 0 1em;
-    font-size: 14px;
-    vertical-align: middle;
-}
-
 footer {
     background-color: black;
     color: white;
-    height: 60px;
+    min-height: 60px;
+    height: auto;
     position: relative;
     width: 100%;
+    padding: 0 .5em;
 }
 
 footer:before {
