@@ -8,21 +8,6 @@
     margin: 0 10px 0 0;
 }
 
-.nav-link {
-    display: inline-block;
-    padding: 0 1em;
-    font-size: 14px;
-    vertical-align: middle;
-}
-
-.main-nav {
-    height: 30px;
-    background-color: black;
-    color: white;
-    position: relative;
-    padding-bottom: 4px;
-}
-
 main {
     width: 100%;
     position: relative;
@@ -37,27 +22,22 @@ header {
     text-align: center;
 }
 
-.main-nav:after, main:after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    height: 4px;
-    background-color: #F6DD3B;
+main .main-content {
     width: 100%;
-    left: 0;
+    height: auto;
+    min-height: 600px;
+    background: url(https://images.pexels.com/photos/63641/bee-in-the-approach-bee-apis-pollen-63641.jpeg?w=1260&amp;h=750&amp;auto=compress&amp;cs=tinysrgb) no-repeat center center; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 }
 
-.left-nav {
-    text-align: left;
-}
-
-.right-nav {
-    text-align: right;
-}
-
-.main-content-bg {
-    height: 600px;
-    width: 100%;
+.nav-link {
+    display: inline-block;
+    padding: 0 1em;
+    font-size: 14px;
+    vertical-align: middle;
 }
 
 footer {
@@ -68,8 +48,6 @@ footer {
     width: 100%;
 }
 
-footer:before {}
-
 footer:before {
     position: absolute;
     top: 0;
@@ -79,7 +57,9 @@ footer:before {
     left: 0;
 }
 
-footer .row {padding-top: 10px;}
+footer .row {
+    padding-top: 10px;
+}
 
 .bc-header-logo > img {
     width: 144px;
