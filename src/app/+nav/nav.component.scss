@@ -1,0 +1,32 @@
+.main-nav {
+    height: auto;
+    position: relative;
+    padding-bottom: 4px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        height: 4px;
+        background-color: #F6DD3B;
+        width: 100%;
+        left: 0;
+    }
+
+    nav {
+        text-align: center;
+
+        a {
+            background-color: transparent;
+        }
+        .nav-item.active {
+            a {
+                color: #F6DD3B;
+            }
+        }
+
+        .navbar-brand {
+            margin-right: 0;
+        }
+    }
+}

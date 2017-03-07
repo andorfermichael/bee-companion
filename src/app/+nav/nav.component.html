@@ -1,13 +1,22 @@
 <div class="main-nav">
-  <div class="row align-items-start">
-    <div class="col-6 left-nav">
-      <span class="nav-link nav-link-home"><a [routerLink]="['/']">Home</a></span>
-      <span class="nav-link nav-link-home"><a [routerLink]="['/BeeRadar']">BeeRadar</a></span>
-      <span class="nav-link nav-link-home"><a [routerLink]="['/AboutUs']">AboutUs</a></span>
+  <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse">
+    <button class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand hidden-md-up" href="#">Menu</a>
+
+    <div class="collapse navbar-collapse" id="navbarColor01">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">BeeRadar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">AboutUs</a>
+        </li>
+      </ul>
     </div>
-    <div class="col-6 right-nav">
-      <span class="nav-link nav-link-singup"><a href="#">SignUp</a></span>
-      <span class="nav-link nav-link-singup"><a href="#">LogIn</a></span>
-    </div>
-  </div>
+  </nav>
 </div>

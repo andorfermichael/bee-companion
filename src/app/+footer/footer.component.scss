@@ -1,0 +1,25 @@
+.navbar-text {
+	& > span {
+		color: white;
+		&:hover {
+			color: white;
+		}
+	}
+}
+
+
+.nav-link {
+	width: auto;
+	padding: 0 .5em;
+}
+
+
+@media (min-width: 768px) { 
+  .left-nav {
+  	order: -1;
+  }
+}
+.right-nav {
+    padding-top: .425rem;
+    padding-bottom: .425rem;
+}

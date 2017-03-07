@@ -16,10 +16,10 @@ import { AppState } from './app.service';
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
-    './app.component.css'
+    './app.component.scss'
   ],
   template: `
-  <div class="container-fluid no-gutter">
+  <div class="container-fluid">
     <router-outlet></router-outlet>
   </div>
   `

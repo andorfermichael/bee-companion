@@ -25,13 +25,12 @@ main .main-content {
 }
 
 footer {
-    background-color: black;
     color: white;
     min-height: 60px;
     height: auto;
     position: relative;
     width: 100%;
-    padding: 0 .5em;
+    padding-top: 4px;
 }
 
 footer:before {
@@ -39,7 +38,7 @@ footer:before {
     position: absolute;
     top: 0;
     height: 4px;
-    background-color: yellow;
+    background-color: #F6DD3B;;
     width: 100%;
     left: 0;
 }

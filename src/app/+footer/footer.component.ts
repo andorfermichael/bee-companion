@@ -13,7 +13,7 @@ console.log('`Footer` component loaded asynchronously');
 @Component({
   selector: 'footer',
    // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: [ './footer.component.css' ],
+  styleUrls: [ './footer.component.scss' ],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './footer.component.html',
 })
