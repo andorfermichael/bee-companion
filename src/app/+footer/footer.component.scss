@@ -19,6 +19,39 @@
   	order: -1;
   }
 }
+
+.nav-link {
+	&.terms-long, &.contact-long {
+		display: none;
+		@media (min-width: 968px) { 
+	  		display: block;
+		}
+	}
+	&.terms-short, &.contact-short {
+		display: block;
+		@media (min-width: 968px) { 
+	  		display: none;
+		}
+	}
+}
+
+
+.navbar-nav {
+	min-width: 50%;
+	&.second-col {
+		margin-left: auto;
+	}
+
+	@media (min-width: 576px) { 
+		min-width: initial;
+		&.second-col {
+			margin-left: initial;
+		}
+	}
+}
+
+
+
 .right-nav {
     padding-top: .425rem;
     padding-bottom: .425rem;
