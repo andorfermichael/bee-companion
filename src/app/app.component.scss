@@ -1,25 +1,30 @@
 html, body{
   height: 100%;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: 'Open Sans', sans-serif;
 }
 
-a {
+a:not(.btn):not(.button) {
 	color: white;
 	text-decoration: none;
 }
 
-a:hover {
+a:not(.btn):not(.button):hover {
 	text-decoration: underline;
 }
 
-a:visited {
+a:not(.btn):not(.button):visited {
 	color: white;
 }
 
-a.active {
+a:not(.btn):not(.button).active {
   color: #F6DD3B;
 }
 
 .no-gutter {
 	padding: 0;
+}
+
+.container-fluid {
+	padding-left: 0;
+	padding-right: 0;
 }
