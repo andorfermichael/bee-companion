@@ -15,7 +15,7 @@ main {
     .main-content {
         width: 100%;
         @media (min-width: 576px) { 
-            height: 600px;
+            min-height: 600px;
         }
         background: url(https://images.pexels.com/photos/63641/bee-in-the-approach-bee-apis-pollen-63641.jpeg?w=1260&amp;h=750&amp;auto=compress&amp;cs=tinysrgb) no-repeat center center; 
         -webkit-background-size: cover;
@@ -61,10 +61,10 @@ main {
         color: white;
         border-radius: 0;
         max-width: 100%;
-        
-        @media (min-width: 768px) {
-          border-radius: 12px;
-          max-width: 750px;
+
+        @media (min-width: 768px) { 
+            max-width: 750px;
+            border-radius: 12px;
         }
 
         .txt-bee {
@@ -72,18 +72,35 @@ main {
             font-weight: 600;
         }
 
-        .signup-row {
-            margin-bottom: 1rem;
+        .card-quote {
+          margin-left: -1.25rem;
+          margin-right: -1.25rem;
+          margin-bottom: 1.25rem;
+          background-color: black;
+          padding-top: 1.25rem;
+          padding-bottom: 1.25rem;
 
-            .button:first-child {
-                @media (max-width: 575px) { 
-                    margin-bottom: .25rem;
-                }
+          .inner-quote {
+            margin: 0 1.25rem;
+          }
+
+          .lead {
+            text-align: left;
+            @media (min-width: 576px) { 
+              padding-right: 0;
+              padding-left: 0;
             }
-            .tilde {
-                font-size: 2em;
-                line-height: 1.25;
-            }
+          }
+
+          .author {
+
+          }
+
+          img.einstein {
+            width: 100%;
+            height: auto;
+            background-color: white;
+          }
         }
     }
 }

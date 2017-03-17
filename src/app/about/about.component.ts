@@ -2,61 +2,41 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+
+import { AppState } from '../app.service';
+import { NavComponent } from '../+nav';
 
 @Component({
-  selector: 'about',
-  styles: [`
-  `],
-  template: `
-    <h1>About</h1>
-    <div>
-      For hot module reloading run
-      <pre>npm run start:hmr</pre>
-    </div>
-    <div>
-      <h3>
-        patrick@AngularClass.com
-      </h3>
-    </div>
-    <pre>this.localState = {{ localState | json }}</pre>
-  `
+  // The selector is what angular internally uses
+  // for `document.querySelectorAll(selector)` in our index.html
+  // where, in this case, selector is the string 'aboutUs'
+  selector: 'aboutUs',  // <aboutUs></aboutUs>
+  // We need to tell Angular's Dependency Injection which providers are in our app.
+  // providers: [
+  //  Title
+  // ],
+  // Our list of styles in our component. We may add more to compose many styles together
+  styleUrls: [ './about.component.scss' ],
+  // Every Angular template is first compiled by the browser before Angular runs it's compiler
+  templateUrl: './about.component.html'
 })
-export class AboutComponent implements OnInit {
-
-  public localState: any;
+export class AboutUsComponent implements OnInit {
+  // Set our default values
+  public localState = { value: '' };
+  // TypeScript public modifiers
   constructor(
-    public route: ActivatedRoute
+    public appState: AppState,
+    //public title: Title
   ) {}
 
   public ngOnInit() {
-    this.route
-      .data
-      .subscribe((data: any) => {
-        // your resolved data from route
-        this.localState = data.yourData;
-      });
-
-    console.log('hello `About` component');
-    // static data that is bundled
-    // var mockData = require('assets/mock-data/mock-data.json');
-    // console.log('mockData', mockData);
-    // if you're working with mock data you can also use http.get('assets/mock-data/mock-data.json')
-    this.asyncDataWithWebpack();
-  }
-  private asyncDataWithWebpack() {
-    // you can also async load mock data with 'es6-promise-loader'
-    // you would do this if you don't want the mock-data bundled
-    // remember that 'es6-promise-loader' is a promise
-    setTimeout(() => {
-
-      System.import('../../assets/mock-data/mock-data.json')
-        .then((json) => {
-          console.log('async mockData', json);
-          this.localState = json;
-        });
-
-    });
+    console.log('hello `AboutUs` component');
+    // this.title.getData().subscribe(data => this.data = data);
   }
 
+  public submitState(value: string) {
+    console.log('submitState', value);
+    this.appState.set('value', value);
+    this.localState.value = '';
+  }
 }
