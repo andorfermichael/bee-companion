@@ -6,8 +6,8 @@ import { NoContentComponent } from './no-content';
 import { DataResolver } from './app.resolver';
 
 export const ROUTES: Routes = [
-  { path: '',      component: HomeComponent },
-  { path: 'home',  component: HomeComponent },
-  { path: 'about', component: AboutUsComponent },
-  { path: '**',    component: NoContentComponent },
+	{ path: '', redirectTo: 'home', pathMatch: 'full' },
+  	{ path: 'home',  component: HomeComponent, pathMatch: 'full'},
+  	{ path: 'about', component: AboutUsComponent, pathMatch: 'full'},
+  	{ path: '**',    component: NoContentComponent },
 ];
