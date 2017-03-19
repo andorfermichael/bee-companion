@@ -24,6 +24,7 @@
     width: 144px;
     height: 100px;
     margin-top: 25px;
+    margin-bottom: 25px;
 }
 
 .header-icons-left {
@@ -40,4 +41,8 @@
     position: absolute;
     right: 10px;
     top: 10px;
+}
+
+.header-wrapper {
+    position: relative;
 }

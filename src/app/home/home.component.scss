@@ -1,7 +1,7 @@
 /*styles for home content only*/
 
 header {
-    height: 150px;
+    min-height: 150px;
     width: 100%;
     position: relative;
     text-align: center;
@@ -14,7 +14,7 @@ main {
 
     .main-content {
         width: 100%;
-        @media (min-width: 576px) { 
+        @media (min-width: 768px) { 
             height: 600px;
         }
         background: url(https://images.pexels.com/photos/63641/bee-in-the-approach-bee-apis-pollen-63641.jpeg?w=1260&amp;h=750&amp;auto=compress&amp;cs=tinysrgb) no-repeat center center; 
@@ -70,6 +70,11 @@ main {
         .txt-bee {
             color: #F6DD3B;
             font-weight: 600;
+        }
+
+        .container.buttons-area {
+          padding-top: 1.25rem;
+          padding-bottom: 1.25rem;
         }
 
         .signup-row {
