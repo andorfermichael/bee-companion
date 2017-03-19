@@ -15,6 +15,9 @@ import {
   PreloadAllModules
 } from '@angular/router';
 
+//import google Maps:
+import { AgmCoreModule } from 'angular2-google-maps/core';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -26,6 +29,7 @@ import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
+import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
 import { HeaderComponent } from './+header';
 import { FooterComponent } from './+footer';
@@ -56,6 +60,7 @@ type StoreType = {
     AppComponent,
     AboutUsComponent,
     HomeComponent,
+    BeeRadarComponent,
     NavComponent,
     HeaderComponent,
     FooterComponent,
@@ -66,7 +71,10 @@ type StoreType = {
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAzRGKSl4vUt5C9ub3tvpIysxcuBeJbUJg'
+    })
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
