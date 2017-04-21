@@ -3,7 +3,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {
   NgModule,
-  ApplicationRef
+  ApplicationRef,
+  NO_ERRORS_SCHEMA
 } from '@angular/core';
 import {
   removeNgStyles,
@@ -33,6 +34,10 @@ import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
 import { HeaderComponent } from './+header';
 import { FooterComponent } from './+footer';
+import { MainCardComponent } from './+mainCard';
+import { MainContentComponent } from './+mainContent';
+import { MainContentRowComponent } from './+mainContentRow';
+import { RadarCardComponent } from './+radarCard';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
 
@@ -64,6 +69,10 @@ type StoreType = {
     NavComponent,
     HeaderComponent,
     FooterComponent,
+    MainCardComponent,
+    MainContentComponent,
+    MainContentRowComponent,
+    RadarCardComponent,
     NoContentComponent,
     XLargeDirective
   ],
@@ -79,6 +88,9 @@ type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS
+  ],
+  schemas: [ 
+    NO_ERRORS_SCHEMA 
   ]
 })
 export class AppModule {

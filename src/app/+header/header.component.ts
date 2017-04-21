@@ -36,7 +36,7 @@ export class HeaderComponent implements OnInit {
         this.lat = data.coords.latitude ? data.coords.latitude : this.lat;
         this.lng = data.coords.longitude ? data.coords.longitude : this.lng;
         this.messageType = 'success';
-        this.message = 'You successfully granted us retrieving your location to enhance your experience with BeeCompanion.', 'success');
+        this.message = 'You successfully granted us retrieving your location to enhance your experience with BeeCompanion.', 'success';
       }
     }
   }  

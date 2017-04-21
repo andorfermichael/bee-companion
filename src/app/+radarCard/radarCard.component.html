@@ -1,0 +1,21 @@
+<div class="card radar">
+	<img src="../assets/img/radar-frame.png" class="radar-frame">
+	<img src="../assets/img/radar-full-trans.png" class="radar-full">
+	<div class="radar-wrapper">
+		<img id="radar" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/9729/circle.png" alt="" />
+		<svg width="400" height="400" viewbox="0 0 150 150" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve">
+			  <mask id="mask2" x="0" y="0" width="80" height="80" >
+		  <path d="M 0 0 L 400 0 400 400 0 400 0 0 M 185 185 m -150, 0 a 150,150 0 1,0 300,0 a 150,150 0 1,0 -300,0" fill="white" style="transform: scale(1.08);" />
+		    </mask>
+			
+			  <rect x="0" y="0" width="600" height="600" fill="white" style="mask: url(#mask2);"/>
+			  <rect x="300" y="0" width="2600" height="2600" fill="white" style="mask: url(#mask2);"/>
+			  
+		</svg>
+		<div id="map">
+			<sebm-google-map [latitude]="lat" [longitude]="lng" [styles]="styles" [zoom]="zoom" [disableDefaultUI]="disableDefaultUI" [scrollwheel]="scrollwheel" [zoomControl]="zoomControl" [mapDraggable]="mapDraggable" [disableDoubleClickZoom]="disableDoubleClickZoom" [streetViewControl]="streetViewControl">
+			  <sebm-google-map-marker [latitude]="lat" [longitude]="lng"></sebm-google-map-marker>
+			</sebm-google-map>
+		</div>
+	</div>
+</div>

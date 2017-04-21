@@ -1,107 +1,69 @@
 /*styles for home content only*/
 
 header {
-    min-height: 150px;
-    width: 100%;
-    position: relative;
-    text-align: center;
+  min-height: 150px;
+  width: 100%;
+  position: relative;
+  text-align: center;
 }
 
 main {
-    width: 100%;
-    position: relative;
-    height: auto;
+  width: 100%;
+  position: relative;
+  height: auto;
 
-    .main-content {
-        width: 100%;
-        @media (min-width: 768px) { 
-            height: 600px;
-        }
-        background: url(https://images.pexels.com/photos/63641/bee-in-the-approach-bee-apis-pollen-63641.jpeg?w=1260&amp;h=750&amp;auto=compress&amp;cs=tinysrgb) no-repeat center center; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+  .txt-bee {
+    color: #F6DD3B;
+    font-weight: 600;
+  }
 
-        > .row {
-            @media (min-width: 768px) { 
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-            @media (max-width: 575px) { 
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
+  .container.buttons-area {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
 
-        .button {
-            .icon {
-                font-size: 2em;
-                display: inline;
-            }
-            .icon_hover {
-                display: none;
-            }
-            &:hover {
-                .icon {
-                    display: none;
-                } 
-                .icon_hover {
-                    display: inline;
-                }
-            }
+  .signup-row {
+    margin-bottom: 1rem;
+
+    .button:first-child {
+        @media (max-width: 575px) { 
+            margin-bottom: .25rem;
         }
     }
+    .tilde {
+        font-size: 2em;
+        line-height: 1.25;
+    }
+  }
 
-    .main-card {
-       
-        background-color: rgba(0,0,0,.85);
-        border-color: #292b2c;
-        margin: 0 auto;
-        color: white;
-        border-radius: 0;
-        max-width: 100%;
-        
-        @media (min-width: 768px) {
-          border-radius: 12px;
-          max-width: 750px;
-        }
-
-        .txt-bee {
-            color: #F6DD3B;
-            font-weight: 600;
-        }
-
-        .container.buttons-area {
-          padding-top: 1.25rem;
-          padding-bottom: 1.25rem;
-        }
-
-        .signup-row {
-            margin-bottom: 1rem;
-
-            .button:first-child {
-                @media (max-width: 575px) { 
-                    margin-bottom: .25rem;
-                }
-            }
-            .tilde {
-                font-size: 2em;
-                line-height: 1.25;
-            }
+  .button {
+    .icon {
+        font-size: 2em;
+        display: inline;
+    }
+    .icon_hover {
+        display: none;
+    }
+    &:hover {
+        .icon {
+            display: none;
+        } 
+        .icon_hover {
+            display: inline;
         }
     }
+  }
 }
+
 footer {
-    color: white;
-    min-height: 60px;
-    height: auto;
-    position: relative;
-    width: 100%;
-    padding-top: 4px;
-}
+  color: white;
+  min-height: 60px;
+  height: auto;
+  position: relative;
+  width: 100%;
+  padding-top: 4px;
 
-footer:before {
+  &:before {
     content: '';
     position: absolute;
     top: 0;
@@ -109,8 +71,8 @@ footer:before {
     background-color: #F6DD3B;;
     width: 100%;
     left: 0;
+  }  
 }
-
 
 .button {
   display: inline-block;
@@ -133,14 +95,16 @@ footer:before {
   background-image: linear-gradient(to bottom, #efefef, #777);
   -webkit-box-shadow: inset 0 1px rgba(255, 255, 255, 0.09), 0 1px 1px rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 1px rgba(255, 255, 255, 0.09), 0px 1px 1px rgba(0, 0, 0, 0.2);
+
+  &:hover {
+    background-color: #aaaaaa;
+    background-image: -webkit-linear-gradient(top, #ccc, #555);
+    background-image: -moz-linear-gradient(top, #ccc, #555);
+    background-image: -o-linear-gradient(top, #ccc, #555);
+    background-image: linear-gradient(to bottom, #ccc, #555);
+  }
 }
-.button:hover {
-  background-color: #aaaaaa;
-  background-image: -webkit-linear-gradient(top, #ccc, #555);
-  background-image: -moz-linear-gradient(top, #ccc, #555);
-  background-image: -o-linear-gradient(top, #ccc, #555);
-  background-image: linear-gradient(to bottom, #ccc, #555);
-}
+
 .button:active, .button.active {
   background-color: #b42f32;
   border-color: #1c1c1c #202020 #222;
@@ -149,8 +113,6 @@ footer:before {
 }
 
 .rounded {border-radius:100em!important;}
-
-
 
 .lightGrey {
   color: #bbb;
@@ -161,13 +123,14 @@ footer:before {
   background-image: -moz-linear-gradient(top, #8e8e8e, #434343);
   background-image: -o-linear-gradient(top, #8e8e8e, #434343);
   background-image: linear-gradient(to bottom, #8e8e8e, #434343);
-}
-.lightGrey:hover {
-  background-color: #313131;
-  background-image: -webkit-linear-gradient(top, #7b7b7b, #2a2a2a);
-  background-image: -moz-linear-gradient(top, #7b7b7b, #2a2a2a);
-  background-image: -o-linear-gradient(top, #7b7b7b, #2a2a2a);
-  background-image: linear-gradient(to bottom, #7b7b7b, #2a2a2a);
+
+  &:hover {
+    background-color: #313131;
+    background-image: -webkit-linear-gradient(top, #7b7b7b, #2a2a2a);
+    background-image: -moz-linear-gradient(top, #7b7b7b, #2a2a2a);
+    background-image: -o-linear-gradient(top, #7b7b7b, #2a2a2a);
+    background-image: linear-gradient(to bottom, #7b7b7b, #2a2a2a);
+  }
 }
 
 .darkGrey {
@@ -179,11 +142,12 @@ footer:before {
   background-image: -moz-linear-gradient(top, #2a2a2a, #1b1b1b);
   background-image: -o-linear-gradient(top, #2a2a2a, #1b1b1b);
   background-image: linear-gradient(to bottom, #2a2a2a, #1b1b1b);
-}
-.darkGrey:hover {
-  background-color: #363636;
-  background-image: -webkit-linear-gradient(top, #404040, #2a2a2a);
-  background-image: -moz-linear-gradient(top, #404040, #2a2a2a);
-  background-image: -o-linear-gradient(top, #404040, #2a2a2a);
-  background-image: linear-gradient(to bottom, #404040, #2a2a2a);
+
+  &::hover {
+    background-color: #363636;
+    background-image: -webkit-linear-gradient(top, #404040, #2a2a2a);
+    background-image: -moz-linear-gradient(top, #404040, #2a2a2a);
+    background-image: -o-linear-gradient(top, #404040, #2a2a2a);
+    background-image: linear-gradient(to bottom, #404040, #2a2a2a);
+  }
 }
