@@ -28,3 +28,17 @@ a:not(.btn):not(.button).active {
 	padding-left: 0;
 	padding-right: 0;
 }
+
+.bee-scrollbar {
+	::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(255,255,255,0.3);
+		background-color: rgba(0, 0, 0, 0.85);
+	}
+	::-webkit-scrollbar {
+		width: 6px;
+		background-color: #F5F5F5;
+	}
+	::-webkit-scrollbar-thumb {
+		background-color: #F6DD3B;
+	}
+}

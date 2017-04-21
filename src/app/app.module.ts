@@ -31,6 +31,7 @@ import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
 import { ContactUsComponent } from './contact';
+import { TermsAndConditionsComponent } from './terms';
 import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
 import { HeaderComponent } from './+header';
@@ -66,6 +67,7 @@ type StoreType = {
     AppComponent,
     AboutUsComponent,
     ContactUsComponent,
+    TermsAndConditionsComponent,
     HomeComponent,
     BeeRadarComponent,
     NavComponent,
