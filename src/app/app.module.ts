@@ -30,6 +30,7 @@ import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
+import { ContactUsComponent } from './contact';
 import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
 import { HeaderComponent } from './+header';
@@ -64,6 +65,7 @@ type StoreType = {
   declarations: [
     AppComponent,
     AboutUsComponent,
+    ContactUsComponent,
     HomeComponent,
     BeeRadarComponent,
     NavComponent,
