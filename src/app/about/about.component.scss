@@ -1,128 +1,41 @@
-/*styles for home content only*/
-
-header {
-    min-height: 150px;
-    width: 100%;
-    position: relative;
-    text-align: center;
-}
+/*styles for about content only*/
 
 main {
     width: 100%;
     position: relative;
     height: auto;
 
-    .main-content {
-        width: 100%;
+    .card-quote {
+      margin-left: -1.25rem;
+      margin-right: -1.25rem;
+      margin-bottom: 1.25rem;
+      background-color: black;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
+
+      .inner-quote {
+        margin: 0 1.25rem;
+      }
+
+      .lead {
+        text-align: left;
         @media (min-width: 576px) { 
-            min-height: 600px;
+          padding-right: 0;
+          padding-left: 0;
         }
-        background: url(https://images.pexels.com/photos/63641/bee-in-the-approach-bee-apis-pollen-63641.jpeg?w=1260&amp;h=750&amp;auto=compress&amp;cs=tinysrgb) no-repeat center center; 
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
-        background-size: cover;
+      }
 
-        > .row {
-            @media (min-width: 768px) { 
-                padding-top: 2rem;
-                padding-bottom: 2rem;
-            }
-            @media (max-width: 575px) { 
-                margin-left: 0;
-                margin-right: 0;
-            }
-        }
+      .author {
+      }
 
-        .button {
-            .icon {
-                font-size: 2em;
-                display: inline;
-            }
-            .icon_hover {
-                display: none;
-            }
-            &:hover {
-                .icon {
-                    display: none;
-                } 
-                .icon_hover {
-                    display: inline;
-                }
-            }
-        }
+      img.einstein {
+        width: 100%;
+        height: auto;
+        background-color: white;
+      }
     }
-
-    .main-card {
-       
-        background-color: rgba(0,0,0,.85);
-        border-color: #292b2c;
-        margin: 0 auto;
-        color: white;
-        border-radius: 0;
-        max-width: 100%;
-
-        @media (min-width: 768px) { 
-            max-width: 750px;
-            border-radius: 12px;
-        }
-
-        .txt-bee {
-            color: #F6DD3B;
-            font-weight: 600;
-        }
-
-        .card-quote {
-          margin-left: -1.25rem;
-          margin-right: -1.25rem;
-          margin-bottom: 1.25rem;
-          background-color: black;
-          padding-top: 1.25rem;
-          padding-bottom: 1.25rem;
-
-          .inner-quote {
-            margin: 0 1.25rem;
-          }
-
-          .lead {
-            text-align: left;
-            @media (min-width: 576px) { 
-              padding-right: 0;
-              padding-left: 0;
-            }
-          }
-
-          .author {
-
-          }
-
-          img.einstein {
-            width: 100%;
-            height: auto;
-            background-color: white;
-          }
-        }
-    }
+    
 }
-footer {
-    color: white;
-    min-height: 60px;
-    height: auto;
-    position: relative;
-    width: 100%;
-    padding-top: 4px;
-}
-
-footer:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    height: 4px;
-    background-color: #F6DD3B;;
-    width: 100%;
-    left: 0;
-}
-
 
 .button {
   display: inline-block;
