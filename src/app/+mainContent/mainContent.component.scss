@@ -8,4 +8,9 @@
     -moz-background-size: cover;
     -o-background-size: cover;
     background-size: cover;
+
+    /deep/ .txt-bee {
+        color: #F6DD3B;
+        font-weight: 600;
+    }
 }

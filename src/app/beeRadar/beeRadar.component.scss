@@ -1,12 +1,5 @@
 /*styles for bee-radar content only*/
 
-header {
-    min-height: 150px;
-    width: 100%;
-    position: relative;
-    text-align: center;
-}
-
 main {
     width: 100%;
     position: relative;
@@ -16,23 +9,4 @@ main {
       height: auto;
       background-color: white;
     }
-}
-
-footer {
-  color: white;
-  min-height: 60px;
-  height: auto;
-  position: relative;
-  width: 100%;
-  padding-top: 4px;
-
-  :before {
-    content: '';
-    position: absolute;
-    top: 0;
-    height: 4px;
-    background-color: #F6DD3B;;
-    width: 100%;
-    left: 0;
-  }
 }

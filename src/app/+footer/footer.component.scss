@@ -1,3 +1,22 @@
+:host {
+  color: white;
+  min-height: 60px;
+  height: auto;
+  position: relative;
+  width: 100%;
+  padding-top: 4px;
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    height: 4px;
+    background-color: #F6DD3B;;
+    width: 100%;
+    left: 0;
+  }
+}
+
 .navbar-text {
 	& > span {
 		color: white;
@@ -7,12 +26,10 @@
 	}
 }
 
-
 .nav-link {
 	width: auto;
 	padding: 0 .5em;
 }
-
 
 @media (min-width: 768px) { 
   .left-nav {
@@ -35,7 +52,6 @@
 	}
 }
 
-
 .navbar-nav {
 	min-width: 50%;
 	&.second-col {
@@ -49,8 +65,6 @@
 		}
 	}
 }
-
-
 
 .right-nav {
     padding-top: .425rem;
