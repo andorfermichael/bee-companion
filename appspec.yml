@@ -10,3 +10,12 @@ permissions:
      mode: 755
      type:
        - file
+hooks:
+  AfterInstall :
+    - location: deployment/application-setup.sh
+      timeout: 3600
+  ApplicationStart:
+    - location: deployment/application-start.sh
+      timeout: 3600
+
+
