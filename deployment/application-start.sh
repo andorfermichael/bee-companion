@@ -1,5 +1,6 @@
 #!/bin/bash
-npm install --production
 cd ./server
 pm2 start server.js
-npm deploy
+cd ..
+npm run build:prod
+npm run server:prod:pm2
