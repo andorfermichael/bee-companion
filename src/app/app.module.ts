@@ -32,6 +32,7 @@ import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
 import { ContactUsComponent } from './contact';
 import { TermsAndConditionsComponent } from './terms';
+import { PrivacyPolicyComponent } from './privacy';
 import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
 import { HeaderComponent } from './+header';
@@ -68,6 +69,7 @@ type StoreType = {
     AboutUsComponent,
     ContactUsComponent,
     TermsAndConditionsComponent,
+    PrivacyPolicyComponent,
     HomeComponent,
     BeeRadarComponent,
     NavComponent,

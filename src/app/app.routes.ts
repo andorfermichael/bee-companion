@@ -3,6 +3,7 @@ import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
 import { ContactUsComponent } from './contact';
 import { TermsAndConditionsComponent } from './terms';
+import { PrivacyPolicyComponent } from './privacy';
 import { BeeRadarComponent } from './beeRadar';
 import { NoContentComponent } from './no-content';
 
@@ -14,6 +15,7 @@ export const ROUTES: Routes = [
   	{ path: 'bee-radar',  component: BeeRadarComponent, pathMatch: 'full'},
   	{ path: 'about', component: AboutUsComponent, pathMatch: 'full'},
   	{ path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
+  	{ path: 'privacy', component: PrivacyPolicyComponent, pathMatch: 'full'},
   	{ path: 'contact', component: ContactUsComponent, pathMatch: 'full'},
   	{ path: '**',    component: NoContentComponent },
 ];
