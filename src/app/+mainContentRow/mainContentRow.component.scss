@@ -1,0 +1,13 @@
+.main-content-row {
+	justify-content: center;
+	height: 100%;
+
+    @media (min-width: 768px) { 
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+    @media (max-width: 575px) { 
+        margin-left: 0;
+        margin-right: 0;
+    }
+}

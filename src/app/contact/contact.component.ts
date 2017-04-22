@@ -9,18 +9,18 @@ import { NavComponent } from '../+nav';
 @Component({
   // The selector is what angular internally uses
   // for `document.querySelectorAll(selector)` in our index.html
-  // where, in this case, selector is the string 'aboutUs'
-  selector: 'aboutUs',  // <aboutUs></aboutUs>
+  // where, in this case, selector is the string 'contactUs'
+  selector: 'contactUs',  // <contactUs></contactUs>
   // We need to tell Angular's Dependency Injection which providers are in our app.
   // providers: [
   //  Title
   // ],
   // Our list of styles in our component. We may add more to compose many styles together
-  styleUrls: [ './about.component.scss' ],
+  styleUrls: [ './contact.component.scss' ],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
-  templateUrl: './about.component.html'
+  templateUrl: './contact.component.html'
 })
-export class AboutUsComponent implements OnInit {
+export class ContactUsComponent implements OnInit {
   // Set our default values
   public localState = { value: '' };
   // TypeScript public modifiers
@@ -30,7 +30,7 @@ export class AboutUsComponent implements OnInit {
   ) {}
 
   public ngOnInit() {
-    console.log('hello `AboutUs` component');
+    console.log('hello `ContactUs` component');
     // this.title.getData().subscribe(data => this.data = data);
   }
 

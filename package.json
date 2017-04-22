@@ -81,6 +81,7 @@
     "@angularclass/conventions-loader": "^1.0.2",
     "@angularclass/hmr": "~1.2.2",
     "@angularclass/hmr-loader": "~3.0.2",
+    "angular2-google-maps": "^0.17.0",
     "bootstrap": "^4.0.0-alpha.6",
     "core-js": "^2.4.1",
     "express": "^4.14.1",

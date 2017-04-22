@@ -1,0 +1,57 @@
+.main-nav {
+    height: auto;
+    position: relative;
+    padding-bottom: 4px;
+
+    &:after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        height: 4px;
+        background-color: #F6DD3B;
+        width: 100%;
+        left: 0;
+    }
+
+    nav {
+        text-align: center;
+
+        a {
+            background-color: transparent;
+        }
+        .nav-item.active {
+            a {
+                color: #F6DD3B;
+            }
+        }
+
+        .navbar-brand {
+            margin-right: 0;
+        }
+
+        .navbar-nav {
+            width: 100%;
+
+            .nav-link {
+                cursor: pointer;
+            }
+        }
+
+        hr { 
+            height: 10px;
+            width: 100%;
+            border: 0;
+            box-shadow: 0 10px 10px -10px #fff inset;
+            padding: 0 1rem;
+            margin: .5rem 0 .5rem -1rem;
+            border: 0;
+        }
+
+        .ml-auto-md-up {
+            margin-left: initial;
+            @media (min-width: 768px) { 
+                margin-left: auto;
+            }
+        }
+    }
+}

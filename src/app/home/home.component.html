@@ -1,37 +1,27 @@
-<div class="card-container">
-  <h1 x-large class="sample-content">Your Content Here</h1>
+<header>Loading...</header>
 
-  <hr>
+<main [ngClass]="'home'">
+	<nav-bar>Loading...</nav-bar>
+	<mainContent>
+		<mainContentRow>
+			<mainCard>
+					<h1 class="card-title">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span></h1><br>
+					<h5 class="card-text">Do you love bees as much as we do?</h5>
+					<p>BeeCompanion is a social platform for Beekeepers and interested Beefriends.</p>
+					<p>Our target is to bring beefriends and beekeepers together and to raise public attention to the non-stopping bee death. Support your local Beekeepers and bee a hero!</p>
+					<div class="container buttons-area">
+						<div class="row signup-row justify-content-center justify-content-sm-around">
+							<a href="#" class="button rounded">SignUp as BeeKeeper <i class="icon_star icon icon_hover"></i><i class="icon_star_alt icon"></i></a>
+							<span class="tilde hidden-xs-down">~</span>
+							<a href="#" class="button rounded">SignUp as Supporter <i class="icon_heart icon icon_hover"></i><i class="icon_heart_alt icon"></i></a>
+						</div>
+						<div class="row beeradar-row justify-content-center">
+							<a href="#" class="button rounded" routerLink="/bee-radar">Explore BeeCompanion with BeeRadar <i class="icon_globe icon"></i><i class="icon_globe_alt icon icon_hover"></i></a>
+						</div>
+					</div>
+			</mainCard>
+		</mainContentRow>
+	</mainContent>
+</main>
 
-  <div>
-    For hot module reloading run
-    <pre>npm run start:hmr</pre>
-  </div>
-
-  <hr>
-
-  <div>
-    <h4>Local State</h4>
-
-    <form (ngSubmit)="submitState(localState.value)" autocomplete="off">
-
-      <input
-        [value]="localState.value"
-        (input)="localState.value = $event.target.value"
-        placeholder="Submit Local State to App State"
-        autofocus>
-
-      <button md-raised-button color="primary">Submit Value</button>
-    </form>
-    <!--
-        <input type="text" [value]="localState.value" (input)="localState.value = $event.target.value" autofocus>
-        Rather than wiring up two-way data-binding ourselves with [value] and (input)
-        we can use Angular's [(ngModel)] syntax
-        <input type="text" name="textInput" [(ngModel)]="localState.value" autofocus>
-      -->
-
-    <pre>this.localState = {{ localState | json }}</pre>
-
-  </div>
-
-</div>
+<footer>Loading...</footer>

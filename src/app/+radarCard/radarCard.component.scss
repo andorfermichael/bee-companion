@@ -1,0 +1,71 @@
+.radar {
+  border: none;
+  width: 400px;
+  position: relative;
+  .gmnoprint {
+    display: none;
+  }
+  img#radar {
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    animation: rotate 5s infinite;
+    width: 400px;
+    height: 400px;
+    transform-origin: 200px 200px;
+    animation-timing-function: linear;
+    opacity: .5;
+    z-index: 10;
+    
+  }
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(359deg);
+    }
+  }
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    user-select: none;
+    z-index: 11;
+  }
+
+  #map {
+    width: 400px;
+    height: 400px;
+    z-index: 1;
+    .sebm-google-map-container {
+      height: 400px;
+      width: 400px;
+    }
+  }
+
+  .radar-frame {
+    width: 440px;
+    position: absolute;
+    top: 0px;
+    z-index: 12;
+    left: -22px;
+    opacity: 1;
+    pointer-events: none;
+  }
+
+  .radar-full {
+    width: 450px;
+    position: absolute;
+    top: -10px;
+    z-index: 10;
+    left: -22px;
+    opacity: .3;
+    height: 440px;
+    pointer-events: none;
+  }
+}

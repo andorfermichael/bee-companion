@@ -1,0 +1,17 @@
+/*styles for terms content only*/
+
+main {
+  width: 100%;
+  position: relative;
+  height: auto;
+
+  /deep/ .main-content-row {
+    max-height: 600px;
+  }
+
+  .privacy-content {
+    overflow-y: auto;
+    max-height: 400px;
+    padding-right: 12px;
+  }
+}
