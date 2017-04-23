@@ -1,4 +1,5 @@
 #!/bin/bash
+cd var/www/
 cd ./server
 pm2 start server.js
 cd ..
