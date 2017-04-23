@@ -6,7 +6,7 @@ files:
 permissions:
    - object: /var/www
      pattern: "**"
-     owner: ec2-user
+     owner: root
      mode: 755
      type:
        - file
@@ -14,10 +14,10 @@ hooks:
   AfterInstall :
     - location: deployment/application-setup.sh
       timeout: 3600
-      runas: ec2-user
+      runas: root
   ApplicationStart:
     - location: deployment/application-start.sh
       timeout: 3600
-      runas: ec2-user
+      runas: root
 
 
