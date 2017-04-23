@@ -53,5 +53,45 @@
                 margin-left: auto;
             }
         }
+
+        .login-area {
+           align-self: center;
+
+            .login-menu-desktop {
+                display: flex;
+                align-items: center;
+
+                &.login-clicked {
+                    > .nav-item {
+                        display: none;
+                    }
+                    .login-inputs {
+                        display: flex;
+                    }
+                }
+
+                .login-inputs {
+                    display: none;
+
+                    .nav-item:not(:last-child) {
+                        padding-right: .25em;
+                    }
+                    input {
+                        padding: .125em;
+                        width: 8em;
+                        padding-left: .25em;
+                        padding-right: .25em;
+                        cursor: initial!important;
+                        background-color: transparent;
+                        border-color: white;
+                        border-radius: 4px;
+                        outline: none;
+                        &:focus {
+                            border-color: #f6dd3b;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

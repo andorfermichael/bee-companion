@@ -17,12 +17,38 @@
           <a class="nav-link">AboutUs</a>
         </li>
         <div class="hr-line hidden-md-up" routerLink="/register" routerLinkActive="active"><hr></div>
-        <li class="nav-item ml-auto-md-up">
-          <a class="nav-link">SignUp</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">LogIn</a>
-        </li>
+        <div class="login-area logged-out ml-auto-md-up">
+          <div class="login-menu hidden-md-up">
+            <li class="nav-item">
+              <a class="nav-link">SignUp</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">LogIn</a>
+            </li>
+          </div>
+          <div class="login-menu login-menu-desktop hidden-sm-down">
+            <li class="nav-item">
+              <a class="nav-link">SignUp</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">LogIn</a>
+            </li>
+            <div class="login-menu login-menu-desktop login-inputs">
+                <li class="nav-item">
+                  <input class="nav-link" type="text" placeholder="Username">
+                </li>
+                <li class="nav-item">
+                  <input class="nav-link" type="password" placeholder="Password">
+                </li>
+                <li class="nav-item">
+                  <i class="arrow_back nav-link"></i>
+                </li>
+                <li class="nav-item">
+                  <i class="arrow_carrot-right_alt2 nav-link"></i>
+                </li>
+            </div>
+          </div>
+        </div>
       </ul>
     </div>
   </nav>
