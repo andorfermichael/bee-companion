@@ -11,10 +11,6 @@ permissions:
      type:
        - file
 hooks:
-  AfterInstall :
-    - location: deployment/application-setup.sh
-      timeout: 3600
-      runas: root
   ApplicationStart:
     - location: deployment/application-start.sh
       timeout: 3600
