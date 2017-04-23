@@ -91,6 +91,7 @@
     "ie-shim": "^0.1.0",
     "jasmine-core": "^2.5.2",
     "jquery": "^3.1.1",
+    "morgan": "^1.8.1",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "postcss-loader": "^1.2.2",
