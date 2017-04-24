@@ -65,14 +65,9 @@
                     > .nav-item {
                         display: none;
                     }
-                    .login-inputs {
-                        display: flex;
-                    }
                 }
 
                 .login-inputs {
-                    display: none;
-
                     .nav-item:not(:last-child) {
                         padding-right: .25em;
                     }

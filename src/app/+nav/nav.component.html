@@ -13,7 +13,7 @@
         <li class="nav-item" routerLink="/bee-radar" routerLinkActive="active">
           <a class="nav-link">BeeRadar</a>
         </li>
-        <li class="nav-item"  routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
           <a class="nav-link">AboutUs</a>
         </li>
         <div class="hr-line hidden-md-up" routerLink="/register" routerLinkActive="active"><hr></div>
@@ -23,25 +23,24 @@
               <a class="nav-link">SignUp</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">LogIn</a>
+              <a class="nav-link" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">LogIn</a>
             </li>
           </div>
-          <div class="login-menu login-menu-desktop hidden-sm-down">
-            <li class="nav-item">
-              <a class="nav-link">SignUp</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">LogIn</a>
-            </li>
-            <div class="login-menu login-menu-desktop login-inputs">
+          <div class="login-menu login-menu-desktop hidden-sm-down" >
+            <div class="login-buttons d-flex" [@loginButtonsState]="loginButtons">
+              <li class="nav-item">
+                <a class="nav-link">SignUp</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="clickedLogin()">LogIn</a>
+              </li>
+            </div>
+            <div class="login-menu login-menu-desktop login-inputs" [@loginClickedState]="loginInputs">
                 <li class="nav-item">
                   <input class="nav-link" type="text" placeholder="Username">
                 </li>
                 <li class="nav-item">
                   <input class="nav-link" type="password" placeholder="Password">
-                </li>
-                <li class="nav-item">
-                  <i class="arrow_back nav-link"></i>
                 </li>
                 <li class="nav-item">
                   <i class="arrow_carrot-right_alt2 nav-link"></i>

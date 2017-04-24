@@ -15,6 +15,7 @@ import {
   RouterModule,
   PreloadAllModules
 } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 //import google Maps:
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -32,6 +33,7 @@ import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
 import { ContactUsComponent } from './contact';
 import { TermsAndConditionsComponent } from './terms';
+import { LoginPageComponent } from './login';
 import { PrivacyPolicyComponent } from './privacy';
 import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
@@ -69,6 +71,7 @@ type StoreType = {
     AboutUsComponent,
     ContactUsComponent,
     TermsAndConditionsComponent,
+    LoginPageComponent,
     PrivacyPolicyComponent,
     HomeComponent,
     BeeRadarComponent,
