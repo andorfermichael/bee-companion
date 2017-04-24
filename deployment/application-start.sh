@@ -8,7 +8,7 @@ npm install -g pm2
 pm2 kill
 cd /var/www/
 npm install
-npm install -g http-server
+npm install http-server
 cd ./server
 pm2 start server.js
 cd ..
