@@ -4,6 +4,7 @@ import {
   ElementRef,
   trigger, state, animate, transition, style
 } from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
 
 /*
  * We're loading this component asynchronously
@@ -52,7 +53,7 @@ console.log('`Nav` component loaded asynchronously');
   ]
 })
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef) { }
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) { }
 
   onClick(event) {
    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
@@ -60,9 +61,60 @@ export class NavComponent implements OnInit {
    }
   }
 
+  onMouseOver(event) {
+    if (!this.transitionInProgress) {
+      this.transitionInProgress = true
+      this.createGradientTransition(this.getOffsetLeft(event.srcElement))
+    }
+  }
+
+  onMouseLeave(event) {
+    this.gradientBarBackground = ""
+  }
+
   loginClicked = false
   loginInputs = 'inactive'
   loginButtons = 'active'
+  public gradientBarBackground
+  lastPosition = 0
+  transitionInProgress = false
+
+  createGradientTransition(to) {
+    if (this.lastPosition < to) {
+      if (to - this.lastPosition < 10) {
+        this.createGradient(to)
+        this.transitionInProgress = false
+        return
+      }
+      this.lastPosition += 10
+      setTimeout(() => {
+        this.createGradient(this.lastPosition)
+        this.createGradientTransition(to)
+      }, 1 )
+    } else if (this.lastPosition > to) {
+      if (this.lastPosition - to < 10) {
+        this.createGradient(to)
+        this.transitionInProgress = false
+        return
+      }
+      this.lastPosition -= 10
+      setTimeout(() => {
+        this.createGradient(this.lastPosition)
+        this.createGradientTransition(to)
+      }, 1 )
+    } else {
+      this.transitionInProgress = false
+    }
+  }
+
+  createGradient(position) {
+    const gradient = 'linear-gradient(to right, #292b2c ' + (position-80) + 'px, #f6dd3b ' + (position) + 'px, #292b2c ' + (position + 80) + 'px)'
+    this.gradientBarBackground = this.sanitizer.bypassSecurityTrustStyle(gradient);
+  }
+
+  getOffsetLeft(element) {
+    return (element.offsetWidth/2) + element.offsetLeft + ( element.offsetParent ? element.offsetParent.offsetLeft : 0 )
+  }
 
   public ngOnInit() {
     console.log('hello `Nav` component');

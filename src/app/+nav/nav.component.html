@@ -1,5 +1,5 @@
 <div class="main-nav">
-  <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse">
+  <nav class="navbar navbar-toggleable-sm navbar-inverse bg-inverse" (mouseleave)="onMouseLeave($event)">
     <button class="navbar-toggler navbar-toggler-left" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -7,13 +7,13 @@
 
     <div class="collapse navbar-collapse" id="navbarColor01">
       <ul class="navbar-nav">
-        <li class="nav-item" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li class="nav-item" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
           <a class="nav-link">Home</a>
         </li>
-        <li class="nav-item" routerLink="/bee-radar" routerLinkActive="active">
+        <li class="nav-item" routerLink="/bee-radar" routerLinkActive="active" (mouseover)="onMouseOver($event)">
           <a class="nav-link">BeeRadar</a>
         </li>
-        <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
           <a class="nav-link">AboutUs</a>
         </li>
         <div class="hr-line hidden-md-up" routerLink="/register" routerLinkActive="active"><hr></div>
@@ -28,27 +28,28 @@
           </div>
           <div class="login-menu login-menu-desktop hidden-sm-down" >
             <div class="login-buttons d-flex" [@loginButtonsState]="loginButtons">
-              <li class="nav-item">
+              <li class="nav-item" (mouseover)="onMouseOver($event)">
                 <a class="nav-link">SignUp</a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item" (mouseover)="onMouseOver($event)">
                 <a class="nav-link" (click)="clickedLogin()">LogIn</a>
               </li>
             </div>
             <div class="login-menu login-menu-desktop login-inputs" [@loginClickedState]="loginInputs">
-                <li class="nav-item">
+                <li class="nav-item" (mouseover)="onMouseOver($event)">
                   <input class="nav-link" type="text" placeholder="Username">
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" (mouseover)="onMouseOver($event)">
                   <input class="nav-link" type="password" placeholder="Password">
                 </li>
-                <li class="nav-item">
+                <li class="nav-item" (mouseover)="onMouseOver($event)">
                   <i class="arrow_carrot-right_alt2 nav-link"></i>
                 </li>
             </div>
           </div>
         </div>
       </ul>
+      <div class="gradient-bar" [style.background]="gradientBarBackground"></div>
     </div>
   </nav>
 </div>
