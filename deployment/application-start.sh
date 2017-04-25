@@ -9,7 +9,7 @@ pm2 kill
 cd /var/www/beecompanion/
 npm install
 npm install http-server
-cd ./server
+cd /var/www/beecompanion/server/
 pm2 start server.js
-cd ..
+cd /var/www/beecompanion/
 npm run server:prod:pm2
