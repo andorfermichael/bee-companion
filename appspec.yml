@@ -1,8 +1,16 @@
 version: 0.0
 os: linux
 files:
-   - source: /
-     destination: /var/www
+   - source: config/
+     destination: /var/www/beecompanion/config/
+   - source: deployment/
+     destination: /var/www/beecompanion/deployment/
+   - source: dist/
+     destination: /var/www/beecompanion/dist/
+   - source: server/
+     destination: /var/www/beecompanion/server/
+   - source: ./package.json
+     destination: /var/www/beecompanion/
 permissions:
    - object: /var/www
      pattern: "**"

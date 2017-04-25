@@ -19,11 +19,50 @@
         a {
             background-color: transparent;
         }
+        .gradient-bar {
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            opacity: .85;
+            z-index: 2;
+            height: 4px;
+            background: #292b2c;
+            // /* Old browsers */
+            background: -moz-linear-gradient(left, #292b2c 30%, #f6dd3b 49%, #292b2c 70%);
+            // /* FF3.6-15 */
+            background: -webkit-linear-gradient(left, #292b2c 30%,#f6dd3b 49%,#292b2c 70%);
+            // /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to right, #292b2c 30%,#f6dd3b 49%,#292b2c 70%);
+            // /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#292b2c', endColorstr='#292b2c',GradientType=1 );
+            // /* IE6-9 */
+        }
         .nav-item.active {
             a {
                 color: #F6DD3B;
             }
-        }
+            &:after {
+                // content: '';
+                // position: absolute;
+                // bottom: -4px;
+                // left: 0;
+                // width: 100%;
+                // opacity: .85;
+                // z-index: 2;
+                // height: 4px;
+                // background: #292b2c;
+                // /* Old browsers */
+                // background: -moz-linear-gradient(left, #292b2c 30%, #f6dd3b 49%, #292b2c 70%);
+                // /* FF3.6-15 */
+                // background: -webkit-linear-gradient(left, #292b2c 30%,#f6dd3b 49%,#292b2c 70%);
+                // /* Chrome10-25,Safari5.1-6 */
+                // background: linear-gradient(to right, #292b2c 30%,#f6dd3b 49%,#292b2c 70%);
+                // /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#292b2c', endColorstr='#292b2c',GradientType=1 );
+                // /* IE6-9 */
+            }
+         }
 
         .navbar-brand {
             margin-right: 0;
@@ -51,6 +90,41 @@
             margin-left: initial;
             @media (min-width: 768px) { 
                 margin-left: auto;
+            }
+        }
+
+        .login-area {
+           align-self: center;
+
+            .login-menu-desktop {
+                display: flex;
+                align-items: center;
+
+                &.login-clicked {
+                    > .nav-item {
+                        display: none;
+                    }
+                }
+
+                .login-inputs {
+                    .nav-item:not(:last-child) {
+                        padding-right: .25em;
+                    }
+                    input {
+                        padding: .125em;
+                        width: 8em;
+                        padding-left: .25em;
+                        padding-right: .25em;
+                        cursor: initial!important;
+                        background-color: transparent;
+                        border-color: white;
+                        border-radius: 4px;
+                        outline: none;
+                        &:focus {
+                            border-color: #f6dd3b;
+                        }
+                    }
+                }
             }
         }
     }

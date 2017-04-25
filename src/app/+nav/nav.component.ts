@@ -1,7 +1,11 @@
 import {
   Component,
   OnInit,
+  ElementRef,
+  trigger, state, animate, transition, style
 } from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
+
 /*
  * We're loading this component asynchronously
  * We are using some magic with es6-promise-loader that will wrap the module with a Promise
@@ -16,11 +20,120 @@ console.log('`Nav` component loaded asynchronously');
   styleUrls: [ './nav.component.scss' ],
   // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './nav.component.html',
+  host: {
+    '(document:click)': 'onClick($event)',
+  },
+  animations: [
+    trigger('loginClickedState', [
+      state('inactive', style({
+        display: 'none',
+        transform: 'translateX(120%)'
+      })),
+      state('active',   style({
+        display: 'flex',
+        transform: 'translateX(0%)'
+      })),
+      transition('inactive => active', animate('.25s ease-in')),
+      transition('active => inactive', animate('.25s ease-out'))
+    ]),
+    trigger('loginButtonsState', [
+      state('inactive', style({
+        display: 'none',
+        transform: 'translateX(-50%)',
+        opacity: '0'
+      })),
+      state('active',   style({
+        display: 'flex',
+        transform: 'translateX(0%)',
+        opacity: '1'
+      })),
+      transition('inactive => active', animate('.125s ease-in')),
+      transition('active => inactive', animate('.125s ease-out'))
+    ])
+  ]
 })
 export class NavComponent implements OnInit {
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) { }
+
+  onClick(event) {
+   if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
+    this.clickedLogin()
+   }
+  }
+
+  onMouseOver(event) {
+    if (!this.transitionInProgress) {
+      this.transitionInProgress = true
+      this.createGradientTransition(this.getOffsetLeft(event.srcElement))
+    }
+  }
+
+  onMouseLeave(event) {
+    this.gradientBarBackground = ""
+  }
+
+  loginClicked = false
+  loginInputs = 'inactive'
+  loginButtons = 'active'
+  public gradientBarBackground
+  lastPosition = 0
+  transitionInProgress = false
+
+  createGradientTransition(to) {
+    if (this.lastPosition < to) {
+      if (to - this.lastPosition < 10) {
+        this.createGradient(to)
+        this.transitionInProgress = false
+        return
+      }
+      this.lastPosition += 10
+      setTimeout(() => {
+        this.createGradient(this.lastPosition)
+        this.createGradientTransition(to)
+      }, 1 )
+    } else if (this.lastPosition > to) {
+      if (this.lastPosition - to < 10) {
+        this.createGradient(to)
+        this.transitionInProgress = false
+        return
+      }
+      this.lastPosition -= 10
+      setTimeout(() => {
+        this.createGradient(this.lastPosition)
+        this.createGradientTransition(to)
+      }, 1 )
+    } else {
+      this.transitionInProgress = false
+    }
+  }
+
+  createGradient(position) {
+    const gradient = 'linear-gradient(to right, #292b2c ' + (position-80) + 'px, #f6dd3b ' + (position) + 'px, #292b2c ' + (position + 80) + 'px)'
+    this.gradientBarBackground = this.sanitizer.bypassSecurityTrustStyle(gradient);
+  }
+
+  getOffsetLeft(element) {
+    return (element.offsetWidth/2) + element.offsetLeft + ( element.offsetParent ? element.offsetParent.offsetLeft : 0 )
+  }
 
   public ngOnInit() {
     console.log('hello `Nav` component');
+  }
+
+  public clickedLogin() {
+      this.loginInputs = !this.loginClicked ? 'active' : 'inactive'
+      if (this.loginClicked) {
+        setTimeout(() => {
+          this.loginClicked = !this.loginClicked
+          this.loginButtons = !this.loginClicked ? 'active' : 'inactive'
+        }, 250)
+      } else {
+        this.loginButtons = this.loginClicked ? 'active' : 'inactive'
+        setTimeout(() => {
+          this.loginClicked = !this.loginClicked
+        }, 250)
+      }
+      
   }
 
 }
