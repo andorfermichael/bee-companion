@@ -6,7 +6,7 @@ nvm use 7.4.0
 export NODE_ENV=production
 npm install -g pm2
 pm2 kill
-cd /var/www/
+cd /var/www/beecompanion/
 npm install
 npm install http-server
 cd ./server
