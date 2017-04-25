@@ -5,7 +5,7 @@ files:
      destination: /var/www/beecompanion
    - source: server/
      destination: /var/www/beecompanion
-   - source: package.json
+   - source: ./package.json
      destination: /var/www/beecompanion
    - source: deployment/
      destination: /var/www/beecompanion
