@@ -8,7 +8,7 @@ files:
    - source: dist/
      destination: /var/www/beecompanion/dist/
    - source: server/
-     destination: /var/www/beecompanion/server/
+     destination: /var/www/beecompanion/api/
    - source: ./package.json
      destination: /var/www/beecompanion/
 permissions:
