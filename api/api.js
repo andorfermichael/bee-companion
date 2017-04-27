@@ -1,17 +1,17 @@
 // Express
-var express = require('express');
-var history = require('connect-history-api-fallback');
-var morgan  = require('morgan');
-var bodyParser = require('body-parser');
+const express = require('express');
+const history = require('connect-history-api-fallback');
+const morgan  = require('morgan');
+const bodyParser = require('body-parser');
 
-var beekeepers = require('./routes/beekeepers');
+const beekeepers = require('./routes/beekeepers');
 
 // Express App
-var app = express();
+const app = express();
 
 // Env
-var PORT     = process.env.PORT || 3000;
-var NODE_ENV = process.env.NODE_ENV || 'development';
+const PORT     = process.env.PORT || 3000;
+const NODE_ENV = process.env.NODE_ENV || 'development';
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());

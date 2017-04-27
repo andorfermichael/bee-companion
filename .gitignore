@@ -1,7 +1,7 @@
-# Dependencies
+# dependencies
 node_modules
 
-# Build
+# build
 dll
 dist
 
@@ -10,3 +10,7 @@ dist
 
 # Config
 .env
+
+# logs
+*.log
+
