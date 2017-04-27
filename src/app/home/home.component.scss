@@ -127,3 +127,13 @@ main {
     background-image: linear-gradient(to bottom, #404040, #2a2a2a);
   }
 }
+
+/deep/ .auth0-lock-submit svg #Login #Btn {
+  circle {
+    stroke: #292b2c;
+  }
+  path {
+    fill: #292b2c;
+  }
+}
+

@@ -20,31 +20,41 @@
         <div class="login-area logged-out ml-auto-md-up">
           <div class="login-menu hidden-md-up">
             <li class="nav-item">
-              <a class="nav-link">SignUp</a>
+              <a class="nav-link" (click)="auth.signup()">SignUp</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">LogIn</a>
+              <a class="nav-link" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="!auth.isAuthenticated()">LogIn</a>
+              <a class="nav-link" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">LogOut</a>
             </li>
           </div>
           <div class="login-menu login-menu-desktop hidden-sm-down" >
             <div class="login-buttons d-flex" [@loginButtonsState]="loginButtons">
-              <li class="nav-item" (mouseover)="onMouseOver($event)">
-                <a class="nav-link">SignUp</a>
+              <li class="nav-item " (mouseover)="onMouseOver($event)" *ngIf="!auth.isAuthenticated()">
+                <a class="nav-link" (click)="auth.signup()">SignUp</a>
               </li>
               <li class="nav-item" (mouseover)="onMouseOver($event)">
-                <a class="nav-link" (click)="clickedLogin()">LogIn</a>
+                <a class="nav-link" (click)="clickedLogin()" *ngIf="!auth.isAuthenticated()">LogIn</a>
+                <a class="nav-link" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">LogOut</a>
               </li>
             </div>
             <div class="login-menu login-menu-desktop login-inputs" [@loginClickedState]="loginInputs">
+              <form class="d-flex align-items-center">
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input class="nav-link" type="text" placeholder="Username">
+                  <a class="nav-link" (click)="auth.loginWithFacebook()">FB</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input class="nav-link" type="password" placeholder="Password">
+                  <a class="nav-link" (click)="auth.loginWithGoogle()">Google</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
+                  <input #username class="nav-link" type="text" placeholder="Username">
+                </li>
+                <li class="nav-item" (mouseover)="onMouseOver($event)">
+                  <input #password class="nav-link" type="password" placeholder="Password">
+                </li>
+                <li class="nav-item" (mouseover)="onMouseOver($event)" (click)="auth.login(username.value, password.value)">
                   <i class="arrow_carrot-right_alt2 nav-link"></i>
                 </li>
+              </form>
             </div>
           </div>
         </div>

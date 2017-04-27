@@ -5,6 +5,7 @@ import {
   trigger, state, animate, transition, style
 } from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
+import {Auth} from '../auth.service';
 
 /*
  * We're loading this component asynchronously
@@ -53,7 +54,7 @@ console.log('`Nav` component loaded asynchronously');
   ]
 })
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) { }
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth) { }
 
   onClick(event) {
    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
@@ -75,7 +76,7 @@ export class NavComponent implements OnInit {
   loginClicked = false
   loginInputs = 'inactive'
   loginButtons = 'active'
-  public gradientBarBackground
+  gradientBarBackground
   lastPosition = 0
   transitionInProgress = false
 

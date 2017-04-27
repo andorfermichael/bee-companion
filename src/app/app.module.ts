@@ -16,6 +16,7 @@ import {
   PreloadAllModules
 } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Auth } from './auth.service';
 
 //import google Maps:
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -96,7 +97,8 @@ type StoreType = {
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
-    APP_PROVIDERS
+    APP_PROVIDERS,
+    Auth
   ],
   schemas: [ 
     NO_ERRORS_SCHEMA 

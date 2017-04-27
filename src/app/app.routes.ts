@@ -1,4 +1,6 @@
-import { Routes } from '@angular/router';
+import { Routes, RouterModule, CanActivate } from '@angular/router';
+import { AuthGuard } from './auth-guard.service';
+
 import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';
 import { ContactUsComponent } from './contact';
@@ -19,5 +21,6 @@ export const ROUTES: Routes = [
   	{ path: 'privacy', component: PrivacyPolicyComponent, pathMatch: 'full'},
   	{ path: 'contact', component: ContactUsComponent, pathMatch: 'full'},
   	{ path: 'login', component: LoginPageComponent, pathMatch: 'full'},
+  	{ path: 'restricted', component: LoginPageComponent, pathMatch: 'full', canActivate: [AuthGuard]},
   	{ path: '**',    component: NoContentComponent },
 ];

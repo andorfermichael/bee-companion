@@ -1,13 +1,15 @@
-// Express
 var express = require('express');
+var app = express();
+
+// Auth0 dependencies
+var jwt = require('express-jwt');
+var jwks = require('jwks-rsa');
+
 var history = require('connect-history-api-fallback');
 var morgan  = require('morgan');
 var bodyParser = require('body-parser');
 
 var beekeepers = require('./routes/beekeepers');
-
-// Express App
-var app = express();
 
 // Env
 var PORT     = process.env.PORT || 3000;
@@ -28,8 +30,25 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
 });
 
 // your api middleware
+// Auth0
 
-app.use('/api', beekeepers);
+var jwtCheck = jwt({
+    secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: "https://bee-companion.eu.auth0.com/.well-known/jwks.json"
+    }),
+    audience: 'https://bee-companion.com/api',
+    issuer: "https://bee-companion.eu.auth0.com/",
+    algorithms: ['RS256']
+});
+
+app.use(jwtCheck);
+
+app.get('/api/authorized', function (req, res) {
+  res.send('Secured Resource');
+});
 
 app.listen(PORT, function() {
   console.log('Listen on http://localhost:' + PORT + ' in ' + NODE_ENV);
