@@ -2,10 +2,12 @@ import {
   Component,
   OnInit,
   ElementRef,
-  trigger, state, animate, transition, style
+  ViewChild,
+  trigger, state, animate, transition, keyframes, style
 } from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
-import {Auth} from '../auth.service';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Router }   from '@angular/router';
+import { Auth } from '../auth.service';
 
 /*
  * We're loading this component asynchronously
@@ -50,11 +52,37 @@ console.log('`Nav` component loaded asynchronously');
       })),
       transition('inactive => active', animate('.125s ease-in')),
       transition('active => inactive', animate('.125s ease-out'))
+    ]),
+    trigger('fieldRequired', [
+      state('inactive', style({
+        transform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden',
+        perspective: '1000px'
+      })),
+      transition('inactive => active', [
+        animate(300, keyframes([
+          style({transform: 'translate3d(-1px, 0, 0)', borderColor: '#f6dd3b'}),
+          style({transform: 'translate3d(2px, 0, 0)'}),
+          style({transform: 'translate3d(-4px, 0, 0)'}),
+          style({transform: 'translate3d(4px, 0, 0)'})
+        ]))
+      ]),
+      transition('active => inactive', [
+        animate(300, keyframes([
+          style({transform: 'translate3d(4px, 0, 0)'}),
+          style({transform: 'translate3d(-4px, 0, 0)'}),
+          style({transform: 'translate3d(2px, 0, 0)'}),
+          style({transform: 'translate3d(-1px, 0, 0)', borderColor: 'initial'})
+          ]))
+       ])
     ])
   ]
 })
+
+
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth) { }
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth, public router: Router) { }
+
 
   onClick(event) {
    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
@@ -79,6 +107,10 @@ export class NavComponent implements OnInit {
   gradientBarBackground
   lastPosition = 0
   transitionInProgress = false
+  usernameEmpty = 'inactive'
+  passwordEmpty = 'inactive'
+  @ViewChild('username') usernameElementRef
+  @ViewChild('password') passwordElementRef
 
   createGradientTransition(to) {
     if (this.lastPosition < to) {
@@ -106,6 +138,39 @@ export class NavComponent implements OnInit {
     } else {
       this.transitionInProgress = false
     }
+  }
+
+  resetUsernamePasswordEmtpy() {
+    this.usernameEmpty = 'inactive';
+    this.passwordEmpty = 'inactive';
+  }
+
+  checkInputs(username?: string, password?: string) {
+    if (!password || password.length < 6) {
+      this.passwordEmpty = 'active';
+      this.setFocus(this.passwordElementRef)
+    }
+    if (!username || username.length < 6) {
+      this.usernameEmpty = 'active';
+      this.setFocus(this.usernameElementRef)
+    }
+    if (username && username.length >= 6 && password && password.length >= 6) {
+      this.auth.login(username, password, this.redirectToFullLogin)
+    }
+  }
+
+  redirectToFullLogin = (err) => {
+    if (err) {
+      this.router.navigate(['/login', {
+        errorMsg: err.description
+      }])
+    }
+  }
+
+
+
+  setFocus(elementRef) {
+    elementRef.nativeElement.focus();
   }
 
   createGradient(position) {

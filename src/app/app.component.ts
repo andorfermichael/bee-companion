@@ -15,6 +15,7 @@ import { Auth } from './auth.service';
  */
 @Component({
   selector: 'app',
+  providers: [ Auth ],
   encapsulation: ViewEncapsulation.None,
   styleUrls: [
     './app.component.scss'

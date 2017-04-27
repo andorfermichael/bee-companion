@@ -5,58 +5,13 @@ import 'rxjs/add/operator/filter';
 import Auth0Lock from 'auth0-lock';
 import auth0 from 'auth0-js';
 
+import { myConfig }        from './auth.config';
+
 // Avoid name not found warnings
 // declare var auth0: any;
 
 @Injectable()
 export class Auth {
-	private defaults:any = {
-		domain: 'bee-companion.eu.auth0.com',
-		clientID: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
-		lock: {
-			socialButtonStyle: 'small',
-			theme: {
-				logo: '../assets/img/BeeCompanion_mainlogo.png',
-				primaryColor: '#F6DD3B',
-				foregroundColor: "#000000",
-		    	labeledSubmitButton: false
-			},
-			languageDictionary: {
-				title: 'Bee Companion'
-			},
-			additionalSignUpFields: [{
-			    name: "username",
-			    placeholder: "your desired username",
-			    validator: function(name) {
-			      return {
-			         valid: name.length >= 3,
-			         hint: "Must have 3 or more chars" // optional
-			      };
-			    }
-			  },
-			  {
-			    name: "first_name",
-			    placeholder: "your first name",
-			    validator: function(name) {
-			      return {
-			         valid: name.length >= 3,
-			         hint: "Must have 3 or more chars" // optional
-			      };
-			    }
-			  },
-			  {
-			    name: "last_name",
-			    placeholder: "your last name",
-			    validator: function(name) {
-			      return {
-			         valid: name.length >= 3,
-			         hint: "Must have 3 or more chars" // optional
-			      };
-			    }
-			  }]
-		}
-	}
-
 	// Configure Auth0
 	auth0 = new auth0.WebAuth({
 		domain: 'bee-companion.eu.auth0.com',
@@ -66,7 +21,7 @@ export class Auth {
 		responseType: 'token id_token'
 	});
 
-	lock = new Auth0Lock(this.defaults.clientID, this.defaults.domain, this.defaults.lock);
+	lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
 
 	constructor(private router: Router) {
 		this
@@ -81,7 +36,6 @@ export class Auth {
 		    this.router.navigate(['/']);
 		  });
 		});
-
 	}
 
 	public handleAuthentication(): void {
@@ -98,14 +52,22 @@ export class Auth {
 	    });
 	}
 
-	 public login(username?: string, password?: string): void {
+	public alertError(err): void {
+		this.router.navigate(['/login', err]);
+		if (err) {
+			console.log(err);
+			alert(err.description);
+		}
+	}
+
+	public login(username?: string, password?: string, callback?: any): void {
+	 	if (!username || !password) return;
+	 	callback = callback || this.alertError;
 		this.auth0.redirect.loginWithCredentials({
 	      connection: 'Username-Password-Authentication',
 	      username,
 	      password
-	    }, err => {
-	      if (err) return alert(err.description);
-	    });
+	    }, callback );
 	}
 
 	public loginWithWidget(): void {
@@ -122,12 +84,11 @@ export class Auth {
 		      if (err) return alert(err.description);
 		    });
 		} else {
-			let options = this.defaults.lock;
+			let options = myConfig.lock;
 			options.initialScreen = 'signUp';
-			const lock = new Auth0Lock(this.defaults.clientID, this.defaults.domain, options);
+			const lock = new Auth0Lock(myConfig.clientID, myConfig.domain, options);
 			lock.show();
 		}
-	    
 	}
 
 	public loginWithGoogle(): void {

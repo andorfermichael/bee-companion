@@ -46,15 +46,16 @@
                   <a class="nav-link" (click)="auth.loginWithGoogle()">Google</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input #username class="nav-link" type="text" placeholder="Username">
+                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input #password class="nav-link" type="password" placeholder="Password">
+                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
                 </li>
-                <li class="nav-item" (mouseover)="onMouseOver($event)" (click)="auth.login(username.value, password.value)">
+                <li class="nav-item" (mouseover)="onMouseOver($event)" (click)="checkInputs(username.value, password.value)">
                   <i class="arrow_carrot-right_alt2 nav-link"></i>
                 </li>
               </form>
+              <span #errorMsg></span>
             </div>
           </div>
         </div>
