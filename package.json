@@ -55,6 +55,7 @@
     "server": "npm run server:dev",
     "start:hmr": "npm run server:dev:hmr",
     "start": "npm run server:dev",
+    "start:api": "cd api && node api.js",
     "test": "npm run lint && karma start",
     "tslint": "tslint",
     "typedoc": "typedoc",
