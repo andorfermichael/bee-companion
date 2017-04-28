@@ -32,7 +32,7 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
 // your api middleware
 // Auth0
 
-var jwtCheck = jwt({
+var authCheck = jwt({
     secret: jwks.expressJwtSecret({
         cache: true,
         rateLimit: true,
@@ -44,9 +44,9 @@ var jwtCheck = jwt({
     algorithms: ['RS256']
 });
 
-app.use(jwtCheck);
+app.use(authCheck);
 
-app.get('/api/authorized', function (req, res) {
+app.get('/api/authorized', authCheck, function (req, res) {
   res.send('Secured Resource');
 });
 
