@@ -1,11 +1,14 @@
 import { Injectable }      from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
 import { Router, NavigationStart } from '@angular/router';
+import { Http, Headers, RequestOptions, Request, RequestMethod, Response} from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/filter';
 import Auth0Lock from 'auth0-lock';
 import auth0 from 'auth0-js';
 
-import { myConfig }        from './auth.config';
+import { myConfig, postConfig } from './auth.config';
 
 // Avoid name not found warnings
 // declare var auth0: any;
@@ -23,7 +26,7 @@ export class Auth {
 
 	lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
 
-	constructor(private router: Router) {
+	constructor(private router: Router, private http: Http) {
 		this
 		.router
 		.events
@@ -89,6 +92,63 @@ export class Auth {
 			const lock = new Auth0Lock(myConfig.clientID, myConfig.domain, options);
 			lock.show();
 		}
+	}
+
+	public forgotPassword(username?:string, email?:string, onSuccess?:any, onError?:any): void {
+		if (!username && !email)
+			return
+		let options = myConfig.lock;
+		options.initialScreen = 'forgotPassword';
+		options.prefill = {
+			email: email || '',
+			username: username ||''
+		}
+		// const lock = new Auth0Lock(myConfig.clientID, myConfig.domain, options);
+		// lock.show();
+		this.processForgotPassword(email, username).then(
+			data => onSuccess(data),
+			error => onError(error));
+	}
+
+	private processForgotPassword(email?: string, username?: string): Promise<any> {
+		const options = postConfig
+		options.body.email = email
+		const headers = new Headers();
+    	headers.append('content-type', options.headers['content-type']);
+		const reqOpts = new RequestOptions({
+			method: RequestMethod.Post,
+			url: options.url,
+			headers: headers,
+			body: { 
+				client_id: options.body.client_id,
+				username: username || '',
+				email: email || '',
+		 		connection: options.body.connection
+		 	}
+		})
+		return this.http.post(options.url, options.body, reqOpts)
+			.toPromise()
+			.then(this.extractData)
+			.catch(this.handleError);
+	}
+
+	private extractData(res: Response) {
+		let body = res.json();
+		return body || { };
+	}
+
+	private handleError (error: Response | any) {
+		// In a real world app, we might use a remote logging infrastructure
+		let errMsg: string;
+		if (error instanceof Response) {
+			const body = error.json() || '';
+			const err = body.error || JSON.stringify(body);
+			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+		} else {
+			errMsg = error.message ? error.message : error.toString();
+		}
+		console.error(errMsg);
+		return Promise.reject(errMsg);
 	}
 
 	public loginWithGoogle(): void {

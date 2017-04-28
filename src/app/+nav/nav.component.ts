@@ -3,6 +3,7 @@ import {
   OnInit,
   ElementRef,
   ViewChild,
+  Input,
   trigger, state, animate, transition, keyframes, style
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -111,6 +112,8 @@ export class NavComponent implements OnInit {
   passwordEmpty = 'inactive'
   @ViewChild('username') usernameElementRef
   @ViewChild('password') passwordElementRef
+  @Input() disableInlineLogin: boolean
+  errorMsg: string
 
   createGradientTransition(to) {
     if (this.lastPosition < to) {
@@ -146,15 +149,24 @@ export class NavComponent implements OnInit {
   }
 
   checkInputs(username?: string, password?: string) {
-    if (!password || password.length < 6) {
+    if (!password) {
       this.passwordEmpty = 'active';
       this.setFocus(this.passwordElementRef)
+      this.errorMsg = 'Password is required!'
     }
-    if (!username || username.length < 6) {
+    if (!username) {
       this.usernameEmpty = 'active';
       this.setFocus(this.usernameElementRef)
+      this.errorMsg = 'Username is required!'
     }
-    if (username && username.length >= 6 && password && password.length >= 6) {
+    if (!username && !password) {
+      this.errorMsg = 'Username and password are required!'
+    }
+    if (username && password) {
+      if (username.length < 6 || password.length < 6) {
+        this.errorMsg = 'Invalid username or password!'
+        return
+      }
       this.auth.login(username, password, this.redirectToFullLogin)
     }
   }
@@ -166,8 +178,6 @@ export class NavComponent implements OnInit {
       }])
     }
   }
-
-
 
   setFocus(elementRef) {
     elementRef.nativeElement.focus();

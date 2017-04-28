@@ -9,12 +9,10 @@ main {
     maincard {
       @media (max-width: 767px) { 
         width: 100%;
-        max-width: 400px;
       }
     }
     .card-block {
       padding: 0;
-      margin-top: -1px;
       @media (min-width: 768px) { 
         min-width: 300px;
       }
@@ -27,12 +25,12 @@ main {
     .nav-item {
       min-width: 50%;
       color: white;
+      margin-bottom: 0;
 
       a {
         border-radius: 0;
-        color: rgba(255, 255, 255, 0.5);
         border: 0;
-        border-radius: 0;
+        color: rgba(255, 255, 255, 0.5);
         &:hover {
           outline: none;
           color: rgba(255, 255, 255, 0.75);
@@ -43,24 +41,41 @@ main {
           border-top-left-radius: 12px; 
         }
       }
-      &:last-child {
+      &:last-child a {
         @media (min-width: 768px) { 
           border-top-right-radius: 12px; 
         }
       }
-
       .active {
         color: #464a4c!important;
       }
     }
   }
   
-  .login-register-card{
+  .login-card, .signup-card {
     padding: 1.25em;
   }
 
+  .login-card {
+    form.login {
+      .forgotPassword {
+        display: none;
+      }
+      .login {
+        display: initial;
+      }
+    }
+    form.forgotPassword {
+      .forgotPassword {
+        display: initial;
+      }
+      .login {
+        display: none;
+      }
+    }
+  }
+
   .login-content {
-    overflow-y: auto;
     max-height: 400px;
 
     .social-login {
@@ -83,8 +98,22 @@ main {
         border-radius: 4px;
         outline: none;
         &:focus {
-            border-color: #f6dd3b;
+          border-color: #f6dd3b;
         }
+      }
+    }
+
+    .log-message {
+      align-self: center;
+
+      .error {
+        font-size: .8em;
+        color: darkred;
+      }
+
+      .success {
+        font-size: .8em;
+        color: #F6DD3B;
       }
     }
 
@@ -107,6 +136,34 @@ main {
         &:hover {
           text-decoration: none;
           color: #F6DD3B;
+        }
+        background: initial;
+        border: none;
+        &:focus {
+          color: #014c8c;
+          outline: none;
+          text-decoration: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  .role-selection {
+    text-align: center;
+    padding: .5em 0;
+    margin-left: -1.25em;
+    margin-right: -1.25em;
+    margin-bottom: 1em;
+    background-color: black;
+
+    .role {
+      &:hover {
+        a {
+          text-decoration: none;
+          color: #F6DD3B;
+          img {
+            filter: sepia() saturate(10000%) hue-rotate(-30deg);
+          }
         }
       }
     }
