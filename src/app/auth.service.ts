@@ -7,6 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/filter';
 import Auth0Lock from 'auth0-lock';
 import auth0 from 'auth0-js';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { myConfig, postConfig } from './auth.config';
 
@@ -17,12 +18,16 @@ import { myConfig, postConfig } from './auth.config';
 export class Auth {
 	// Configure Auth0
 	auth0 = new auth0.WebAuth({
-		domain: 'bee-companion.eu.auth0.com',
-		clientID: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
+		domain: myConfig.domain,
+		clientID: myConfig.clientID,
 		// specify your desired callback URL
-		redirectUri: 'http://localhost:3000',
-		responseType: 'token id_token'
+		redirectUri: myConfig.redirectUri,
+		responseType: myConfig.responseType
 	});
+
+	// Create a stream of logged in status to communicate throughout app
+	loggedIn: boolean;
+	loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
 
 	lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
 
@@ -36,9 +41,59 @@ export class Auth {
 		  this.lock.resumeAuth(window.location.hash, (error, authResult) => {
 		    if (error) return console.log(error);
 		    localStorage.setItem('id_token', authResult.idToken);
+		    this.setLoggedIn(true);
 		    this.router.navigate(['/']);
 		  });
 		});
+	}
+
+	setLoggedIn(value: boolean) {
+		// Update login status subject
+		this.loggedIn$.next(value);
+		this.loggedIn = value;
+	}
+
+ 	handleAuth() {
+		// When Auth0 hash parsed, get profile
+		this.auth0.parseHash({}, (err, authResult) => {
+		  if (authResult && authResult.accessToken && authResult.idToken) {
+		    window.location.hash = '';
+		    this._getProfile(authResult);
+		    this.router.navigate(['/']);
+		  } else if (err) {
+		    this.router.navigate(['/']);
+		    console.error(`Error: ${err.error}`);
+		  }
+		});
+	}
+
+	private _getProfile(authResult) {
+		// Use access token to retrieve user's profile and set session
+		this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
+		  this._setSession(authResult, profile);
+		});
+	}
+
+	private _setSession(authResult, profile) {
+		// Save session data and update login status subject
+		localStorage.setItem('token', authResult.accessToken);
+		localStorage.setItem('id_token', authResult.idToken);
+		localStorage.setItem('profile', JSON.stringify(profile));
+		this.setLoggedIn(true);
+	}
+
+	logout() {
+	    // Remove tokens and profile and update login status subject
+	    localStorage.removeItem('token');
+	    localStorage.removeItem('id_token');
+	    localStorage.removeItem('profile');
+	    this.router.navigate(['/']);
+	    this.setLoggedIn(false);
+	}
+
+	get authenticated() {
+		// Check if there's an unexpired access token
+		return tokenNotExpired('token');
 	}
 
 	public handleAuthentication(): void {
@@ -63,14 +118,20 @@ export class Auth {
 		}
 	}
 
-	public login(username?: string, password?: string, callback?: any): void {
-	 	if (!username || !password) return;
-	 	callback = callback || this.alertError;
+	public login(username?:string, password?:string): Promise<any> {
+		if (!username && !password)
+			return
 		this.auth0.redirect.loginWithCredentials({
-	      connection: 'Username-Password-Authentication',
-	      username,
-	      password
-	    }, callback );
+			connection: postConfig.body.connection,
+			username: username,
+			password: password,
+			scope: 'openid'
+		}, this.callback);
+		return this.processLogin(username, password)
+	}
+
+	callback (data) {
+		console.log(data)
 	}
 
 	public loginWithWidget(): void {
@@ -94,7 +155,7 @@ export class Auth {
 		}
 	}
 
-	public forgotPassword(username?:string, email?:string, onSuccess?:any, onError?:any): void {
+	public forgotPassword(username?:string, email?:string, onSuccess?:any, onError?:any): Promise<any> {
 		if (!username && !email)
 			return
 		let options = myConfig.lock;
@@ -105,9 +166,7 @@ export class Auth {
 		}
 		// const lock = new Auth0Lock(myConfig.clientID, myConfig.domain, options);
 		// lock.show();
-		this.processForgotPassword(email, username).then(
-			data => onSuccess(data),
-			error => onError(error));
+		return this.processForgotPassword(email, username)
 	}
 
 	private processForgotPassword(email?: string, username?: string): Promise<any> {
@@ -117,7 +176,7 @@ export class Auth {
     	headers.append('content-type', options.headers['content-type']);
 		const reqOpts = new RequestOptions({
 			method: RequestMethod.Post,
-			url: options.url,
+			url: options.urlForgotPassword,
 			headers: headers,
 			body: { 
 				client_id: options.body.client_id,
@@ -126,28 +185,71 @@ export class Auth {
 		 		connection: options.body.connection
 		 	}
 		})
-		return this.http.post(options.url, options.body, reqOpts)
+		return this.http.post(options.urlForgotPassword, options.body, reqOpts)
 			.toPromise()
 			.then(this.extractData)
 			.catch(this.handleError);
 	}
 
+	private processLogin(username?: string, password?: string): Promise<any> {
+		// const options = postConfig
+		// options.body.email = email
+		const options = {
+			client_id: myConfig.clientID,
+			connection: postConfig.body.connection,
+			password: password,
+			redirect_uri: myConfig.redirectUri,
+			response_type: myConfig.responseType,
+			scope: myConfig.scope,
+			tenant: myConfig.tenant,
+			username: username
+		}
+		const headers = new Headers();
+    	headers.append('content-type', postConfig.headers['content-type']);
+		const reqOpts = new RequestOptions({
+			method: RequestMethod.Post,
+			url: postConfig.urlLogin,
+			headers: headers,
+			body: options
+		})
+		return this.http.post(postConfig.urlLogin, options, reqOpts)
+			.toPromise()
+			.then(this.extractData)
+			.catch(this.handleLoginError);
+	}
+
+	private handleLoginError (error: Response | any) {
+		//simplified handleError method
+		let errMsg: string
+		if (error instanceof Response) {
+			const body = error.json() || '';
+			errMsg = `${body.description || error.statusText}`;
+		} else {
+			errMsg = error.message ? error.message : error.toString();
+		}
+		return Promise.reject(errMsg);
+	}
+
 	private extractData(res: Response) {
-		let body = res.json();
+		let body: string
+		try {
+			body = res.json()
+		}
+		catch(e) {
+			body = res.toString()
+		}
 		return body || { };
 	}
 
 	private handleError (error: Response | any) {
-		// In a real world app, we might use a remote logging infrastructure
 		let errMsg: string;
 		if (error instanceof Response) {
 			const body = error.json() || '';
-			const err = body.error || JSON.stringify(body);
+			const err = body.error ||JSON.stringify(body);
 			errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
 		} else {
 			errMsg = error.message ? error.message : error.toString();
 		}
-		console.error(errMsg);
 		return Promise.reject(errMsg);
 	}
 
@@ -166,12 +268,6 @@ export class Auth {
 	public isAuthenticated(): boolean {
 	    // Check whether the id_token is expired or not
 	    return tokenNotExpired('id_token');
-	}
-
-	public logout() {
-		// Remove token from localStorage
-	    localStorage.removeItem('access_token');
-	    localStorage.removeItem('id_token');
 	}
 
 	private setUser(authResult): void {

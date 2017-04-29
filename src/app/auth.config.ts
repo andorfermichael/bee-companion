@@ -1,6 +1,13 @@
 interface AuthConfiguration {
 	domain: string,
 	clientID: string,
+	redirectUri: string,
+	responseType: string,
+	audience: string,
+	issuer: string,
+	tenant: string,
+	scope: string,
+	algorithms: [string],
 	lock: any
 	// lock: {
 	// 	socialButtonStyle: "big" | "small",
@@ -25,6 +32,13 @@ interface AuthConfiguration {
 export const myConfig: AuthConfiguration = {
 	domain: 'bee-companion.eu.auth0.com',
 	clientID: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
+	redirectUri: 'http://localhost:8000/callback',
+	responseType: 'token id_token',
+	audience: 'https://bee-companion.com/api',
+	issuer: 'https://bee-companion.eu.auth0.com',
+	tenant: 'bee-companion',
+	scope: 'openid',
+	algorithms: ['RS256'],
 	lock: {
 		socialButtonStyle: 'small',
 		theme: {
@@ -71,7 +85,8 @@ export const myConfig: AuthConfiguration = {
 
 export const postConfig = { 
 	method: 'POST',
-	url: 'https://bee-companion.eu.auth0.com/dbconnections/change_password',
+	urlForgotPassword: 'https://bee-companion.eu.auth0.com/dbconnections/change_password',
+	urlLogin: 'https://bee-companion.eu.auth0.com/usernamepassword/login',
 	headers: { 
 		'content-type': 'application/json' 
 	},

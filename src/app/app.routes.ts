@@ -8,6 +8,8 @@ import { TermsAndConditionsComponent } from './terms';
 import { LoginPageComponent } from './login';
 import { PrivacyPolicyComponent } from './privacy';
 import { BeeRadarComponent } from './beeRadar';
+import { CallbackComponent } from './callback';
+import { RestrictedComponent } from './restricted';
 import { NoContentComponent } from './no-content';
 
 import { DataResolver } from './app.resolver';
@@ -22,6 +24,9 @@ export const ROUTES: Routes = [
   	{ path: 'contact', component: ContactUsComponent, pathMatch: 'full'},
     { path: 'login', component: LoginPageComponent, pathMatch: 'full'},
   	{ path: 'signup', component: LoginPageComponent, pathMatch: 'full'},
-  	{ path: 'restricted', component: LoginPageComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  	{ path: '**',    component: NoContentComponent },
+  	{ path: 'restricted', component: RestrictedComponent, pathMatch: 'full', canActivate: [AuthGuard]},
+  	{ path: 'callback', component: CallbackComponent },
+    { path: '**',    component: NoContentComponent },
 ];
+
+export const routing = RouterModule.forRoot(ROUTES);

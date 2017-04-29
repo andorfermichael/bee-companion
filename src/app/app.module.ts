@@ -17,6 +17,7 @@ import {
 } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Auth } from './auth.service';
+import { AuthGuard } from './auth-guard.service';
 
 //import google Maps:
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -44,8 +45,12 @@ import { MainCardComponent } from './+mainCard';
 import { MainContentComponent } from './+mainContent';
 import { MainContentRowComponent } from './+mainContentRow';
 import { RadarCardComponent } from './+radarCard';
+import { CallbackComponent } from './callback';
+import { RestrictedComponent } from './restricted';
 import { NoContentComponent } from './no-content';
 import { XLargeDirective } from './home/x-large';
+
+import { LoginError } from './login.error.service';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
@@ -82,6 +87,8 @@ type StoreType = {
     MainCardComponent,
     MainContentComponent,
     MainContentRowComponent,
+    CallbackComponent,
+    RestrictedComponent,
     RadarCardComponent,
     NoContentComponent,
     XLargeDirective
@@ -98,7 +105,9 @@ type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS,
-    Auth
+    Auth,
+    AuthGuard,
+    LoginError
   ],
   schemas: [ 
     NO_ERRORS_SCHEMA 

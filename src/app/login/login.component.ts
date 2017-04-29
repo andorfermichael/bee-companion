@@ -11,6 +11,7 @@ import { AppState } from '../app.service';
 import { NavComponent } from '../+nav';
 import { Auth } from '../auth.service';
 import { Router }   from '@angular/router';
+import { LoginError } from '../login.error.service';
 
 @Component({
   // The selector is what angular internally uses
@@ -60,7 +61,8 @@ export class LoginPageComponent implements OnInit {
     public appState: AppState,
     private auth: Auth,
     private elemRef: ElementRef, 
-    public router: Router
+    public router: Router,
+    private _loginError: LoginError
     //public title: Title
   ) {}
 
@@ -107,7 +109,9 @@ export class LoginPageComponent implements OnInit {
         this.errorMsg = 'Invalid username or password!'
         return
       }
-      this.auth.login(username, password, this.redirectToFullLogin)
+      this.auth.login(username, password).then(
+        (data) => { this.router.navigate(['/restricted']) },
+        (error) => { console.log(error); this.errorMsg = error })
     }
   }
 
@@ -121,10 +125,11 @@ export class LoginPageComponent implements OnInit {
        this.setFocus(this.usernameElementRef)
        this.errorMsg = 'Username or email-address are necessary!'
     } else {
-      this.auth.forgotPassword(username, email, (data) => {
+      this.auth.forgotPassword(username, email).then(
+      (data) => {
         this.successMsg = data
-        this.forgotPassword = false
-      }, (error) => {
+        this.forgotPassword = false },
+      (error) => {
         this.errorMsg = error
         this.forgotPassword = false
       })
@@ -152,7 +157,23 @@ export class LoginPageComponent implements OnInit {
 
   public ngOnInit() {
     console.log('hello `loginPage` component');
+    console.log('test123123123')
+    console.log(this._loginError.errorMessage)
+    if (this._loginError.errorMessage) {
+      console.log(this._loginError.errorMessage)
+      this.errorMsg = this._loginError.errorMessage
+      this._loginError.errorMessage = undefined
+      this.passwordEmpty = 'active'
+    }
     // this.title.getData().subscribe(data => this.data = data);
+  }
+
+  public ngAfterViewInit() {
+    if (this._loginError.enteredUsername) {
+      this.usernameElementRef.nativeElement.value = this._loginError.enteredUsername
+      this._loginError.enteredUsername = undefined
+      this.setFocus(this.passwordElementRef)
+    }
   }
 
   public submitState(value: string) {

@@ -9,6 +9,7 @@ import {
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router }   from '@angular/router';
 import { Auth } from '../auth.service';
+import { LoginError } from '../login.error.service';
 
 /*
  * We're loading this component asynchronously
@@ -82,7 +83,7 @@ console.log('`Nav` component loaded asynchronously');
 
 
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth, public router: Router) { }
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth, private router: Router, private _loginError: LoginError) { }
 
 
   onClick(event) {
@@ -167,8 +168,24 @@ export class NavComponent implements OnInit {
         this.errorMsg = 'Invalid username or password!'
         return
       }
-      this.auth.login(username, password, this.redirectToFullLogin)
+      // this.auth.login(username, password, this.redirectToFullLogin)
+      this.auth.login(username, password).then(
+        (data) => this.onLoginSuccess(data),
+        (error) => this.onLoginError(error, username));
     }
+  }
+
+  private onLoginError(err, username) {
+    console.log("### ERROR ON LOGIN###")
+    console.log(err)
+    this._loginError.errorMessage = err
+    this._loginError.enteredUsername = username
+    this.router.navigate(['/login'])
+  }
+
+  private onLoginSuccess(data) {
+    console.log("### SUCCESS ON LOGIN###")
+    console.log(data)
   }
 
   redirectToFullLogin = (err) => {
