@@ -4,7 +4,7 @@ import {
   ElementRef,
   trigger, state, animate, transition, style
 } from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 
 /*
  * We're loading this component asynchronously
@@ -16,9 +16,7 @@ console.log('`Nav` component loaded asynchronously');
 
 @Component({
   selector: 'nav-bar',
-   // Our list of styles in our component. We may add more to compose many styles together
   styleUrls: [ './nav.component.scss' ],
-  // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './nav.component.html',
   host: {
     '(document:click)': 'onClick($event)',
@@ -53,37 +51,37 @@ console.log('`Nav` component loaded asynchronously');
   ]
 })
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) { }
+  public loginClicked = false;
+  public loginInputs = 'inactive';
+  public loginButtons = 'active';
+  public gradientBarBackground;
+  public lastPosition = 0;
+  public transitionInProgress = false;
 
-  onClick(event) {
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) {  }
+
+  public onClick(event) {
    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
     this.clickedLogin()
    }
   }
 
-  onMouseOver(event) {
+  public onMouseOver(event) {
     if (!this.transitionInProgress) {
-      this.transitionInProgress = true
+      this.transitionInProgress = true;
       this.createGradientTransition(this.getOffsetLeft(event.srcElement))
     }
   }
 
-  onMouseLeave(event) {
+  public onMouseLeave(event) {
     this.gradientBarBackground = ""
   }
-
-  loginClicked = false
-  loginInputs = 'inactive'
-  loginButtons = 'active'
-  public gradientBarBackground
-  lastPosition = 0
-  transitionInProgress = false
 
   createGradientTransition(to) {
     if (this.lastPosition < to) {
       if (to - this.lastPosition < 10) {
-        this.createGradient(to)
-        this.transitionInProgress = false
+        this.createGradient(to);
+        this.transitionInProgress = false;
         return
       }
       this.lastPosition += 10
@@ -133,7 +131,7 @@ export class NavComponent implements OnInit {
           this.loginClicked = !this.loginClicked
         }, 250)
       }
-      
+
   }
 
 }
