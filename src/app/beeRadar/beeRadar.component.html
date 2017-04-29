@@ -9,7 +9,17 @@
 			</mainCard>
 		</mainContentRow>
 		<mainContentRow>
-			<radarCard></radarCard>
+			<radarCard
+        [styles]=styles
+        [lat]=lat
+        [lng]=lng
+        [zoom]=zoom
+        [zoomControl]=zoomControl
+        [disableDefaultUI]=disableDefaultUI
+        [disableDoubleClickZoom]=disableDoubleClickZoom
+        [scrollwheel]=scrollwheel
+        [streetViewControl]=streetViewControl
+      ></radarCard>
 		</mainContentRow>
 	</mainContent>
 </main>

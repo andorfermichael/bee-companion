@@ -1,10 +1,10 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {
   NgModule,
-  ApplicationRef,
-  NO_ERRORS_SCHEMA
+  ApplicationRef
 } from '@angular/core';
 import {
   removeNgStyles,
@@ -15,10 +15,9 @@ import {
   RouterModule,
   PreloadAllModules
 } from '@angular/router';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-//import google Maps:
-import { AgmCoreModule } from 'angular2-google-maps/core';
+// Import Google Maps
+import { AgmCoreModule } from '@agm/core';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -55,11 +54,11 @@ const APP_PROVIDERS = [
   AppState
 ];
 
-type StoreType = {
-  state: InternalStateType,
-  restoreInputValues: () => void,
-  disposeOldHosts: () => void
-};
+interface StoreType {
+  state: InternalStateType;
+  restoreInputValues: () => void;
+  disposeOldHosts: () => void;
+}
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process
@@ -90,6 +89,7 @@ type StoreType = {
     FormsModule,
     HttpModule,
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
+    BrowserAnimationsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAzRGKSl4vUt5C9ub3tvpIysxcuBeJbUJg'
     })
@@ -97,9 +97,6 @@ type StoreType = {
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
     APP_PROVIDERS
-  ],
-  schemas: [ 
-    NO_ERRORS_SCHEMA 
   ]
 })
 export class AppModule {
@@ -118,7 +115,7 @@ export class AppModule {
     this.appState._state = store.state;
     // set input values
     if ('restoreInputValues' in store) {
-      let restoreInputValues = store.restoreInputValues;
+      const restoreInputValues = store.restoreInputValues;
       setTimeout(restoreInputValues);
     }
 

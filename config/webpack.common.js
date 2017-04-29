@@ -20,7 +20,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 const ngcWebpack = require('ngc-webpack');
-const ProvidePlugin = require('webpack/lib/ProvidePlugin'); 
 
 /*
  * Webpack Constants
@@ -28,7 +27,7 @@ const ProvidePlugin = require('webpack/lib/ProvidePlugin');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'Angular2 Webpack Starter by @gdi2290 from @AngularClass',
+  title: 'BeeCompanion',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
 };
@@ -181,10 +180,18 @@ module.exports = function (options) {
           exclude: [helpers.root('src/index.html')]
         },
 
-        /* File loader for supporting images, for example, in CSS files.
+        /*
+         * File loader for supporting images, for example, in CSS files.
          */
         {
           test: /\.(jpg|png|gif)$/,
+          use: 'file-loader'
+        },
+
+        /* File loader for supporting fonts, for example, in CSS files.
+         */
+        {
+          test: /\.(eot|woff2?|svg|ttf)([\?]?.*)$/,
           use: 'file-loader'
         },
 
@@ -194,20 +201,7 @@ module.exports = function (options) {
         {
           test: /bootstrap\/dist\/js\/umd\//,
           use: 'imports-loader?jQuery=jquery'
-        },
-
-        /*
-         * Font loaders, required for font-awesome-sass-loader and bootstrap-loader
-         */
-        {
-          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: "url-loader?limit=10000&mimetype=application/font-woff"
-        },
-        {
-          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          loader: "file-loader"
-        },
-
+        }
       ],
 
     },
@@ -263,7 +257,7 @@ module.exports = function (options) {
        */
       new ContextReplacementPlugin(
         // The (\\|\/) piece accounts for path separators in *nix and Windows
-        /angular(\\|\/)core(\\|\/)src(\\|\/)linker/,
+        /angular(\\|\/)core(\\|\/)@angular/,
         helpers.root('src'), // location of your src
         {
           // your Angular Async Route paths relative to this root directory
@@ -390,8 +384,7 @@ module.exports = function (options) {
         Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
         Util: 'exports-loader?Util!bootstrap/js/dist/util'
       }),
-
-    ],
+],
 
     /*
      * Include polyfills or mocks for various node stuff
