@@ -2,9 +2,10 @@ import {
   Component,
   OnInit,
   ElementRef,
-  trigger, state, animate, transition, style
+  HostListener
 } from '@angular/core';
-import {DomSanitizer} from '@angular/platform-browser';
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { DomSanitizer } from '@angular/platform-browser';
 
 /*
  * We're loading this component asynchronously
@@ -16,13 +17,8 @@ console.log('`Nav` component loaded asynchronously');
 
 @Component({
   selector: 'nav-bar',
-   // Our list of styles in our component. We may add more to compose many styles together
   styleUrls: [ './nav.component.scss' ],
-  // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './nav.component.html',
-  host: {
-    '(document:click)': 'onClick($event)',
-  },
   animations: [
     trigger('loginClickedState', [
       state('inactive', style({
@@ -53,67 +49,77 @@ console.log('`Nav` component loaded asynchronously');
   ]
 })
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) { }
+  public loginClicked = false;
+  public loginInputs = 'inactive';
+  public loginButtons = 'active';
+  public gradientBarBackground;
+  public lastPosition = 0;
+  public transitionInProgress = false;
 
-  onClick(event) {
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) {  }
+
+  @HostListener('onclick', ['$event'])
+  public onClick(event) {
    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
-    this.clickedLogin()
+    this.clickedLogin();
    }
   }
 
-  onMouseOver(event) {
+  @HostListener('mouseover', ['$event'])
+  public onMouseOver(event) {
     if (!this.transitionInProgress) {
-      this.transitionInProgress = true
-      this.createGradientTransition(this.getOffsetLeft(event.srcElement))
+      this.transitionInProgress = true;
+      this.createGradientTransition(this.getOffsetLeft(event.srcElement));
     }
   }
 
-  onMouseLeave(event) {
-    this.gradientBarBackground = ""
+  public onMouseLeave() {
+    this.gradientBarBackground = '';
   }
 
-  loginClicked = false
-  loginInputs = 'inactive'
-  loginButtons = 'active'
-  public gradientBarBackground
-  lastPosition = 0
-  transitionInProgress = false
-
-  createGradientTransition(to) {
+  public createGradientTransition(to) {
     if (this.lastPosition < to) {
       if (to - this.lastPosition < 10) {
-        this.createGradient(to)
-        this.transitionInProgress = false
-        return
+        this.createGradient(to);
+        this.transitionInProgress = false;
+        return;
       }
-      this.lastPosition += 10
+      this.lastPosition += 10;
       setTimeout(() => {
-        this.createGradient(this.lastPosition)
-        this.createGradientTransition(to)
-      }, 1 )
+        this.createGradient(this.lastPosition);
+        this.createGradientTransition(to);
+      }, 1);
     } else if (this.lastPosition > to) {
       if (this.lastPosition - to < 10) {
-        this.createGradient(to)
-        this.transitionInProgress = false
-        return
+        this.createGradient(to);
+        this.transitionInProgress = false;
+        return;
       }
-      this.lastPosition -= 10
+      this.lastPosition -= 10;
       setTimeout(() => {
-        this.createGradient(this.lastPosition)
-        this.createGradientTransition(to)
-      }, 1 )
+        this.createGradient(this.lastPosition);
+        this.createGradientTransition(to);
+      }, 1);
     } else {
-      this.transitionInProgress = false
+      this.transitionInProgress = false;
     }
   }
 
-  createGradient(position) {
-    const gradient = 'linear-gradient(to right, #292b2c ' + (position-80) + 'px, #f6dd3b ' + (position) + 'px, #292b2c ' + (position + 80) + 'px)'
+  public createGradient(position) {
+    const gradient =
+      'linear-gradient(to right, #292b2c ' +
+      (position - 80) + 'px, #f6dd3b ' +
+      (position) + 'px, #292b2c ' +
+      (position + 80) + 'px)';
     this.gradientBarBackground = this.sanitizer.bypassSecurityTrustStyle(gradient);
   }
 
-  getOffsetLeft(element) {
-    return (element.offsetWidth/2) + element.offsetLeft + ( element.offsetParent ? element.offsetParent.offsetLeft : 0 )
+  public getOffsetLeft(element) {
+    if ((element.offsetWidth / 2) + element.offsetLeft + element.offsetParent) {
+      return element.offsetParent.offsetLeft;
+    } else {
+      return 0;
+    }
   }
 
   public ngOnInit() {
@@ -121,19 +127,17 @@ export class NavComponent implements OnInit {
   }
 
   public clickedLogin() {
-      this.loginInputs = !this.loginClicked ? 'active' : 'inactive'
+      this.loginInputs = !this.loginClicked ? 'active' : 'inactive';
       if (this.loginClicked) {
         setTimeout(() => {
-          this.loginClicked = !this.loginClicked
-          this.loginButtons = !this.loginClicked ? 'active' : 'inactive'
-        }, 250)
+          this.loginClicked = !this.loginClicked;
+          this.loginButtons = !this.loginClicked ? 'active' : 'inactive';
+        }, 250);
       } else {
-        this.loginButtons = this.loginClicked ? 'active' : 'inactive'
+        this.loginButtons = this.loginClicked ? 'active' : 'inactive';
         setTimeout(() => {
-          this.loginClicked = !this.loginClicked
-        }, 250)
+          this.loginClicked = !this.loginClicked;
+        }, 250);
       }
-      
   }
-
 }
