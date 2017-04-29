@@ -7,21 +7,81 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'beeRadar',
-  styleUrls: [ './beeRadar.component.scss' ],
+  styleUrls: ['./beeRadar.component.scss'],
   templateUrl: './beeRadar.component.html'
 })
 export class BeeRadarComponent implements OnInit {
-  // Set our default values
-  public lat: number = 56.713;
-  public lng: number = 21.1644;
-  public styles: any = [{"featureType":"all","elementType":"all","stylers":[{"invert_lightness":true},{"saturation":"0"},{"lightness":"33"},{"gamma":0.5},{"hue":"#ffcc00"},{"weight":"1.51"}]},{"featureType":"all","elementType":"geometry.fill","stylers":[{"saturation":"0"}]},{"featureType":"poi","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"poi.attraction","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.attraction","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"road.highway","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"geometry.fill","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit.station","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit.station.rail","elementType":"labels.text","stylers":[{"gamma":"1.00"}]},{"featureType":"transit.station.rail","elementType":"labels.text.fill","stylers":[{"hue":"#ff0000"},{"lightness":"42"}]},{"featureType":"transit.station.rail","elementType":"labels.icon","stylers":[{"hue":"#ff0000"},{"invert_lightness":true},{"lightness":"-15"},{"saturation":"31"}]}];
-  public zoom: number = 11;
-  public zoomControl: boolean = false;
-  public disableDefaultUI: boolean = true;
-  public mapDraggable: boolean = false;
-  public disableDoubleClickZoom: boolean = true;
-  public scrollwheel: boolean = false;
-  public streetViewControl: boolean = false;
+  public styles: any = [{
+    featureType: 'all',
+    elementType: 'all',
+    stylers: [
+      {invert_lightness: true},
+      {saturation: '0'},
+      {lightness: '33'},
+      {gamma: 0.5},
+      {hue: '#ffcc00'},
+      {weight: '1.51'}
+    ]
+  }, {
+    featureType: 'all', elementType: 'geometry.fill', stylers: [{saturation: '0'}]}, {
+    featureType: 'poi',
+    elementType: 'labels.icon',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'poi.attraction',
+    elementType: 'labels.text',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'poi.attraction',
+    elementType: 'labels.icon',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'road.highway',
+    elementType: 'labels.text',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'road.highway',
+    elementType: 'labels.icon',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'transit.station',
+    elementType: 'geometry.fill',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'transit.station',
+    elementType: 'labels.text',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'transit.station',
+    elementType: 'labels.icon',
+    stylers: [{visibility: 'off'}]
+  }, {
+    featureType: 'transit.station.rail',
+    elementType: 'labels.text',
+    stylers: [{gamma: '1.00'}]
+  }, {
+    featureType: 'transit.station.rail',
+    elementType: 'labels.text.fill',
+    stylers: [{hue: '#ff0000'}, {lightness: '42'}]
+  }, {
+    featureType: 'transit.station.rail',
+    elementType: 'labels.icon',
+    stylers: [
+      {hue: '#ff0000'},
+      {invert_lightness: true},
+      {lightness: '-15'},
+      {saturation: '31'}
+    ]
+  }];
+  public lat = 56.713;
+  public lng = 21.1644;
+  public zoom = 11;
+  public zoomControl = false;
+  public disableDefaultUI = true;
+  public mapDraggable = false;
+  public disableDoubleClickZoom = true;
+  public scrollwheel = false;
+  public streetViewControl = false;
   public localState: any;
 
   constructor(public route: ActivatedRoute) {}
@@ -48,7 +108,7 @@ export class BeeRadarComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
     }
 
-    console.log('hello `AboutUs` component');
+    console.log('hello `BeeRadar` component');
     // static data that is bundled
     // var mockData = require('assets/mock-data/mock-data.json');
     // console.log('mockData', mockData);
