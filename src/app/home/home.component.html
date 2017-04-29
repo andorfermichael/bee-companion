@@ -11,9 +11,8 @@
 					<p>Our target is to bring beefriends and beekeepers together and to raise public attention to the non-stopping bee death. Support your local Beekeepers and bee a hero!</p>
 					<div class="container buttons-area">
 						<div class="row signup-row justify-content-center justify-content-sm-around">
-							<a href="#" class="button rounded">SignUp as BeeKeeper <i class="icon_star icon icon_hover"></i><i class="icon_star_alt icon"></i></a>
-							<span class="tilde hidden-xs-down">~</span>
-							<a href="#" class="button rounded">SignUp as Supporter <i class="icon_heart icon icon_hover"></i><i class="icon_heart_alt icon"></i></a>
+							<a [routerLink]="['/signup']" class="button rounded">SignUp as Supporter <i class="icon_heart icon icon_hover"></i><i class="icon_heart_alt icon"></i></a>
+							<a [routerLink]="['/signup']" class="button rounded">SignUp as BeeKeeper <i class="icon_star icon icon_hover"></i><i class="icon_star_alt icon"></i></a>
 						</div>
 						<div class="row beeradar-row justify-content-center">
 							<a href="#" class="button rounded" routerLink="/bee-radar">Explore BeeCompanion with BeeRadar <i class="icon_globe icon"></i><i class="icon_globe_alt icon icon_hover"></i></a>

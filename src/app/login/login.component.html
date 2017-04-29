@@ -25,7 +25,7 @@
 								<a (click)="auth.loginWithGoogle()">Google</a>
 							</div>
 						</div>
-						<form [ngClass]="{'forgotPassword': forgotPassword, 'login': !forgotPassword}">
+						<form [ngClass]="{'forgotPassword': forgotPassword, 'login': !forgotPassword}" [@fieldRequired]="submitErr" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
 							<ul class="navbar-nav login">
 								<li class="nav-item">
 				                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
@@ -48,12 +48,12 @@
 			                	<a (click)="toggleForgotPassword(true)" *ngIf="!forgotPassword">Forgot your Password?</a>
 			                	<a (click)="toggleForgotPassword(false)" *ngIf="forgotPassword">Return to Login</a>
 			                </div>
-			                <div class="row">
-				                <div class="col-9 log-message">
+			                <div class="row no-gutters submit-row">
+				                <div class="col-9 d-flex log-message">
 				                	<span class="error">{{errorMsg}}</span>
 				                	<span class="success">{{successMsg}}</span>
 				                </div>
-				                <div class="col-3">
+				                <div class="col-3 d-flex justify-content-end">
 				                	<div class="login-button login">
 					                	<button type="submit" class="btn btn-link" (click)="checkInputs(username.value, password.value)"><i class="arrow_carrot-right_alt2"></i></button>
 									</div>
@@ -71,7 +71,7 @@
 						<p>You can either sign up as a Supporter and start exploring the world of BeeCompanion or register as BeeKeeper and start presenting your love for bees.</p>
 						<div class="flex-row no-gutters d-flex role-selection">
 							<div class="col-6 role">
-								<div class="row">
+								<div class="row no-gutters">
 									<div class="col-12"><a href="#"><img src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMS4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQ3MS43MDEgNDcxLjcwMSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDcxLjcwMSA0NzEuNzAxOyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjEyOHB4IiBoZWlnaHQ9IjEyOHB4Ij4KPGc+Cgk8cGF0aCBkPSJNNDMzLjYwMSw2Ny4wMDFjLTI0LjctMjQuNy01Ny40LTM4LjItOTIuMy0zOC4ycy02Ny43LDEzLjYtOTIuNCwzOC4zbC0xMi45LDEyLjlsLTEzLjEtMTMuMSAgIGMtMjQuNy0yNC43LTU3LjYtMzguNC05Mi41LTM4LjRjLTM0LjgsMC02Ny42LDEzLjYtOTIuMiwzOC4yYy0yNC43LDI0LjctMzguMyw1Ny41LTM4LjIsOTIuNGMwLDM0LjksMTMuNyw2Ny42LDM4LjQsOTIuMyAgIGwxODcuOCwxODcuOGMyLjYsMi42LDYuMSw0LDkuNSw0YzMuNCwwLDYuOS0xLjMsOS41LTMuOWwxODguMi0xODcuNWMyNC43LTI0LjcsMzguMy01Ny41LDM4LjMtOTIuNCAgIEM0NzEuODAxLDEyNC41MDEsNDU4LjMwMSw5MS43MDEsNDMzLjYwMSw2Ny4wMDF6IE00MTQuNDAxLDIzMi43MDFsLTE3OC43LDE3OGwtMTc4LjMtMTc4LjNjLTE5LjYtMTkuNi0zMC40LTQ1LjYtMzAuNC03My4zICAgczEwLjctNTMuNywzMC4zLTczLjJjMTkuNS0xOS41LDQ1LjUtMzAuMyw3My4xLTMwLjNjMjcuNywwLDUzLjgsMTAuOCw3My40LDMwLjRsMjIuNiwyMi42YzUuMyw1LjMsMTMuOCw1LjMsMTkuMSwwbDIyLjQtMjIuNCAgIGMxOS42LTE5LjYsNDUuNy0zMC40LDczLjMtMzAuNGMyNy42LDAsNTMuNiwxMC44LDczLjIsMzAuM2MxOS42LDE5LjYsMzAuMyw0NS42LDMwLjMsNzMuMyAgIEM0NDQuODAxLDE4Ny4xMDEsNDM0LjAwMSwyMTMuMTAxLDQxNC40MDEsMjMyLjcwMXoiIGZpbGw9IiNGRkZGRkYiLz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" /></a></div>
 									<div class="col-12"><a href="#">Supporter</a></div>
 								</div>

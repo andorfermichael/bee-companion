@@ -2,13 +2,7 @@ import {
   Component,
   OnInit,
 } from '@angular/core';
-/*
- * We're loading this component asynchronously
- * We are using some magic with es6-promise-loader that will wrap the module with a Promise
- * see https://github.com/gdi2290/es6-promise-loader for more info
- */
 
-console.log('`Header` component loaded asynchronously');
 
 @Component({
   selector: 'header',
@@ -30,7 +24,6 @@ export class HeaderComponent implements OnInit {
   // }
 
   public processLocation(data: any) {
-    console.log(data);
     if (data) {
       if (data.coords) {
         this.lat = data.coords.latitude ? data.coords.latitude : this.lat;
@@ -47,7 +40,6 @@ export class HeaderComponent implements OnInit {
   }  
 
   public enableNavigatorLocation() {
-    console.log("NaviatiorLocation");
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(this.processLocation.bind(this), this.locationError.bind(this));
     };
@@ -58,8 +50,6 @@ export class HeaderComponent implements OnInit {
     // });
   }
 
-  public ngOnInit() {
-    console.log('hello `Header` component');
-  }
+  public ngOnInit() {}
 
 }

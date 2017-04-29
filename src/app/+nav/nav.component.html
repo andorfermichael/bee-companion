@@ -16,11 +16,11 @@
         <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
           <a class="nav-link">AboutUs</a>
         </li>
-        <div class="hr-line hidden-md-up" routerLink="/register" routerLinkActive="active"><hr></div>
+        <div class="hr-line hidden-md-up"><hr></div>
         <div class="login-area logged-out ml-auto-md-up">
           <div class="login-menu hidden-md-up">
             <li class="nav-item">
-              <a class="nav-link" [routerLink]="['/signup']">SignUp</a>
+              <a class="nav-link" [routerLink]="['/signup']" *ngIf="!auth.isAuthenticated()">SignUp</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="!auth.isAuthenticated()">LogIn</a>

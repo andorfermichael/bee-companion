@@ -7,24 +7,14 @@ import {
   trigger, state, animate, transition, keyframes, style
 } from '@angular/core';
 
-import { AppState } from '../app.service';
 import { NavComponent } from '../+nav';
 import { Auth } from '../auth.service';
 import { Router }   from '@angular/router';
 import { LoginError } from '../login.error.service';
 
 @Component({
-  // The selector is what angular internally uses
-  // for `document.querySelectorAll(selector)` in our index.html
-  // where, in this case, selector is the string 'loginPage'
-  selector: 'loginPage',  // <loginPage></loginPage>
-  // We need to tell Angular's Dependency Injection which providers are in our app.
-  // providers: [
-  //  Title
-  // ],
-  // Our list of styles in our component. We may add more to compose many styles together
+  selector: 'loginPage',
   styleUrls: [ './login.component.scss' ],
-  // Every Angular template is first compiled by the browser before Angular runs it's compiler
   templateUrl: './login.component.html',
   animations: [
     trigger('fieldRequired', [
@@ -54,16 +44,12 @@ import { LoginError } from '../login.error.service';
 })
 
 export class LoginPageComponent implements OnInit {
-  // Set our default values
-  public localState = { value: '' };
-  // TypeScript public modifiers
+
   constructor(
-    public appState: AppState,
     private auth: Auth,
     private elemRef: ElementRef, 
     public router: Router,
     private _loginError: LoginError
-    //public title: Title
   ) {}
 
   @Input() activeTab: '"logIn" || "signUp"'
@@ -74,6 +60,7 @@ export class LoginPageComponent implements OnInit {
   username2Empty = 'inactive'
   passwordEmpty = 'inactive'
   emailEmpty = 'inactive'
+  submitErr = 'inactive'
   @ViewChild('username') usernameElementRef
   @ViewChild('username2') username2ElementRef
   @ViewChild('password') passwordElementRef
@@ -86,6 +73,7 @@ export class LoginPageComponent implements OnInit {
     this.username2Empty = 'inactive';
     this.passwordEmpty = 'inactive';
     this.emailEmpty = 'inactive';
+    this.submitErr = 'inactive';
   }
 
   checkInputs(username?: string, password?: string) {
@@ -111,7 +99,7 @@ export class LoginPageComponent implements OnInit {
       }
       this.auth.login(username, password).then(
         (data) => { this.router.navigate(['/restricted']) },
-        (error) => { console.log(error); this.errorMsg = error })
+        (error) => { console.log(error); this.errorMsg = error; this.submitErr = 'active' })
     }
   }
 
@@ -136,14 +124,6 @@ export class LoginPageComponent implements OnInit {
     }
   }
 
-  redirectToFullLogin = (err) => {
-    if (err) {
-      this.router.navigate(['/login', {
-        errorMsg: err.description
-      }])
-    }
-  }
-
   setFocus(elementRef) {
     elementRef.nativeElement.focus();
   }
@@ -156,16 +136,12 @@ export class LoginPageComponent implements OnInit {
   }
 
   public ngOnInit() {
-    console.log('hello `loginPage` component');
-    console.log('test123123123')
-    console.log(this._loginError.errorMessage)
     if (this._loginError.errorMessage) {
       console.log(this._loginError.errorMessage)
       this.errorMsg = this._loginError.errorMessage
       this._loginError.errorMessage = undefined
       this.passwordEmpty = 'active'
     }
-    // this.title.getData().subscribe(data => this.data = data);
   }
 
   public ngAfterViewInit() {
@@ -174,11 +150,5 @@ export class LoginPageComponent implements OnInit {
       this._loginError.enteredUsername = undefined
       this.setFocus(this.passwordElementRef)
     }
-  }
-
-  public submitState(value: string) {
-    console.log('submitState', value);
-    this.appState.set('value', value);
-    this.localState.value = '';
   }
 }

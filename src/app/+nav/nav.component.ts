@@ -11,13 +11,7 @@ import { Router }   from '@angular/router';
 import { Auth } from '../auth.service';
 import { LoginError } from '../login.error.service';
 
-/*
- * We're loading this component asynchronously
- * We are using some magic with es6-promise-loader that will wrap the module with a Promise
- * see https://github.com/gdi2290/es6-promise-loader for more info
- */
 
-console.log('`Nav` component loaded asynchronously');
 
 @Component({
   selector: 'nav-bar',
@@ -176,16 +170,13 @@ export class NavComponent implements OnInit {
   }
 
   private onLoginError(err, username) {
-    console.log("### ERROR ON LOGIN###")
-    console.log(err)
     this._loginError.errorMessage = err
     this._loginError.enteredUsername = username
     this.router.navigate(['/login'])
   }
 
   private onLoginSuccess(data) {
-    console.log("### SUCCESS ON LOGIN###")
-    console.log(data)
+    // redirect is called automatically
   }
 
   redirectToFullLogin = (err) => {
@@ -209,9 +200,7 @@ export class NavComponent implements OnInit {
     return (element.offsetWidth/2) + element.offsetLeft + ( element.offsetParent ? element.offsetParent.offsetLeft : 0 )
   }
 
-  public ngOnInit() {
-    console.log('hello `Nav` component');
-  }
+  public ngOnInit() {}
 
   public clickedLogin() {
       this.loginInputs = !this.loginClicked ? 'active' : 'inactive'

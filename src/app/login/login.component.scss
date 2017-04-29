@@ -73,6 +73,11 @@ main {
         display: none;
       }
     }
+    display: flex;
+    justify-content: center;
+    @media (min-width: 768px) { 
+      display: block;
+    }
   }
 
   .login-content {
@@ -101,6 +106,10 @@ main {
           border-color: #f6dd3b;
         }
       }
+    }
+
+    .submit-row {
+      margin-top: .5em;
     }
 
     .log-message {
@@ -140,7 +149,7 @@ main {
         background: initial;
         border: none;
         &:focus {
-          color: #014c8c;
+          color: #F6DD3B;
           outline: none;
           text-decoration: none;
           box-shadow: none;
