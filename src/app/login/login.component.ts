@@ -1,154 +1,21 @@
 import {
   Component,
   OnInit,
-  Input,
-  ElementRef,
-  ViewChild,
-  trigger, state, animate, transition, keyframes, style
 } from '@angular/core';
-
-import { NavComponent } from '../+nav';
-import { Auth } from '../auth.service';
-import { Router }   from '@angular/router';
-import { LoginError } from '../login.error.service';
 
 @Component({
   selector: 'loginPage',
   styleUrls: [ './login.component.scss' ],
-  templateUrl: './login.component.html',
-  animations: [
-    trigger('fieldRequired', [
-      state('inactive', style({
-        transform: 'translate3d(0, 0, 0)',
-        backfaceVisibility: 'hidden',
-        perspective: '1000px'
-      })),
-      transition('inactive => active', [
-        animate(300, keyframes([
-          style({transform: 'translate3d(-1px, 0, 0)', borderColor: '#f6dd3b'}),
-          style({transform: 'translate3d(2px, 0, 0)'}),
-          style({transform: 'translate3d(-4px, 0, 0)'}),
-          style({transform: 'translate3d(4px, 0, 0)'})
-        ]))
-      ]),
-      transition('active => inactive', [
-        animate(300, keyframes([
-          style({transform: 'translate3d(4px, 0, 0)'}),
-          style({transform: 'translate3d(-4px, 0, 0)'}),
-          style({transform: 'translate3d(2px, 0, 0)'}),
-          style({transform: 'translate3d(-1px, 0, 0)', borderColor: 'initial'})
-        ]))
-      ])
-    ])
-  ]
+  templateUrl: './login.component.html'
 })
 
 export class LoginPageComponent implements OnInit {
 
-  constructor(
-    private auth: Auth,
-    private elemRef: ElementRef, 
-    public router: Router,
-    private _loginError: LoginError
-  ) {}
+  constructor() {}
 
-  @Input() activeTab: '"logIn" || "signUp"'
   loginActive: boolean
-  signupActive: boolean
-  forgotPassword: boolean
-  usernameEmpty = 'inactive'
-  username2Empty = 'inactive'
-  passwordEmpty = 'inactive'
-  emailEmpty = 'inactive'
-  submitErr = 'inactive'
-  @ViewChild('username') usernameElementRef
-  @ViewChild('username2') username2ElementRef
-  @ViewChild('password') passwordElementRef
-  @ViewChild('email') emailElementRef
-  errorMsg: string
-  successMsg: string
+  
+  public ngOnInit() {}
 
-  resetUsernamePasswordEmtpy() {
-    this.usernameEmpty = 'inactive';
-    this.username2Empty = 'inactive';
-    this.passwordEmpty = 'inactive';
-    this.emailEmpty = 'inactive';
-    this.submitErr = 'inactive';
-  }
-
-  checkInputs(username?: string, password?: string) {
-    this.errorMsg = ''
-    this.successMsg = ''
-    if (!password) {
-      this.passwordEmpty = 'active';
-      this.setFocus(this.passwordElementRef)
-      this.errorMsg = 'Password is required!'
-    }
-    if (!username) {
-      this.usernameEmpty = 'active';
-      this.setFocus(this.usernameElementRef)
-      this.errorMsg = 'Username is required!'
-    }
-    if (!username && !password) {
-      this.errorMsg = 'Username and password are required!'
-    }
-    if (username && password) {
-      if (username.length < 6 || password.length < 6) {
-        this.errorMsg = 'Invalid username or password!'
-        return
-      }
-      this.auth.login(username, password).then(
-        (data) => { this.router.navigate(['/restricted']) },
-        (error) => { console.log(error); this.errorMsg = error; this.submitErr = 'active' })
-    }
-  }
-
-  checkForgotPasswordInputs(username?: string, email?: string) {
-    this.errorMsg = ''
-    this.successMsg = ''
-    if (!username && !email) {
-       this.usernameEmpty = 'active'
-       this.username2Empty = 'active'
-       this.emailEmpty = 'active'
-       this.setFocus(this.usernameElementRef)
-       this.errorMsg = 'Username or email-address are necessary!'
-    } else {
-      this.auth.forgotPassword(username, email).then(
-      (data) => {
-        this.successMsg = data
-        this.forgotPassword = false },
-      (error) => {
-        this.errorMsg = error
-        this.forgotPassword = false
-      })
-    }
-  }
-
-  setFocus(elementRef) {
-    elementRef.nativeElement.focus();
-  }
-
-  toggleForgotPassword(toggleTo:boolean) {
-    if (toggleTo === undefined) toggleTo = !this.forgotPassword
-      this.forgotPassword = toggleTo
-    this.resetUsernamePasswordEmtpy()
-    this.errorMsg = ''
-  }
-
-  public ngOnInit() {
-    if (this._loginError.errorMessage) {
-      console.log(this._loginError.errorMessage)
-      this.errorMsg = this._loginError.errorMessage
-      this._loginError.errorMessage = undefined
-      this.passwordEmpty = 'active'
-    }
-  }
-
-  public ngAfterViewInit() {
-    if (this._loginError.enteredUsername) {
-      this.usernameElementRef.nativeElement.value = this._loginError.enteredUsername
-      this._loginError.enteredUsername = undefined
-      this.setFocus(this.passwordElementRef)
-    }
-  }
+  public ngAfterViewInit() {}
 }

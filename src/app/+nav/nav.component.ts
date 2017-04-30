@@ -4,14 +4,14 @@ import {
   ElementRef,
   ViewChild,
   Input,
+  Inject, Injectable,
   trigger, state, animate, transition, keyframes, style
 } from '@angular/core';
+
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router }   from '@angular/router';
 import { Auth } from '../auth.service';
-import { LoginError } from '../login.error.service';
-
-
+import { EventsService } from '../events.service';
 
 @Component({
   selector: 'nav-bar',
@@ -77,7 +77,7 @@ import { LoginError } from '../login.error.service';
 
 
 export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth, private router: Router, private _loginError: LoginError) { }
+  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth, private router: Router, public _eventsService: EventsService) {}
 
 
   onClick(event) {
@@ -108,7 +108,10 @@ export class NavComponent implements OnInit {
   @ViewChild('username') usernameElementRef
   @ViewChild('password') passwordElementRef
   @Input() disableInlineLogin: boolean
+  @Input() extErrorMessage: string
   errorMsg: string
+  isError: boolean
+  isLoading = false
 
   createGradientTransition(to) {
     if (this.lastPosition < to) {
@@ -158,33 +161,34 @@ export class NavComponent implements OnInit {
       this.errorMsg = 'Username and password are required!'
     }
     if (username && password) {
-      if (username.length < 6 || password.length < 6) {
+      if (username.length < 4 || password.length < 4) {
         this.errorMsg = 'Invalid username or password!'
         return
       }
-      // this.auth.login(username, password, this.redirectToFullLogin)
+      this._eventsService.broadcast('loginStart');
       this.auth.login(username, password).then(
         (data) => this.onLoginSuccess(data),
         (error) => this.onLoginError(error, username));
     }
   }
 
+  toggleIsLoading(isLoading?:boolean):void {
+    isLoading = (isLoading !== undefined) ? isLoading : !this.isLoading
+    this.isLoading = isLoading
+    this.transitionInProgress = isLoading
+  }1
+
   private onLoginError(err, username) {
-    this._loginError.errorMessage = err
-    this._loginError.enteredUsername = username
+    this.toggleIsLoading()    
     this.router.navigate(['/login'])
+    setTimeout(() => { this._eventsService.broadcast('loginFail', err, {username: username}) },1)
   }
 
   private onLoginSuccess(data) {
-    // redirect is called automatically
-  }
-
-  redirectToFullLogin = (err) => {
-    if (err) {
-      this.router.navigate(['/login', {
-        errorMsg: err.description
-      }])
-    }
+    this.toggleIsLoading()
+    console.log("ROUTER, MOVE YOUR ASS TO '/RESTRICTED' !!!")
+    this.router.navigate(['/restricted'])
+    this._eventsService.broadcast('loginSuccess');
   }
 
   setFocus(elementRef) {
@@ -200,7 +204,29 @@ export class NavComponent implements OnInit {
     return (element.offsetWidth/2) + element.offsetLeft + ( element.offsetParent ? element.offsetParent.offsetLeft : 0 )
   }
 
-  public ngOnInit() {}
+  public ngOnInit() {
+    this.isError = this.extErrorMessage ? true : false
+
+    this._eventsService.on('loginStart', () => {
+      this.toggleIsLoading(true)
+    })
+    this._eventsService.on('loginSuccess', () => {
+      this.toggleIsLoading(false)
+    })
+    this._eventsService.on('loginFail', (err) => {
+      this.toggleIsLoading(false)
+      this.isError = true
+    })
+  }
+
+  public ngOnChanges() {
+    this.isError = this.extErrorMessage ? true : false
+  }
+
+  public ngOnDestroy() {
+    this.extErrorMessage = ''
+    this.isError = false
+  }
 
   public clickedLogin() {
       this.loginInputs = !this.loginClicked ? 'active' : 'inactive'

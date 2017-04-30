@@ -14,7 +14,7 @@ main {
     .card-block {
       padding: 0;
       @media (min-width: 768px) { 
-        min-width: 300px;
+        width: 425px;
       }
     }
     .main-content-row {
@@ -22,159 +22,40 @@ main {
     }
   }
   .card-tabs {
-    .nav-item {
-      min-width: 50%;
-      color: white;
-      margin-bottom: 0;
-
-      a {
-        border-radius: 0;
-        border: 0;
-        color: rgba(255, 255, 255, 0.5);
-        &:hover {
-          outline: none;
-          color: rgba(255, 255, 255, 0.75);
-        }
-      }
-      &:first-child a {
-        @media (min-width: 768px) { 
-          border-top-left-radius: 12px; 
-        }
-      }
-      &:last-child a {
-        @media (min-width: 768px) { 
-          border-top-right-radius: 12px; 
-        }
-      }
-      .active {
-        color: #464a4c!important;
-      }
-    }
-  }
-  
-  .login-card, .signup-card {
-    padding: 1.25em;
-  }
-
-  .login-card {
-    form.login {
-      .forgotPassword {
-        display: none;
-      }
-      .login {
-        display: initial;
-      }
-    }
-    form.forgotPassword {
-      .forgotPassword {
-        display: initial;
-      }
-      .login {
-        display: none;
-      }
-    }
-    display: flex;
-    justify-content: center;
-    @media (min-width: 768px) { 
-      display: block;
-    }
-  }
-
-  .login-content {
-    max-height: 400px;
-
-    .social-login {
-      padding-bottom: 1em;
-    }
-
-    .nav-item {
-      &:not(:first-child) {
-        padding-top: .5em;
-      }
-    
-      input {
-        padding: .125em;
-        width: 100%;
-        padding-left: .25em;
-        padding-right: .25em;
-        cursor: initial !important;
-        background-color: transparent;
-        border-color: white;
-        border-radius: 4px;
-        outline: none;
-        &:focus {
-          border-color: #f6dd3b;
-        }
-      }
-    }
-
-    .submit-row {
-      margin-top: .5em;
-    }
-
-    .log-message {
-      align-self: center;
-
-      .error {
-        font-size: .8em;
-        color: darkred;
-      }
-
-      .success {
-        font-size: .8em;
-        color: #F6DD3B;
-      }
-    }
-
-    .password-forgot {
-      a {
-        font-size: .75em;
-        color: rgba(255,255,255,.5)
-      }
-    }
-
-    .login-button {
-      text-align: right;
-      overflow: hidden;
-      .btn-link {
-        font-size: 2em;
-        line-height: 1em;
-        padding: 0;
+    .nav-tabs {
+      .nav-item {
+        min-width: 50%;
         color: white;
-        cursor: pointer;
-        &:hover {
-          text-decoration: none;
-          color: #F6DD3B;
+        margin-bottom: 0;
+
+        a {
+          border-radius: 0;
+          border: 0;
+          color: rgba(255, 255, 255, 0.5);
+          &:hover {
+            outline: none;
+            color: rgba(255, 255, 255, 0.75);
+          }
         }
-        background: initial;
-        border: none;
-        &:focus {
-          color: #F6DD3B;
-          outline: none;
-          text-decoration: none;
-          box-shadow: none;
+        .active {
+          color: #464a4c!important;
         }
       }
-    }
-  }
-  .role-selection {
-    text-align: center;
-    padding: .5em 0;
-    margin-left: -1.25em;
-    margin-right: -1.25em;
-    margin-bottom: 1em;
-    background-color: black;
-
-    .role {
-      &:hover {
-        a {
-          text-decoration: none;
-          color: #F6DD3B;
-          img {
-            filter: sepia() saturate(10000%) hue-rotate(-30deg);
+      
+      &:first-child {
+        .nav-item {
+          &:first-child a {
+            @media (min-width: 768px) { 
+              border-top-left-radius: 12px; 
+            }
+          }
+          &:last-child a {
+            @media (min-width: 768px) { 
+              border-top-right-radius: 12px; 
+            }
           }
         }
       }
     }
-  }
+  }  
 }

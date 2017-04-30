@@ -16,6 +16,12 @@
         <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
           <a class="nav-link">AboutUs</a>
         </li>
+        <li class="nav-item" *ngIf="auth.isAuthenticated()" routerLink="/restricted" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
+          <a class="nav-link">RestrictedArea</a>
+        </li>
+        <li class="nav-item d-flex ml-auto hidden-sm-down error-msg">
+          <span #errorMsg class="error">{{extErrorMessage}}</span>
+        </li>
         <div class="hr-line hidden-md-up"><hr></div>
         <div class="login-area logged-out ml-auto-md-up">
           <div class="login-menu hidden-md-up">
@@ -40,10 +46,10 @@
             <div class="login-menu login-menu-desktop login-inputs" [@loginClickedState]="loginInputs">
               <form class="d-flex align-items-center">
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <a class="nav-link" (click)="auth.loginWithFacebook()">FB</a>
+                  <a class="nav-link" (click)="auth.loginWithFacebook(); toggleIsLoading();">FB</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <a class="nav-link" (click)="auth.loginWithGoogle()">Google</a>
+                  <a class="nav-link" (click)="auth.loginWithGoogle(); toggleIsLoading();">Google</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
                   <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
@@ -57,12 +63,11 @@
                   </button>
                 </li>
               </form>
-              <span #errorMsg></span>
             </div>
           </div>
         </div>
       </ul>
-      <div class="gradient-bar" [style.background]="gradientBarBackground"></div>
+      <div class="gradient-bar" [ngClass]="{'error': isError, 'loading': isLoading}" [style.background]="gradientBarBackground"></div>
     </div>
   </nav>
 </div>

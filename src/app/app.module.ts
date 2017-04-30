@@ -18,6 +18,8 @@ import {
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Auth } from './auth.service';
 import { AuthGuard } from './auth-guard.service';
+import { NonAuthGuard } from './non-auth-guard.service';
+import { EventsService } from './events.service';
 
 //import google Maps:
 import { AgmCoreModule } from 'angular2-google-maps/core';
@@ -35,6 +37,9 @@ import { AboutUsComponent } from './about';
 import { ContactUsComponent } from './contact';
 import { TermsAndConditionsComponent } from './terms';
 import { LoginPageComponent } from './login';
+import { LoginCardComponent } from './+loginCard';
+import { SignupPageComponent } from './signup';
+import { SignupCardComponent } from './+signupCard';
 import { PrivacyPolicyComponent } from './privacy';
 import { BeeRadarComponent } from './beeRadar';
 import { NavComponent } from './+nav';
@@ -47,8 +52,6 @@ import { RadarCardComponent } from './+radarCard';
 import { CallbackComponent } from './callback';
 import { RestrictedComponent } from './restricted';
 import { NoContentComponent } from './no-content';
-
-import { LoginError } from './login.error.service';
 
 import '../styles/styles.scss';
 import '../styles/headings.css';
@@ -69,6 +72,9 @@ const APP_PROVIDERS = [
     ContactUsComponent,
     TermsAndConditionsComponent,
     LoginPageComponent,
+    LoginCardComponent,
+    SignupPageComponent,
+    SignupCardComponent,
     PrivacyPolicyComponent,
     HomeComponent,
     BeeRadarComponent,
@@ -97,7 +103,8 @@ const APP_PROVIDERS = [
     APP_PROVIDERS,
     Auth,
     AuthGuard,
-    LoginError
+    NonAuthGuard,
+    EventsService
   ],
   schemas: [ 
     NO_ERRORS_SCHEMA 

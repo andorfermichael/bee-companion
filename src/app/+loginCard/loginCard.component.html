@@ -1,0 +1,50 @@
+<div class="login-card">
+	<div class="login-content navbar-inverse">
+		<div class="flex-row no-gutters d-flex justify-content-between social-login" *ngIf="!forgotPassword">
+			<div class="">
+                <a href="#" (click)="loginWithSocial('facebook')" class="button rounded">Facebook <i class="social_facebook icon"></i></a>
+			</div>
+			<div class="">
+				<a href="#" (click)="loginWithSocial('google')" class="button rounded">Google <i class="social_googleplus icon"></i></a>
+			</div>
+		</div>
+		<form [ngClass]="{'forgotPassword': forgotPassword, 'login': !forgotPassword}" [@fieldRequired]="submitErr" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+			<ul class="navbar-nav login">
+				<li class="nav-item">
+                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                </li>
+                <li class="nav-item">
+                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                </li>
+            </ul>
+            <ul class="navbar-nav forgotPassword">
+            	<p>To reset your password, enter your</p>
+				<li class="nav-item">
+                  <input #username2 class="nav-link" type="text" placeholder="Username" [@fieldRequired]="username2Empty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()" [attr.value]="username.value">
+                </li>
+                <li class="nav-item">or</li>
+                <li class="nav-item">
+                  <input #email class="nav-link" type="email" placeholder="email-address" [@fieldRequired]="emailEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                </li>
+            </ul>
+            <div class="password-forgot">
+            	<a (click)="toggleForgotPassword(true)" *ngIf="!forgotPassword">Forgot your Password?</a>
+            	<a (click)="toggleForgotPassword(false)" *ngIf="forgotPassword">Return to Login</a>
+            </div>
+            <div class="row no-gutters submit-row">
+                <div class="col-9 d-flex log-message">
+                	<span class="error">{{errorMsg}}</span>
+                	<span class="success">{{successMsg}}</span>
+                </div>
+                <div class="col-3 d-flex justify-content-end">
+                	<div class="login-button login">
+	                	<button type="submit" class="btn btn-link" (click)="checkInputs(username.value, password.value)"><i class="arrow_carrot-right_alt2"></i></button>
+					</div>
+					<div class="login-button forgotPassword">
+	                	<button type="submit" class="btn btn-link" (click)="checkForgotPasswordInputs(username2.value, email.value)"><i class="arrow_carrot-right_alt2"></i></button>
+					</div>
+                </div>
+            </div>
+		</form>
+	</div>
+</div>

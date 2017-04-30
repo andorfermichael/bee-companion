@@ -5,8 +5,19 @@
 	<mainContent>
 		<mainContentRow>
 			<mainCard>
-					<h1 class="card-title">Welcome to <span class="txt-bee">Restricted</span><span class="txt-companion">Area</span></h1><br>
-					<h5 class="card-text">Only logged-in people have access to this page</h5>
+				<h1 class="card-title">Welcome to the <span class="txt-bee">Restricted </span><span class="txt-companion">Area</span></h1><br>
+				 <h4>You are logged in</h4>
+			    <div class="row">
+			      <div class="col-md-6">
+			        <h3>Profile</h3>
+			        <img [src]="auth.userProfile.picture" alt="" class="profile-img">
+			        <p><strong>Name: </strong> {{auth.userProfile.name}}</p>
+			        <p><strong>Email: </strong> {{auth.userProfile.email}}</p>
+			        <p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>
+			        <p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
+			        <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>
+			      </div>
+			    </div>
 			</mainCard>
 		</mainContentRow>
 	</mainContent>

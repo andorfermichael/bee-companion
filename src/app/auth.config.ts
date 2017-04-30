@@ -37,7 +37,7 @@ export const myConfig: AuthConfiguration = {
 	audience: 'https://bee-companion.com/api',
 	issuer: 'https://bee-companion.eu.auth0.com',
 	tenant: 'bee-companion',
-	scope: 'openid',
+	scope: 'openid profile email',
 	algorithms: ['RS256'],
 	lock: {
 		socialButtonStyle: 'small',
@@ -50,16 +50,7 @@ export const myConfig: AuthConfiguration = {
 		languageDictionary: {
 			title: 'Bee Companion'
 		},
-		additionalSignUpFields: [{
-		    name: "username",
-		    placeholder: "your desired username",
-		    validator: function(name) {
-		      return {
-		         valid: name.length >= 3,
-		         hint: "Must have 3 or more chars" // optional
-		      };
-		    }
-		  },
+		additionalSignUpFields: [
 		  {
 		    name: "first_name",
 		    placeholder: "your first name",
@@ -79,14 +70,15 @@ export const myConfig: AuthConfiguration = {
 		         hint: "Must have 3 or more chars" // optional
 		      };
 		    }
-		  }]
+		  }
+		]
 	}
 }
 
 export const postConfig = { 
 	method: 'POST',
 	urlForgotPassword: 'https://bee-companion.eu.auth0.com/dbconnections/change_password',
-	urlLogin: 'https://bee-companion.eu.auth0.com/usernamepassword/login',
+	urlLogin: 'https://bee-companion.eu.auth0.com/oauth/ro',
 	headers: { 
 		'content-type': 'application/json' 
 	},
@@ -97,3 +89,5 @@ export const postConfig = {
  	},
   	json: true 
 }
+
+export const necessaryRoles = ['Beekeeper', 'Supporter', 'Admin']

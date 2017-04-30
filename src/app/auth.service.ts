@@ -9,7 +9,7 @@ import Auth0Lock from 'auth0-lock';
 import auth0 from 'auth0-js';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { myConfig, postConfig } from './auth.config';
+import { myConfig, postConfig, necessaryRoles } from './auth.config';
 
 // Avoid name not found warnings
 // declare var auth0: any;
@@ -31,20 +31,13 @@ export class Auth {
 
 	lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
 
+	//Store profile object in auth class
+  	public userProfile: any;
+  	public signUpIncomplete: boolean;
+
 	constructor(private router: Router, private http: Http) {
-		this
-		.router
-		.events
-		.filter(event => event instanceof NavigationStart)
-		.filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
-		.subscribe(() => {
-		  this.lock.resumeAuth(window.location.hash, (error, authResult) => {
-		    if (error) return console.log(error);
-		    localStorage.setItem('id_token', authResult.idToken);
-		    this.setLoggedIn(true);
-		    this.router.navigate(['/']);
-		  });
-		});
+		// Set userProfile attribute of already saved profile
+    	this.userProfile = JSON.parse(localStorage.getItem('profile'));
 	}
 
 	setLoggedIn(value: boolean) {
@@ -53,32 +46,92 @@ export class Auth {
 		this.loggedIn = value;
 	}
 
- 	handleAuth() {
+ 	// Call this method in app.component 
+  	// if using path-based routing <== WE ARE USING PATH BASED ROUTING
+ 	public handleAuth(): void {
 		// When Auth0 hash parsed, get profile
 		this.auth0.parseHash({}, (err, authResult) => {
 		  if (authResult && authResult.accessToken && authResult.idToken) {
-		    window.location.hash = '';
+		    //window.location.hash = '';
 		    this._getProfile(authResult);
-		    this.router.navigate(['/']);
+		    // this.router.navigate(['/']);
 		  } else if (err) {
-		    this.router.navigate(['/']);
+		    // this.router.navigate(['/']);
 		    console.error(`Error: ${err.error}`);
 		  }
 		});
 	}
 
+  	// Call this method in app.component
+  	// if using hash-based routing
+	public handleAuthWithHash(): void {
+		this
+			.router
+			.events
+			.filter(event => event instanceof NavigationStart)
+			.filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
+			.subscribe(() => {
+				this.lock.resumeAuth(window.location.hash, (error, authResult) => {
+					if (error) {
+						return console.error(error);
+					}
+					this._getProfile(authResult);
+				});
+			});
+	}
+
+	public checkUserHasRole(profile?:any): boolean {
+		profile = profile ? profile : this.userProfile
+		let userHasNecessaryRole = false
+		if (!profile) {
+			console.error("Profile is not set!")
+			// additional actions probably need to be taken
+			return false
+		}
+		if (profile.roles.length) {
+			for (var i = 0; i < profile.roles.length; i++) {
+				for (var j = 0; j < necessaryRoles.length; j++) {
+					if (profile.roles[i] === necessaryRoles[j]) {
+						userHasNecessaryRole = true
+						this.signUpIncomplete = null
+						console.log("USER HAS ROLE! " + profile.roles[i])
+						return true
+					}
+				}
+			}
+		}
+		if(!profile.roles.length || !userHasNecessaryRole) {
+			console.log("User has no necessary role!")
+			this.signUpIncomplete = true
+			return false
+		}
+	}
+
 	private _getProfile(authResult) {
 		// Use access token to retrieve user's profile and set session
-		this.auth0.client.userInfo(authResult.accessToken, (err, profile) => {
-		  this._setSession(authResult, profile);
-		});
+		// const lock2 = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock)
+		const idToken = authResult.id_token || authResult.idToken;
+		this.lock.getProfile(idToken, (error, profile) => {
+	        if (error) {
+	          // Handle error
+	          console.error(error.error);
+	          return;
+	        }
+	        // Save session data and update login status subject
+			this._setSession(authResult, profile)
+			if (!this.checkUserHasRole(profile)) {
+				this.router.navigate(['/signup/complete'])
+			}
+
+      	});
 	}
 
 	private _setSession(authResult, profile) {
 		// Save session data and update login status subject
-		localStorage.setItem('token', authResult.accessToken);
-		localStorage.setItem('id_token', authResult.idToken);
+		localStorage.setItem('token', authResult.access_token || authResult.accessToken);
+		localStorage.setItem('id_token', authResult.id_token ||authResult.idToken);
 		localStorage.setItem('profile', JSON.stringify(profile));
+		this.userProfile = profile;
 		this.setLoggedIn(true);
 	}
 
@@ -87,51 +140,43 @@ export class Auth {
 	    localStorage.removeItem('token');
 	    localStorage.removeItem('id_token');
 	    localStorage.removeItem('profile');
-	    this.router.navigate(['/']);
+	    this.userProfile = null;
 	    this.setLoggedIn(false);
-	}
-
-	get authenticated() {
-		// Check if there's an unexpired access token
-		return tokenNotExpired('token');
-	}
-
-	public handleAuthentication(): void {
-	    this.auth0.parseHash({ _idTokenVerification: false }, (err, authResult) => {
-			if (err) {
-				alert(`Error: ${err.errorDescription}`)
-			}
-				if (authResult && authResult.accessToken && authResult.idToken) {
-				window.location.hash = '';
-				localStorage.setItem('access_token', authResult.accessToken);
-				localStorage.setItem('id_token', authResult.idToken);
-				this.router.navigate(['/home']);
-			}
-	    });
-	}
-
-	public alertError(err): void {
-		this.router.navigate(['/login', err]);
-		if (err) {
-			console.log(err);
-			alert(err.description);
-		}
+	    // Go back to the home rout
+	    this.router.navigate(['/']);
 	}
 
 	public login(username?:string, password?:string): Promise<any> {
 		if (!username && !password)
 			return
-		this.auth0.redirect.loginWithCredentials({
-			connection: postConfig.body.connection,
-			username: username,
-			password: password,
-			scope: 'openid'
-		}, this.callback);
 		return this.processLogin(username, password)
 	}
 
-	callback (data) {
-		console.log(data)
+	private processLogin(username?: string, password?: string): Promise<any> {
+		// const options = postConfig
+		// options.body.email = email
+		
+		const options = {
+			client_id: myConfig.clientID,
+			connection: postConfig.body.connection,
+			grant_type: 'password',
+			username: username,
+			password: password,
+			scope: myConfig.scope
+		}
+		const headers = new Headers();
+    	headers.append('content-type', 'application/json');
+		const reqOpts = new RequestOptions({
+			method: RequestMethod.Post,
+			url: postConfig.urlLogin,
+			headers: headers,
+			body: options
+		})
+		return this.http.post(postConfig.urlLogin, options, reqOpts)
+			.toPromise()
+			.then(this.extractData)
+			.then((data) => { this._getProfile(data) })
+			.catch(this.handleLoginError);
 	}
 
 	public loginWithWidget(): void {
@@ -191,39 +236,12 @@ export class Auth {
 			.catch(this.handleError);
 	}
 
-	private processLogin(username?: string, password?: string): Promise<any> {
-		// const options = postConfig
-		// options.body.email = email
-		const options = {
-			client_id: myConfig.clientID,
-			connection: postConfig.body.connection,
-			password: password,
-			redirect_uri: myConfig.redirectUri,
-			response_type: myConfig.responseType,
-			scope: myConfig.scope,
-			tenant: myConfig.tenant,
-			username: username
-		}
-		const headers = new Headers();
-    	headers.append('content-type', postConfig.headers['content-type']);
-		const reqOpts = new RequestOptions({
-			method: RequestMethod.Post,
-			url: postConfig.urlLogin,
-			headers: headers,
-			body: options
-		})
-		return this.http.post(postConfig.urlLogin, options, reqOpts)
-			.toPromise()
-			.then(this.extractData)
-			.catch(this.handleLoginError);
-	}
-
 	private handleLoginError (error: Response | any) {
 		//simplified handleError method
 		let errMsg: string
 		if (error instanceof Response) {
 			const body = error.json() || '';
-			errMsg = `${body.description || error.statusText}`;
+			errMsg = `${body.description || body.error_description || error.statusText }`;
 		} else {
 			errMsg = error.message ? error.message : error.toString();
 		}
@@ -256,22 +274,19 @@ export class Auth {
 	public loginWithGoogle(): void {
 	    this.auth0.authorize({
 	      connection: 'google-oauth2',
+	      redirect_uri: myConfig.redirectUri
 	    });
 	}
 
 	public loginWithFacebook(): void {
 	    this.auth0.authorize({
 	      connection: 'facebook',
+	      redirect_uri: myConfig.redirectUri
 	    });
 	}
 
 	public isAuthenticated(): boolean {
 	    // Check whether the id_token is expired or not
 	    return tokenNotExpired('id_token');
-	}
-
-	private setUser(authResult): void {
-		localStorage.setItem('access_token', authResult.accessToken);
-		localStorage.setItem('id_token', authResult.idToken);
 	}
 }
