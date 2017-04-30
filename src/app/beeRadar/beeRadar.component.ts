@@ -3,8 +3,6 @@ import {
   OnInit
 } from '@angular/core';
 
-import { NavComponent } from '../+nav';
-
 @Component({
   selector: 'beeRadar',
   styleUrls: [ './beeRadar.component.scss' ],
