@@ -29,14 +29,30 @@
             height: 4px;
             background: #292b2c;
             // /* Old browsers */
-            background: -moz-linear-gradient(left, #292b2c 30%, #f6dd3b 49%, #292b2c 70%);
+            background: -moz-linear-gradient(left, #292b2c 30%, #f6dd3b 50%, #292b2c 70%);
             // /* FF3.6-15 */
-            background: -webkit-linear-gradient(left, #292b2c 30%,#f6dd3b 49%,#292b2c 70%);
+            background: -webkit-linear-gradient(left, #292b2c 30%,#f6dd3b 50%,#292b2c 70%);
             // /* Chrome10-25,Safari5.1-6 */
-            background: linear-gradient(to right, #292b2c 30%,#f6dd3b 49%,#292b2c 70%);
+            background: linear-gradient(to right, #292b2c 30%,#f6dd3b 50%,#292b2c 70%);
             // /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
             filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#292b2c', endColorstr='#292b2c',GradientType=1 );
             // /* IE6-9 */
+
+            &.loading {
+                background: linear-gradient(to right, #292b2c 30%, #f6dd3b 50%, #292b2c 70%);
+                animation: loading-gradient-slide-main 1s linear;
+                animation-iteration-count: infinite;
+            }
+
+            &.error {
+                background: linear-gradient(to right, #292b2c 30%, darkred 50%, #292b2c 70%);
+                animation: loading-gradient-slide-error 1s linear;
+                animation-iteration-count: 1;
+            }
+        }
+        .nav-item.error-msg {
+            color: darkred;
+            align-items: center;
         }
         .nav-item.active {
             a {
@@ -124,8 +140,86 @@
                             border-color: #f6dd3b;
                         }
                     }
+                    .login {
+                        background: initial;
+                        border: none;
+                        &:focus {
+                            outline: none;
+                        }
+                    }
                 }
             }
         }
     }
 }
+
+@mixin loading-gradient-mixin($name, $basecolor: #292b2c, $highlightcolor: #f6dd3b) {
+    @keyframes #{$name} {
+      0% { 
+        background: linear-gradient(to right, $basecolor 0%, $basecolor 100%);
+      }
+      5% { 
+        background: linear-gradient(to right, $basecolor 0%, $highlightcolor 5%, $basecolor 10%);
+      }
+      10% { 
+        background: linear-gradient(to right, $basecolor 0%, $highlightcolor 10%, $basecolor 20%);
+      }
+      15% { 
+        background: linear-gradient(to right, $basecolor 5%, $highlightcolor 15%, $basecolor 25%);
+      }
+      20% { 
+        background: linear-gradient(to right, $basecolor 10%, $highlightcolor 20%, $basecolor 30%);
+      }
+      25% { 
+        background: linear-gradient(to right, $basecolor 15%, $highlightcolor 25%, $basecolor 35%);
+      }
+      30% { 
+        background: linear-gradient(to right, $basecolor 20%, $highlightcolor 30%, $basecolor 40%);
+      }
+      35% { 
+        background: linear-gradient(to right, $basecolor 25%, $highlightcolor 35%, $basecolor 45%);
+      }
+      40% { 
+        background: linear-gradient(to right, $basecolor 30%, $highlightcolor 40%, $basecolor 50%);
+      }
+      45% { 
+        background: linear-gradient(to right, $basecolor 35%, $highlightcolor 45%, $basecolor 55%);
+      }
+      50% { 
+        background: linear-gradient(to right, $basecolor 42.5%, $highlightcolor 52.5%, $basecolor 62.5%);
+      }
+      55% { 
+        background: linear-gradient(to right, $basecolor 50%, $highlightcolor 60%, $basecolor 70%);
+      }
+      60% { 
+        background: linear-gradient(to right, $basecolor 60%, $highlightcolor 70%, $basecolor 80%);
+      }
+      65% { 
+        background: linear-gradient(to right, $basecolor 65%, $highlightcolor 75%, $basecolor 85%);
+      }
+      70% { 
+        background: linear-gradient(to right, $basecolor 70%, $highlightcolor 80%, $basecolor 90%);
+      }
+      75% { 
+        background: linear-gradient(to right, $basecolor 75%, $highlightcolor 85%, $basecolor 95%);
+      }
+      80% { 
+        background: linear-gradient(to right, $basecolor 80%, $highlightcolor 90%, $basecolor 100%);
+      }
+      85% { 
+        background: linear-gradient(to right, $basecolor 85%, $highlightcolor 95%, $basecolor 105%);
+      }
+      90% { 
+        background: linear-gradient(to right, $basecolor 90%, $highlightcolor 100%);
+      }
+      95% { 
+        background: linear-gradient(to right, $basecolor 95%, $highlightcolor 105%);
+      }
+      100% { 
+        background: linear-gradient(to right, $basecolor 0%, $basecolor 100%);
+      }
+    }   
+}
+
+@include loading-gradient-mixin('loading-gradient-slide-main')
+@include loading-gradient-mixin('loading-gradient-slide-error', #292b2c, darkred)
