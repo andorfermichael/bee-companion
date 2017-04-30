@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 
-import { NavComponent } from '../+nav';
+import { Auth } from '../auth.service';
 
 @Component({
   selector: 'home',
@@ -12,8 +12,14 @@ import { NavComponent } from '../+nav';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() {}
+  constructor(private auth: Auth) {}
 
-  public ngOnInit() {}
+  public ngOnInit() {
+  	if(this.auth.isAuthenticated()) {
+  		this.auth.checkUserHasRole()
+  	}
+  }
+
+  public ngAfterViewInit() {}
 
 }
