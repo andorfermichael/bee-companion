@@ -58,14 +58,14 @@ export class NavComponent implements OnInit {
 
   constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer) {  }
 
-  @HostListener('onclick', ['$event'])
+  @HostListener('window:onclick', ['$event'])
   public onClick(event) {
    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
     this.clickedLogin();
    }
   }
 
-  @HostListener('mouseover', ['$event'])
+  @HostListener('window:mouseover', ['$event'])
   public onMouseOver(event) {
     if (!this.transitionInProgress) {
       this.transitionInProgress = true;
@@ -73,7 +73,8 @@ export class NavComponent implements OnInit {
     }
   }
 
-  public onMouseLeave() {
+  @HostListener('window:mouseleave', ['$event'])
+  public onMouseLeave(event) {
     this.gradientBarBackground = '';
   }
 
