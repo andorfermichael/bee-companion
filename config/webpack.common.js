@@ -27,7 +27,7 @@ const ngcWebpack = require('ngc-webpack');
 const HMR = helpers.hasProcessFlag('hot');
 const AOT = helpers.hasNpmFlag('aot');
 const METADATA = {
-  title: 'BeeCompanion',
+  title: 'BeeCompanion | Bees for life, life for bees',
   baseUrl: '/',
   isDevServer: helpers.isWebpackDevServer()
 };

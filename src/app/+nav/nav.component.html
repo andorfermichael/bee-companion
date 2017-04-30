@@ -16,40 +16,58 @@
         <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
           <a class="nav-link">AboutUs</a>
         </li>
-        <div class="hr-line hidden-md-up" routerLink="/register" routerLinkActive="active"><hr></div>
+        <li class="nav-item" *ngIf="auth.isAuthenticated()" routerLink="/restricted" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
+          <a class="nav-link">RestrictedArea</a>
+        </li>
+        <li class="nav-item d-flex ml-auto hidden-sm-down error-msg">
+          <span #errorMsg class="error">{{extErrorMessage}}</span>
+        </li>
+        <div class="hr-line hidden-md-up"><hr></div>
         <div class="login-area logged-out ml-auto-md-up">
           <div class="login-menu hidden-md-up">
             <li class="nav-item">
-              <a class="nav-link">SignUp</a>
+              <a class="nav-link" [routerLink]="['/signup']" *ngIf="!auth.isAuthenticated()">SignUp</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">LogIn</a>
+              <a class="nav-link" routerLink="/login" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="!auth.isAuthenticated()">LogIn</a>
+              <a class="nav-link" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">LogOut</a>
             </li>
           </div>
-          <div class="login-menu login-menu-desktop hidden-sm-down" >
+          <div class="login-menu login-menu-desktop hidden-sm-down" *ngIf="!disableInlineLogin">
             <div class="login-buttons d-flex" [@loginButtonsState]="loginButtons">
-              <li class="nav-item" (mouseover)="onMouseOver($event)">
-                <a class="nav-link">SignUp</a>
+              <li class="nav-item " (mouseover)="onMouseOver($event)" *ngIf="!auth.isAuthenticated()">
+                <a class="nav-link" [routerLink]="['/signup']">SignUp</a>
               </li>
               <li class="nav-item" (mouseover)="onMouseOver($event)">
-                <a class="nav-link" (click)="clickedLogin()">LogIn</a>
+                <a class="nav-link" (click)="clickedLogin()" *ngIf="!auth.isAuthenticated()">LogIn</a>
+                <a class="nav-link" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">LogOut</a>
               </li>
             </div>
             <div class="login-menu login-menu-desktop login-inputs" [@loginClickedState]="loginInputs">
+              <form class="d-flex align-items-center">
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input class="nav-link" type="text" placeholder="Username">
+                  <a class="nav-link" (click)="auth.loginWithFacebook(); toggleIsLoading();">FB</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input class="nav-link" type="password" placeholder="Password">
+                  <a class="nav-link" (click)="auth.loginWithGoogle(); toggleIsLoading();">Google</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <i class="arrow_carrot-right_alt2 nav-link"></i>
+                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
                 </li>
+                <li class="nav-item" (mouseover)="onMouseOver($event)">
+                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                </li>
+                <li class="nav-item" (mouseover)="onMouseOver($event)" (click)="checkInputs(username.value, password.value)">
+                  <button type="submit" class="login">
+                    <i class="arrow_carrot-right_alt2 nav-link"></i>
+                  </button>
+                </li>
+              </form>
             </div>
           </div>
         </div>
       </ul>
-      <div class="gradient-bar" [style.background]="gradientBarBackground"></div>
+      <div class="gradient-bar" [ngClass]="{'error': isError, 'loading': isLoading}" [style.background]="gradientBarBackground"></div>
     </div>
   </nav>
 </div>

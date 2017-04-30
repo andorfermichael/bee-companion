@@ -87,7 +87,6 @@ export class BeeRadarComponent implements OnInit {
   constructor(public route: ActivatedRoute) {}
 
   public setPosition(data: any) {
-    console.log(data);
     if (data) {
       if (data.coords) {
         this.lat = data.coords.latitude ? data.coords.latitude : this.lat;
@@ -108,11 +107,6 @@ export class BeeRadarComponent implements OnInit {
       navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
     }
 
-    console.log('hello `BeeRadar` component');
-    // static data that is bundled
-    // var mockData = require('assets/mock-data/mock-data.json');
-    // console.log('mockData', mockData);
-    // if you're working with mock data you can also use http.get('assets/mock-data/mock-data.json')
     this.asyncDataWithWebpack();
   }
 

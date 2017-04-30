@@ -3,6 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 
+
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -10,7 +11,9 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: [ './about.component.scss' ],
   templateUrl: './about.component.html'
 })
+
 export class AboutUsComponent implements OnInit {
+
   public localState: any;
 
   constructor(public route: ActivatedRoute) {}

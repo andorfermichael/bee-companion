@@ -4,14 +4,6 @@ import {
   OnInit
 } from '@angular/core';
 
-/*
- * We're loading this component asynchronously
- * We are using some magic with es6-promise-loader that will wrap the module with a Promise
- * see https://github.com/gdi2290/es6-promise-loader for more info
- */
-
-console.log('`radarCard` component loaded asynchronously');
-
 @Component({
   selector: 'radarCard',
   styleUrls: [ './radarCard.component.scss' ],
@@ -29,8 +21,6 @@ export class RadarCardComponent implements OnInit {
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
 
-  public ngOnInit() {
-    console.log('hello `radarCard` component');
-  }
+  public ngOnInit() {}
 
 }
