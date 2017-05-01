@@ -32,7 +32,7 @@ interface AuthConfiguration {
 export const myConfig: AuthConfiguration = {
 	domain: 'bee-companion.eu.auth0.com',
 	clientID: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
-	redirectUri: 'http://localhost:8000/callback',
+	redirectUri: process.env.AUTH_CB,
 	responseType: 'token id_token',
 	audience: 'https://bee-companion.com/api',
 	issuer: 'https://bee-companion.eu.auth0.com',
