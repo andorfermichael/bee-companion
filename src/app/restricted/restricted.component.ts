@@ -17,9 +17,9 @@ import { Auth } from '../auth.service';
 })
 export class RestrictedComponent implements OnInit {
   // TypeScript public modifiers
-  constructor(private auth: Auth) {}
+  constructor(public auth: Auth) {}
 
   public ngOnInit() {
-    console.log(this.auth.userProfile)
+    console.log(this.auth.userProfile);
   }
 }

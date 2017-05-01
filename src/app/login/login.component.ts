@@ -14,10 +14,9 @@ import { ActivatedRoute } from '@angular/router';
 export class LoginPageComponent implements OnInit {
 
   public localState: any;
+  public loginActive: boolean;
 
   constructor(public route: ActivatedRoute) {}
-
-  public loginActive: boolean
 
   public ngOnInit() {
     this.route

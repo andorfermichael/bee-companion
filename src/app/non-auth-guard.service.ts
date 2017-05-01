@@ -9,8 +9,8 @@ export class NonAuthGuard implements CanActivate {
 
   constructor(private auth: Auth, private router: Router) {}
 
-  canActivate() {
-    // If user is logged in we'll send him back to the homepage 
+  public canActivate(): boolean {
+    // If user is logged in we'll send him back to the homepage
     if (this.auth.isAuthenticated()) {
       this.router.navigate(['/home']);
       return false;

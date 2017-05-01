@@ -1,6 +1,8 @@
 import {
   Component,
   OnInit,
+  OnChanges,
+  OnDestroy,
   ElementRef,
   HostListener,
   ViewChild,
@@ -11,7 +13,7 @@ import {
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router }   from '@angular/router';
+import { Router } from '@angular/router';
 import { Auth } from '../auth.service';
 import { EventsService } from '../events.service';
 
@@ -74,173 +76,178 @@ import { EventsService } from '../events.service';
   ]
 })
 
+export class NavComponent implements OnInit, OnChanges, OnDestroy {
+    public loginClicked = false;
+    public loginInputs = 'inactive';
+    public loginButtons = 'active';
+    public gradientBarBackground;
+    public lastPosition = 0;
+    public transitionInProgress = false;
+    public usernameEmpty = 'inactive';
+    public passwordEmpty = 'inactive';
+    @ViewChild('username') public usernameElementRef;
+    @ViewChild('password') public passwordElementRef;
+    @Input() public disableInlineLogin: boolean;
+    @Input() public extErrorMessage: string;
+    public errorMsg: string;
+    public isError: boolean;
+    public isLoading = false;
 
-export class NavComponent implements OnInit {
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer, private auth: Auth, private router: Router, public _eventsService: EventsService) {}
+    constructor(private elemRef: ElementRef,
+                private sanitizer: DomSanitizer,
+                public auth: Auth,
+                private router: Router,
+                public _eventsService: EventsService) {}
 
-  @HostListener('document:click', ['$event'])
-  public onClick(event) {
-   if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
-    this.clickedLogin()
-   }
-  }
-
-  public onMouseOver(event) {
-    if (!this.transitionInProgress) {
-      this.transitionInProgress = true
-      this.createGradientTransition(this.getOffsetLeft(event.srcElement))
+    public ngOnInit() {
+        this.isError = this.extErrorMessage ? true : false;
+        this._eventsService.on('loginStart', () => {
+            this.toggleIsLoading(true);
+        });
+        this._eventsService.on('loginSuccess', () => {
+            this.toggleIsLoading(false);
+        });
+        this._eventsService.on('loginFail', (err) => {
+            this.toggleIsLoading(false);
+            this.isError = true;
+        });
     }
-  }
 
-  public onMouseLeave(event) {
-    this.gradientBarBackground = ""
-  }
-
-  public loginClicked = false;
-  public loginInputs = 'inactive';
-  public loginButtons = 'active';
-  public gradientBarBackground;
-  public lastPosition = 0;
-  public transitionInProgress = false;
-  public usernameEmpty = 'inactive';
-  public passwordEmpty = 'inactive';
-  @ViewChild('username') usernameElementRef;
-  @ViewChild('password') passwordElementRef;
-  @Input() disableInlineLogin: boolean;
-  @Input() extErrorMessage: string;
-  public errorMsg: string;
-  public isError: boolean;
-  public isLoading = false;
-
-  public createGradientTransition(to) {
-    if (this.lastPosition < to) {
-      if (to - this.lastPosition < 10) {
-        this.createGradient(to)
-        this.transitionInProgress = false
-        return
-      }
-      this.lastPosition += 10
-      setTimeout(() => {
-        this.createGradient(this.lastPosition)
-        this.createGradientTransition(to)
-      }, 1 )
-    } else if (this.lastPosition > to) {
-      if (this.lastPosition - to < 10) {
-        this.createGradient(to)
-        this.transitionInProgress = false
-        return
-      }
-      this.lastPosition -= 10
-      setTimeout(() => {
-        this.createGradient(this.lastPosition)
-        this.createGradientTransition(to)
-      }, 1 )
-    } else {
-      this.transitionInProgress = false
+    public ngOnChanges() {
+        this.isError = this.extErrorMessage ? true : false;
     }
-  }
 
-  public resetUsernamePasswordEmtpy() {
-    this.usernameEmpty = 'inactive';
-    this.passwordEmpty = 'inactive';
-  }
-
-  public checkInputs(username?: string, password?: string) {
-    if (!password) {
-      this.passwordEmpty = 'active';
-      this.setFocus(this.passwordElementRef)
-      this.errorMsg = 'Password is required!'
+    public ngOnDestroy() {
+        this.extErrorMessage = '';
+        this.isError = false;
     }
-    if (!username) {
-      this.usernameEmpty = 'active';
-      this.setFocus(this.usernameElementRef)
-      this.errorMsg = 'Username is required!'
+
+    @HostListener('document:click', ['$event'])
+    public onClick(event) {
+        if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
+            this.clickedLogin();
+        }
     }
-    if (!username && !password) {
-      this.errorMsg = 'Username and password are required!'
+
+    public onMouseOver(event) {
+        if (!this.transitionInProgress) {
+            this.transitionInProgress = true;
+            this.createGradientTransition(this.getOffsetLeft(event.srcElement));
+        }
     }
-    if (username && password) {
-      if (username.length < 4 || password.length < 4) {
-        this.errorMsg = 'Invalid username or password!'
-        return
-      }
-      this._eventsService.broadcast('loginStart');
-      this.auth.login(username, password).then(
-        (data) => this.onLoginSuccess(data),
-        (error) => this.onLoginError(error, username));
+
+    public onMouseLeave(event) {
+        this.gradientBarBackground = '';
     }
-  }
 
-  public toggleIsLoading(isLoading?:boolean):void {
-    isLoading = (isLoading !== undefined) ? isLoading : !this.isLoading
-    this.isLoading = isLoading
-    this.transitionInProgress = isLoading
-  }1
+    public createGradientTransition(to) {
+        if (this.lastPosition < to) {
+            if (to - this.lastPosition < 10) {
+                this.createGradient(to);
+                this.transitionInProgress = false;
+                return;
+            }
+            this.lastPosition += 10;
+            setTimeout(() => {
+                this.createGradient(this.lastPosition);
+                this.createGradientTransition(to);
+            }, 1 );
+        } else if (this.lastPosition > to) {
+            if (this.lastPosition - to < 10) {
+                this.createGradient(to);
+                this.transitionInProgress = false;
+                return;
+            }
+            this.lastPosition -= 10;
+            setTimeout(() => {
+                this.createGradient(this.lastPosition);
+                this.createGradientTransition(to);
+            }, 1 );
+        } else {
+            this.transitionInProgress = false;
+        }
+    }
 
-  private onLoginError(err, username) {
-    this.toggleIsLoading()    
-    this.router.navigate(['/login'])
-    setTimeout(() => { this._eventsService.broadcast('loginFail', err, {username: username}) },1)
-  }
+    public resetUsernamePasswordEmtpy() {
+        this.usernameEmpty = 'inactive';
+        this.passwordEmpty = 'inactive';
+    }
 
-  private onLoginSuccess(data) {
-    this.toggleIsLoading()
-    console.log("ROUTER, MOVE YOUR ASS TO '/RESTRICTED' !!!")
-    this.router.navigate(['/restricted'])
-    this._eventsService.broadcast('loginSuccess');
-  }
+    public checkInputs(username?: string, password?: string) {
+        if (!password) {
+            this.passwordEmpty = 'active';
+            this.setFocus(this.passwordElementRef);
+            this.errorMsg = 'Password is required!';
+        }
+        if (!username) {
+            this.usernameEmpty = 'active';
+            this.setFocus(this.usernameElementRef);
+            this.errorMsg = 'Username is required!';
+        }
+        if (!username && !password) {
+            this.errorMsg = 'Username and password are required!';
+        }
+        if (username && password) {
+            if (username.length < 4 || password.length < 4) {
+                this.errorMsg = 'Invalid username or password!';
+                return;
+            }
+            this._eventsService.broadcast('loginStart');
+            this.auth.login(username, password).then(
+            (data) => this.onLoginSuccess(data),
+            (error) => this.onLoginError(error, username));
+        }
+    }
 
-  public setFocus(elementRef) {
-    elementRef.nativeElement.focus();
-  }
+    public toggleIsLoading(isLoading?: boolean): void {
+        isLoading = (isLoading !== undefined) ? isLoading : !this.isLoading;
+        this.isLoading = isLoading;
+        this.transitionInProgress = isLoading;
+    }
 
-  public createGradient(position) {
-    const gradient = 'linear-gradient(to right, #292b2c ' + (position-80) + 'px, #f6dd3b ' + (position) + 'px, #292b2c ' + (position + 80) + 'px)'
-    this.gradientBarBackground = this.sanitizer.bypassSecurityTrustStyle(gradient);
-  }
+    public setFocus(elementRef) {
+        elementRef.nativeElement.focus();
+    }
 
-  public getOffsetLeft(element) {
-    return (element.offsetWidth/2) + element.offsetLeft + ( element.offsetParent ? element.offsetParent.offsetLeft : 0 )
-  }
+    public createGradient(position) {
+        const gradient = 'linear-gradient(to right, #292b2c ' + (position - 80) +
+        'px, #f6dd3b ' + (position) + 'px, #292b2c ' + (position + 80) + 'px)';
+        this.gradientBarBackground = this.sanitizer.bypassSecurityTrustStyle(gradient);
+    }
 
-  public ngOnInit() {
-    this.isError = this.extErrorMessage ? true : false
+    public getOffsetLeft(element) {
+        return (element.offsetWidth / 2) + element.offsetLeft +
+        ( element.offsetParent ? element.offsetParent.offsetLeft : 0 );
+    }
 
-    this._eventsService.on('loginStart', () => {
-      this.toggleIsLoading(true)
-    })
-    this._eventsService.on('loginSuccess', () => {
-      this.toggleIsLoading(false)
-    })
-    this._eventsService.on('loginFail', (err) => {
-      this.toggleIsLoading(false)
-      this.isError = true
-    })
-  }
+    public clickedLogin() {
+        this.loginInputs = !this.loginClicked ? 'active' : 'inactive';
+        if (this.loginClicked) {
+            setTimeout(() => {
+              this.loginClicked = !this.loginClicked;
+              this.loginButtons = !this.loginClicked ? 'active' : 'inactive';
+            }, 250);
+        } else {
+            this.loginButtons = this.loginClicked ? 'active' : 'inactive';
+            setTimeout(() => {
+              this.loginClicked = !this.loginClicked;
+            }, 250);
+        }
+    }
 
-  public ngOnChanges() {
-    this.isError = this.extErrorMessage ? true : false
-  }
-
-  public ngOnDestroy() {
-    this.extErrorMessage = ''
-    this.isError = false
-  }
-
-  public clickedLogin() {
-      this.loginInputs = !this.loginClicked ? 'active' : 'inactive'
-      if (this.loginClicked) {
+    private onLoginError(err, username) {
+        this.toggleIsLoading();
+        this.router.navigate(['/login']);
         setTimeout(() => {
-          this.loginClicked = !this.loginClicked
-          this.loginButtons = !this.loginClicked ? 'active' : 'inactive'
-        }, 250)
-      } else {
-        this.loginButtons = this.loginClicked ? 'active' : 'inactive'
-        setTimeout(() => {
-          this.loginClicked = !this.loginClicked
-        }, 250)
-      }
-      
-  }
+            this._eventsService.broadcast('loginFail', err, {username});
+        }, 1);
+    }
+
+    private onLoginSuccess(data) {
+        this.toggleIsLoading();
+        console.log("ROUTER, MOVE YOUR ASS TO '/RESTRICTED' !!!");
+        this.router.navigate(['/restricted']);
+        this._eventsService.broadcast('loginSuccess');
+    }
 
 }

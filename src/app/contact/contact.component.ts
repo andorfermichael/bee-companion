@@ -3,7 +3,6 @@ import {
   OnInit
 } from '@angular/core';
 
-
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -26,7 +25,7 @@ export class ContactUsComponent implements OnInit {
         this.localState = data.yourData;
       });
 
-      this.asyncDataWithWebpack();
+    this.asyncDataWithWebpack();
   }
 
   private asyncDataWithWebpack() {

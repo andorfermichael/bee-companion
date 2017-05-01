@@ -17,18 +17,19 @@ import { NoContentComponent } from './no-content';
 import { DataResolver } from './app.resolver';
 
 export const ROUTES: Routes = [
-	{ path: '', redirectTo: 'home', pathMatch: 'full' },
-  	{ path: 'home',  component: HomeComponent, pathMatch: 'full'},
-  	{ path: 'bee-radar',  component: BeeRadarComponent, pathMatch: 'full'},
-  	{ path: 'about', component: AboutUsComponent, pathMatch: 'full'},
-  	{ path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
-  	{ path: 'privacy', component: PrivacyPolicyComponent, pathMatch: 'full'},
-  	{ path: 'contact', component: ContactUsComponent, pathMatch: 'full'},
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home',  component: HomeComponent, pathMatch: 'full'},
+    { path: 'bee-radar',  component: BeeRadarComponent, pathMatch: 'full'},
+    { path: 'about', component: AboutUsComponent, pathMatch: 'full'},
+    { path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
+    { path: 'privacy', component: PrivacyPolicyComponent, pathMatch: 'full'},
+    { path: 'contact', component: ContactUsComponent, pathMatch: 'full'},
     { path: 'login', component: LoginPageComponent, pathMatch: 'full', canActivate: [NonAuthGuard]},
     { path: 'signup', component: LoginPageComponent, pathMatch: 'full'},
     { path: 'signup/complete', component: SignupPageComponent, pathMatch: 'full'},
-  	{ path: 'restricted', component: RestrictedComponent, pathMatch: 'full', canActivate: [AuthGuard]},
-  	{ path: 'callback', component: CallbackComponent },
+    { path: 'restricted', component: RestrictedComponent, pathMatch: 'full',
+    canActivate: [AuthGuard]},
+    { path: 'callback', component: CallbackComponent },
     { path: '**',    component: NoContentComponent },
 ];
 

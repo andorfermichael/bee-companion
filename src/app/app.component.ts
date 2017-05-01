@@ -26,7 +26,7 @@ import { Auth } from './auth.service';
   </div>
   `
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   public angularclassLogo = 'assets/img/BeeCompanion_smallLogo.png';
   public name = 'BeeCompanion';
   public url = 'https://www.bee-companion.com/';
@@ -36,7 +36,5 @@ export class AppComponent implements OnInit {
   ) {
     this.auth.handleAuth();
   }
-
-  public ngOnInit() {}
 
 }

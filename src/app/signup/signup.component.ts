@@ -3,20 +3,18 @@ import {
   OnInit,
   Input,
   ElementRef,
+  HostListener,
   ViewChild,
   trigger, state, animate, transition, keyframes, style
 } from '@angular/core';
 
 import { Auth } from '../auth.service';
-import { Router }   from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'signupPage',
   styleUrls: [ './signup.component.scss' ],
   templateUrl: './signup.component.html',
-  host: {
-    '(document:click)': 'onClick($event)',
-  },
   animations: [
     trigger('fieldRequired', [
       state('inactive', style({
@@ -44,108 +42,109 @@ import { Router }   from '@angular/router';
   ]
 })
 
-export class SignupPageComponent implements OnInit {
+export class SignupPageComponent {
+    @Input() public activeTab: '"logIn" || "signUp"';
+    public supporterActive: boolean;
+    public signupActive: boolean;
+    public forgotPassword: boolean;
+    public usernameEmpty = 'inactive';
+    public publicusername2Empty = 'inactive';
+    public passwordEmpty = 'inactive';
+    public emailEmpty = 'inactive';
+    public submitErr = 'inactive';
+    @ViewChild('username') public usernameElementRef;
+    @ViewChild('username2') public username2ElementRef;
+    @ViewChild('password') public passwordElementRef;
+    @ViewChild('email') public emailElementRef;
+    @ViewChild('signupCard') public signupCardElementRef;
+    public extErrorMessage: string;
+    public errorMsg: string;
+    public successMsg: string;
 
-  constructor(
-    private auth: Auth,
-    private elemRef: ElementRef, 
-    public router: Router
-  ) {}
+    constructor(
+        private auth: Auth,
+        private elemRef: ElementRef,
+        public router: Router
+    ) {}
 
-  @Input() activeTab: '"logIn" || "signUp"'
-  supporterActive: boolean
-  signupActive: boolean
-  forgotPassword: boolean
-  usernameEmpty = 'inactive'
-  username2Empty = 'inactive'
-  passwordEmpty = 'inactive'
-  emailEmpty = 'inactive'
-  submitErr = 'inactive'
-  @ViewChild('username') usernameElementRef
-  @ViewChild('username2') username2ElementRef
-  @ViewChild('password') passwordElementRef
-  @ViewChild('email') emailElementRef
-  @ViewChild('signupCard') signupCardElementRef
-  extErrorMessage: string
-  errorMsg: string
-  successMsg: string
-
-  onClick(event) {
-   if (!this.signupCardElementRef.nativeElement.contains(event.target)) {
-     this.extErrorMessage = 'Please complete your signup first :)'
-     return false
-   }
-  }
-
-  resetUsernamePasswordEmtpy() {
-    this.usernameEmpty = 'inactive';
-    this.username2Empty = 'inactive';
-    this.passwordEmpty = 'inactive';
-    this.emailEmpty = 'inactive';
-    this.submitErr = 'inactive';
-  }
-
-  checkInputs(username?: string, password?: string) {
-    this.errorMsg = ''
-    this.successMsg = ''
-    if (!password) {
-      this.passwordEmpty = 'active';
-      this.setFocus(this.passwordElementRef)
-      this.errorMsg = 'Password is required!'
+    @HostListener('document:click', ['$event'])
+    public onClick(event) {
+        if (!this.signupCardElementRef.nativeElement.contains(event.target)) {
+            this.extErrorMessage = 'Please complete your signup first :)';
+            return false;
+        }
     }
-    if (!username) {
-      this.usernameEmpty = 'active';
-      this.setFocus(this.usernameElementRef)
-      this.errorMsg = 'Username is required!'
+
+    public resetUsernamePasswordEmtpy() {
+        this.usernameEmpty = 'inactive';
+        this.passwordEmpty = 'inactive';
+        this.emailEmpty = 'inactive';
+        this.submitErr = 'inactive';
     }
-    if (!username && !password) {
-      this.errorMsg = 'Username and password are required!'
+
+    public checkInputs(username?: string, password?: string) {
+        this.errorMsg = '';
+        this.successMsg = '';
+        if (!password) {
+            this.passwordEmpty = 'active';
+            this.setFocus(this.passwordElementRef);
+            this.errorMsg = 'Password is required!';
+        }
+        if (!username) {
+            this.usernameEmpty = 'active';
+            this.setFocus(this.usernameElementRef);
+            this.errorMsg = 'Username is required!';
+        }
+        if (!username && !password) {
+            this.errorMsg = 'Username and password are required!';
+        }
+        if (username && password) {
+            if (username.length < 6 || password.length < 6) {
+                this.errorMsg = 'Invalid username or password!';
+                return;
+            }
+            this.auth.login(username, password).then(
+            (data) => {
+                this.router.navigate(['/restricted']);
+            },
+            (error) => {
+                console.log(error);
+                this.errorMsg = error;
+                this.submitErr = 'active';
+            });
+        }
     }
-    if (username && password) {
-      if (username.length < 6 || password.length < 6) {
-        this.errorMsg = 'Invalid username or password!'
-        return
-      }
-      this.auth.login(username, password).then(
-        (data) => { this.router.navigate(['/restricted']) },
-        (error) => { console.log(error); this.errorMsg = error; this.submitErr = 'active' })
+
+    public checkForgotPasswordInputs(username?: string, email?: string) {
+        this.errorMsg = '';
+        this.successMsg = '';
+        if (!username && !email) {
+            this.usernameEmpty = 'active';
+            this.emailEmpty = 'active';
+            this.setFocus(this.usernameElementRef);
+            this.errorMsg = 'Username or email-address are necessary!';
+        } else {
+            this.auth.forgotPassword(username, email).then(
+            (data) => {
+                this.successMsg = data;
+                this.forgotPassword = false; },
+            (error) => {
+                this.errorMsg = error;
+                this.forgotPassword = false;
+            });
+        }
     }
-  }
 
-  checkForgotPasswordInputs(username?: string, email?: string) {
-    this.errorMsg = ''
-    this.successMsg = ''
-    if (!username && !email) {
-       this.usernameEmpty = 'active'
-       this.username2Empty = 'active'
-       this.emailEmpty = 'active'
-       this.setFocus(this.usernameElementRef)
-       this.errorMsg = 'Username or email-address are necessary!'
-    } else {
-      this.auth.forgotPassword(username, email).then(
-      (data) => {
-        this.successMsg = data
-        this.forgotPassword = false },
-      (error) => {
-        this.errorMsg = error
-        this.forgotPassword = false
-      })
+    public setFocus(elementRef) {
+        elementRef.nativeElement.focus();
     }
-  }
 
-  setFocus(elementRef) {
-    elementRef.nativeElement.focus();
-  }
-
-  toggleForgotPassword(toggleTo:boolean) {
-    if (toggleTo === undefined) toggleTo = !this.forgotPassword
-      this.forgotPassword = toggleTo
-    this.resetUsernamePasswordEmtpy()
-    this.errorMsg = ''
-  }
-
-  public ngOnInit() {}
-
-  public ngAfterViewInit() {}
-  
+    public toggleForgotPassword(toggleTo: boolean) {
+        if (toggleTo === undefined) {
+            toggleTo = !this.forgotPassword;
+        }
+        this.forgotPassword = toggleTo;
+        this.resetUsernamePasswordEmtpy();
+        this.errorMsg = '';
+    }
 }

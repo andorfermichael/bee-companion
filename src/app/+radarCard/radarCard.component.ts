@@ -9,7 +9,7 @@ import {
   styleUrls: [ './radarCard.component.scss' ],
   templateUrl: './radarCard.component.html',
 })
-export class RadarCardComponent implements OnInit {
+export class RadarCardComponent {
   @Input() public styles: any;
   @Input() public lat: number;
   @Input() public lng: number;
@@ -20,7 +20,5 @@ export class RadarCardComponent implements OnInit {
   @Input() public disableDoubleClickZoom: boolean;
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
-
-  public ngOnInit() {}
 
 }

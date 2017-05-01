@@ -3,13 +3,12 @@ import {
   OnInit,
 } from '@angular/core';
 
-
 @Component({
   selector: 'header',
   styleUrls: [ './header.component.scss' ],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent {
   public lat: number = 56.713;
   public lng: number = 21.1644;
   public message: string;
@@ -41,7 +40,5 @@ export class HeaderComponent implements OnInit {
       );
     }
   }
-
-  public ngOnInit() {}
 
 }

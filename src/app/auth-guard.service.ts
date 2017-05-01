@@ -9,14 +9,14 @@ export class AuthGuard implements CanActivate {
 
   constructor(private auth: Auth, private router: Router) {}
 
-  canActivate() {
-    // If user is not logged in we'll send them to the homepage 
+  public canActivate(): boolean {
+    // If user is not logged in we'll send them to the homepage
     if (!this.auth.isAuthenticated()) {
       this.router.navigate(['/']);
       return false;
     } else if (!this.auth.checkUserHasRole()) {
-    	this.router.navigate(['/signup/complete']);
-    	return false;
+        this.router.navigate(['/signup/complete']);
+        return false;
     }
     return true;
   }

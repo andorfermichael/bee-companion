@@ -3,6 +3,10 @@ import * as Rx from 'rxjs/Rx';
 
 @Injectable()
 export class EventsService {
+    private listeners: any;
+    private eventsSubject: any;
+    private events: any;
+
     constructor() {
         this.listeners = {};
         this.eventsSubject = new Rx.Subject();
@@ -12,18 +16,14 @@ export class EventsService {
         this.events.subscribe(
             ({name, args}) => {
                 if (this.listeners[name]) {
-                    for (let listener of this.listeners[name]) {
+                    for (const listener of this.listeners[name]) {
                         listener(...args);
                     }
                 }
             });
     }
 
-    private listeners:any
-    private eventsSubject: any
-    private events: any
-
-    on(name, listener) {
+    public on(name, listener) {
         if (!this.listeners[name]) {
             this.listeners[name] = [];
         }
@@ -31,7 +31,7 @@ export class EventsService {
         this.listeners[name].push(listener);
     }
 
-    broadcast(name, ...args) {
+    public broadcast(name, ...args) {
         this.eventsSubject.next({
             name,
             args

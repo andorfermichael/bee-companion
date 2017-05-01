@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 
 import { Auth } from '../auth.service';
-import { Router }   from '@angular/router';
+import { Router } from '@angular/router';
 import { EventsService } from '../events.service';
 
 @Component({
@@ -44,29 +44,53 @@ import { EventsService } from '../events.service';
 
 export class LoginCardComponent implements OnInit {
 
+  @Input() public activeTab: '"logIn" || "signUp"';
+  public forgotPassword: boolean;
+  public usernameEmpty = 'inactive';
+  public username2Empty = 'inactive';
+  public passwordEmpty = 'inactive';
+  public emailEmpty = 'inactive';
+  public submitErr = 'inactive';
+  @ViewChild('username') public usernameElementRef;
+  @ViewChild('username2') public username2ElementRef;
+  @ViewChild('password') public passwordElementRef;
+  @ViewChild('email') public emailElementRef;
+  public errorMsg: string;
+  public successMsg: string;
+
   constructor(
-    private auth: Auth,
-    private elemRef: ElementRef, 
+    public auth: Auth,
+    public elemRef: ElementRef,
     public router: Router,
     public _eventsService: EventsService
   ) {}
 
-  @Input() activeTab: '"logIn" || "signUp"'
+  public setFocus(elementRef) {
+    elementRef.nativeElement.focus();
+  }
 
-  forgotPassword: boolean
-  usernameEmpty = 'inactive'
-  username2Empty = 'inactive'
-  passwordEmpty = 'inactive'
-  emailEmpty = 'inactive'
-  submitErr = 'inactive'
-  @ViewChild('username') usernameElementRef
-  @ViewChild('username2') username2ElementRef
-  @ViewChild('password') passwordElementRef
-  @ViewChild('email') emailElementRef
-  errorMsg: string
-  successMsg: string
+  public toggleForgotPassword(toggleTo: boolean) {
+    if (toggleTo === undefined) {
+      toggleTo = !this.forgotPassword;
+    }
+    this.forgotPassword = toggleTo;
+    this.resetUsernamePasswordEmtpy();
+    this.errorMsg = '';
+  }
 
-  resetUsernamePasswordEmtpy() {
+  public restoreFields(data: any) {
+    this.usernameElementRef.nativeElement.value = data.username;
+    this.setFocus(this.passwordElementRef);
+  }
+
+  public ngOnInit() {
+    this._eventsService.on('loginFail', (err, data) => {
+      this.onLoginFail(err);
+      this.restoreFields(data);
+    });
+  }
+
+  public resetUsernamePasswordEmtpy() {
     this.usernameEmpty = 'inactive';
     this.username2Empty = 'inactive';
     this.passwordEmpty = 'inactive';
@@ -74,106 +98,83 @@ export class LoginCardComponent implements OnInit {
     this.submitErr = 'inactive';
   }
 
-  loginWithSocial(type: string) {
-    this._eventsService.broadcast('loginStart')
-    if (type.toLowerCase() === 'facebook')
-      this.auth.loginWithFacebook()
-    if (type.toLowerCase() === 'google')
-      this.auth.loginWithGoogle()
-    return false
-  }  
-
-  loginWithFacebook() {
-    this._eventsService.broadcast('loginStart')
-    this.auth.loginWithGoogle()
-    return false
+  public loginWithSocial(type: string) {
+    this._eventsService.broadcast('loginStart');
+    if (type.toLowerCase() === 'facebook') {
+      this.auth.loginWithFacebook();
+    }
+    if (type.toLowerCase() === 'google') {
+      this.auth.loginWithGoogle();
+    }
+    return false;
   }
 
-  checkInputs(username?: string, password?: string) {
-    this.errorMsg = ''
-    this.successMsg = ''
+  public loginWithFacebook() {
+    this._eventsService.broadcast('loginStart');
+    this.auth.loginWithGoogle();
+    return false;
+  }
+
+  public checkInputs(username?: string, password?: string) {
+    this.errorMsg = '';
+    this.successMsg = '';
     if (!password) {
       this.passwordEmpty = 'active';
-      this.setFocus(this.passwordElementRef)
-      this.errorMsg = 'Password is required!'
+      this.setFocus(this.passwordElementRef);
+      this.errorMsg = 'Password is required!';
     }
     if (!username) {
       this.usernameEmpty = 'active';
-      this.setFocus(this.usernameElementRef)
-      this.errorMsg = 'Username is required!'
+      this.setFocus(this.usernameElementRef);
+      this.errorMsg = 'Username is required!';
     }
     if (!username && !password) {
-      this.errorMsg = 'Username and password are required!'
+      this.errorMsg = 'Username and password are required!';
     }
     if (username && password) {
       if (username.length < 4 || password.length < 4) {
-        this.errorMsg = 'Invalid username or password!'
-        return
+        this.errorMsg = 'Invalid username or password!';
+        return;
       }
       this._eventsService.broadcast('loginStart');
       this.auth.login(username, password).then(
-        (data) => { 
+        (data) => {
           this._eventsService.broadcast('loginSuccess');
-          this.router.navigate(['/restricted']) 
+          this.router.navigate(['/restricted']);
         },
-        (error) => { 
-          this._eventsService.broadcast('loginFail',error, {username: username, password: password});
-          this.onLoginFail(error) 
-        })
+        (error) => {
+          this._eventsService.broadcast('loginFail', error, {username, password});
+          this.onLoginFail(error);
+        });
     }
   }
 
-  onLoginFail(error): void {
-    this.errorMsg = error
-    this.submitErr = 'active'
-    this.usernameEmpty = 'active'
-    this.passwordEmpty = 'active' 
-  }
-
-  checkForgotPasswordInputs(username?: string, email?: string) {
-    this.errorMsg = ''
-    this.successMsg = ''
+  public checkForgotPasswordInputs(username?: string, email?: string) {
+    this.errorMsg = '';
+    this.successMsg = '';
     if (!username && !email) {
-       this.usernameEmpty = 'active'
-       this.username2Empty = 'active'
-       this.emailEmpty = 'active'
-       this.setFocus(this.usernameElementRef)
-       this.errorMsg = 'Username or email-address are necessary!'
+       this.usernameEmpty = 'active';
+       this.username2Empty = 'active';
+       this.emailEmpty = 'active';
+       this.setFocus(this.usernameElementRef);
+       this.errorMsg = 'Username or email-address are necessary!';
     } else {
       this.auth.forgotPassword(username, email).then(
       (data) => {
-        this.successMsg = data
-        this.forgotPassword = false
+        this.successMsg = data;
+        this.forgotPassword = false;
       },
       (error) => {
-        this.errorMsg = error
-        this.forgotPassword = false
-      })
+        this.errorMsg = error;
+        this.forgotPassword = false;
+      });
     }
   }
 
-  setFocus(elementRef) {
-    elementRef.nativeElement.focus();
+  private onLoginFail(error): void {
+    this.errorMsg = error;
+    this.submitErr = 'active';
+    this.usernameEmpty = 'active';
+    this.passwordEmpty = 'active';
   }
-
-  toggleForgotPassword(toggleTo:boolean) {
-    if (toggleTo === undefined) toggleTo = !this.forgotPassword
-      this.forgotPassword = toggleTo
-    this.resetUsernamePasswordEmtpy()
-    this.errorMsg = ''
-  }
-
-  restoreFields(data:any) {
-    this.usernameElementRef.nativeElement.value = data.username
-    this.setFocus(this.passwordElementRef)
-  }
-
-  public ngOnInit() {
-    this._eventsService.on('loginFail', (err, data) => {
-      this.onLoginFail(err)
-      this.restoreFields(data)
-    })
-  }
-
-  public ngAfterViewInit() { }
 }
