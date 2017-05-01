@@ -7,19 +7,18 @@ import { Auth } from '../auth.service';
 
 @Component({
   selector: 'home',
-  styleUrls: [ './home.component.scss' ],
+  styleUrls: ['./home.component.scss'],
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private auth: Auth) {}
-
-  public ngOnInit() {
-  	if(this.auth.isAuthenticated()) {
-  		this.auth.checkUserHasRole()
-  	}
+  constructor(public auth: Auth) {
+    // Instantiation
   }
 
-  public ngAfterViewInit() {}
-
+  public ngOnInit() {
+    if (this.auth.isAuthenticated()) {
+      this.auth.checkUserHasRole();
+    }
+  }
 }

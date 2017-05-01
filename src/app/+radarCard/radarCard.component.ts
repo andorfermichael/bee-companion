@@ -21,6 +21,7 @@ export class RadarCardComponent implements OnInit {
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
 
-  public ngOnInit() {}
-
+  public ngOnInit() {
+    // Init
+  }
 }

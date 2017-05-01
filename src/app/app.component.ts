@@ -31,12 +31,11 @@ export class AppComponent implements OnInit {
   public name = 'BeeCompanion';
   public url = 'https://www.bee-companion.com/';
 
-  constructor(
-    private auth: Auth
-  ) {
+  constructor(private auth: Auth) {
     this.auth.handleAuth();
   }
 
-  public ngOnInit() {}
-
+  public ngOnInit() {
+    // Init
+  }
 }

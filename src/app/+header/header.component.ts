@@ -3,7 +3,6 @@ import {
   OnInit,
 } from '@angular/core';
 
-
 @Component({
   selector: 'header',
   styleUrls: [ './header.component.scss' ],
@@ -42,6 +41,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  public ngOnInit() {}
-
+  public ngOnInit() {
+    // Init
+  }
 }

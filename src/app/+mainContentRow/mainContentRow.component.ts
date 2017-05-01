@@ -3,7 +3,6 @@ import {
   OnInit,
 } from '@angular/core';
 
-
 @Component({
   selector: 'mainContentRow',
   styleUrls: [ './mainContentRow.component.scss' ],
@@ -11,6 +10,7 @@ import {
 })
 export class MainContentRowComponent implements OnInit {
 
-  public ngOnInit() {}
-
+  public ngOnInit() {
+    // Init
+  }
 }

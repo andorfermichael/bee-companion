@@ -113,18 +113,15 @@ const APP_PROVIDERS = [
     NonAuthGuard,
     EventsService
   ],
-  schemas: [ 
-    NO_ERRORS_SCHEMA 
+  schemas: [
+    NO_ERRORS_SCHEMA
   ]
 })
 export class AppModule {
 
-  constructor(
-    public appRef: ApplicationRef
-  ) {}
+  constructor(public appRef: ApplicationRef) {}
 
-  // 
-  //public hmrOnInit(store: StoreType) {
+  // public hmrOnInit(store: StoreType) {
   //   if (!store || !store.state) {
   //     return;
   //   }
