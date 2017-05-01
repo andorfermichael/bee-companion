@@ -85,7 +85,6 @@
     "@angularclass/hmr": "~1.2.2",
     "@angularclass/hmr-loader": "~3.0.2",
     "@types/auth0-lock": "^10.10.1",
-    "angular2-google-maps": "^0.17.0",
     "angular2-jwt": "^0.2.2",
     "auth0-js": "^8.6.0",
     "auth0-lock": "^10.15.1",
@@ -107,9 +106,8 @@
     "reflect-metadata": "^0.1.10",
     "rxjs": "5.3.0",
     "jwks-rsa": "^1.1.1",
-    "morgan": "^1.8.1",
     "sequelize": "^3.30.0",
-    "zone.js": "^0.8.4"
+    "zone.js": "0.8.9"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^4.1.0",
