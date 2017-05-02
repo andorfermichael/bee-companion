@@ -9,6 +9,7 @@ npm install -g pm2
 cd /var/www/beecompanion/
 npm install
 npm install http-server
+sequelize --config config/dbconfig.js
 sequelize db:migrate --env production
 pm2 kill
 npm run api:prod:pm2

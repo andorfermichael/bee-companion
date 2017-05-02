@@ -1,3 +1,4 @@
+cp /var/lib/jenkins/workspace/.env /var/lib/jenkins/workspace/BeeCompanion/.env
 cd /var/lib/jenkins/workspace/BeeCompanion/
 npm install
 sequelize --config config/dbconfig.js
