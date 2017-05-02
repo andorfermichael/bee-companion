@@ -1,14 +1,16 @@
 version: 0.0
 os: linux
 files:
+   - source: api/
+     destination: /var/www/beecompanion/api/
    - source: config/
      destination: /var/www/beecompanion/config/
    - source: deployment/
      destination: /var/www/beecompanion/deployment/
    - source: dist/
      destination: /var/www/beecompanion/dist/
-   - source: api/
-     destination: /var/www/beecompanion/api/
+   - source: ./.sequelizerc
+     destination: /var/www/beecompanion/
    - source: ./package.json
      destination: /var/www/beecompanion/
 permissions:
