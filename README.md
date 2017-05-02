@@ -49,12 +49,12 @@ It supports:
 We use the component approach in our project. This is the new standard for developing Angular apps and a great way to ensure maintainable code by encapsulation of our behavior logic. A component is basically a self contained app usually in a single file or a folder with each concern as a file: style, template, specs, e2e, and component class. Here's how it looks (overview):
 ```
 bee-companion/
- ├──api/						   * our API
+ ├──api/                           * our API
  |   ├──migrations                 * sequelize migrations
- |   ├──models             		   * our API models
- |   ├──routes              	   * our API routes
- |   ├──seeders         		   * database seeds
- │   └──api.js           		   * entry point of our API
+ |   ├──models                     * our API models
+ |   ├──routes                     * our API routes
+ |   ├──seeders                    * database seeds
+ │   └──api.js                     * entry point of our API
  │
  ├──config/                        * our configuration
  |	 ├──dbconfig.js                * our database configuration
@@ -66,7 +66,7 @@ bee-companion/
  │   ├──webpack.prod.js            * our production webpack config
  │   └──webpack.test.js            * our testing webpack config
  │
- ├──deployment/					   * deployment scripts and configurations
+ ├──deployment/                    * deployment scripts and configurations
  |	 ├──application-start.sh       * a shell script to install and run our application on production server
  |
  ├──src/                           * our source files that will be compiled to javascript
@@ -156,8 +156,10 @@ npm run api:prod:pm2
 ```bash
 # development
 npm run build:dev
+
 # production (jit)
 npm run build:prod
+
 # AoT
 npm run build:aot
 ```
@@ -186,6 +188,7 @@ npm run watch:test
 ```bash
 # update Webdriver (optional, done automatically by postinstall script)
 npm run webdriver:update
+
 # this will start a test server and launch Protractor
 npm run e2e
 ```
