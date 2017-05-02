@@ -4,11 +4,11 @@ source ~/.bashrc
 nvm install 7.4.0
 nvm use 7.4.0
 export NODE_ENV=production
-npm install -g sequelize-cli
 npm install -g pm2
 cd /var/www/beecompanion/
 npm install
 npm install http-server
+npm install -g sequelize-cli
 sequelize --config config/dbconfig.js
 sequelize db:migrate --env production
 pm2 kill
