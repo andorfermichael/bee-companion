@@ -7,11 +7,7 @@ import {
   ApplicationRef,
   NO_ERRORS_SCHEMA
 } from '@angular/core';
-import {
-  removeNgStyles,
-  createNewHosts,
-  createInputTransfer
-} from '@angularclass/hmr';
+
 import {
   RouterModule,
   PreloadAllModules
@@ -63,12 +59,6 @@ import '../styles/headings.css';
 const APP_PROVIDERS = [
   ...APP_RESOLVER_PROVIDERS
 ];
-
-// interface StoreType {
-//   state: InternalStateType;
-//   restoreInputValues: () => void;
-//   disposeOldHosts: () => void;
-// }
 
 /**
  * `AppModule` is the main entry point into Angular2's bootstraping process

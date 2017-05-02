@@ -11,10 +11,7 @@ import { Auth } from '../auth.service';
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {
-
-  constructor(public auth: Auth) {
-    // Instantiation
-  }
+  constructor(public auth: Auth) {}
 
   public ngOnInit() {
     if (this.auth.isAuthenticated()) {

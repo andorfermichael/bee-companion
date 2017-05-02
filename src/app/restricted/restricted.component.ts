@@ -11,7 +11,6 @@ import { Auth } from '../auth.service';
   templateUrl: './restricted.component.html'
 })
 export class RestrictedComponent implements OnInit {
-
   constructor(public auth: Auth) {}
 
   public ngOnInit() {

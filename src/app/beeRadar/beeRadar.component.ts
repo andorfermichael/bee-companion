@@ -77,7 +77,6 @@ export class BeeRadarComponent {
   public disableDoubleClickZoom = true;
   public scrollwheel = false;
   public streetViewControl = false;
-  public localState: any;
 
   public setPosition(data: any) {
     if (data) {

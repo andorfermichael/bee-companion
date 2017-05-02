@@ -6,7 +6,6 @@ import { Auth } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-
   constructor(private auth: Auth, private router: Router) {}
 
   public canActivate(): boolean {
@@ -17,5 +16,4 @@ export class AuthGuard implements CanActivate {
     }
     return true;
   }
-
 }

@@ -89,7 +89,6 @@ export class NavComponent implements OnInit {
 
   constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer,
               public auth: Auth, private router: Router, public _eventsService: EventsService) {
-    // Instantiation
   }
 
   @HostListener('document:click', ['$event'])

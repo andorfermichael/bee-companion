@@ -44,8 +44,6 @@ import { EventsService } from '../events.service';
 })
 
 export class LoginCardComponent implements OnInit {
-
-  @Input() public activeTab: '"logIn" || "signUp"';
   public forgotPassword: boolean;
   public usernameEmpty = 'inactive';
   public username2Empty = 'inactive';
@@ -53,14 +51,11 @@ export class LoginCardComponent implements OnInit {
   public emailEmpty = 'inactive';
   public submitErr = 'inactive';
   @ViewChild('username') public usernameElementRef;
-  @ViewChild('username2') public username2ElementRef;
   @ViewChild('password') public passwordElementRef;
-  @ViewChild('email') public emailElementRef;
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(public auth: Auth, public elemRef: ElementRef, public router: Router,
-              public _eventsService: EventsService) {
+  constructor(public auth: Auth, public router: Router, public _eventsService: EventsService) {
   }
 
   public setFocus(elementRef) {
