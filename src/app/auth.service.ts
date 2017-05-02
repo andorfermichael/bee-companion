@@ -18,6 +18,7 @@ export class Auth {
   public lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
   // Store profile object in auth class
   public userProfile: any;
+  public idToken: string;
   public signUpIncomplete: boolean;
 
   // Configure Auth0
@@ -64,6 +65,7 @@ export class Auth {
     localStorage.removeItem('token');
     localStorage.removeItem('id_token');
     localStorage.removeItem('profile');
+    this.idToken = '';
     this.userProfile = null;
     this.setLoggedIn(false);
     // Go back to the home rout
@@ -93,8 +95,9 @@ export class Auth {
     }
   }
 
-  public forgotPassword(username?: string, email?: string,
-                        onSuccess?: any, onError?: any): Promise<any> {
+  public forgotPassword(
+    username?: string, email?: string,
+    onSuccess?: any, onError?: any): Promise<any> {
     if (!username && !email) {
       return;
     }
@@ -113,7 +116,6 @@ export class Auth {
     // Check whether the id_token is expired or not
     return tokenNotExpired('id_token');
   }
-
   // Call this method in app.component
   // if using path-based routing <== WE ARE USING PATH BASED ROUTING
   public handleAuth(): void {
@@ -148,7 +150,7 @@ export class Auth {
       });
   }
 
-  public checkUserHasRole(profile?: any): boolean {
+  public checkUserHasRole(profile?: any): any {
     profile = profile ? profile : this.userProfile;
     let userHasNecessaryRole = false;
     if (!profile) {
@@ -163,7 +165,7 @@ export class Auth {
             userHasNecessaryRole = true;
             this.signUpIncomplete = null;
             console.log('USER HAS ROLE! ' + userRole);
-            return true;
+            return userRole;
           }
         }
       }
@@ -172,6 +174,17 @@ export class Auth {
       console.log('User has no necessary role!');
       this.signUpIncomplete = true;
       return false;
+    }
+  }
+
+  public _updateProfile() {
+    const tokenId = localStorage.getItem('id_token');
+    const tokenAc = localStorage.getItem('token');
+
+    this.logout();
+
+    if (tokenId && tokenAc) {
+      this._getProfile({id_token: tokenId, access_token: tokenAc});
     }
   }
 
@@ -196,7 +209,6 @@ export class Auth {
       if (!this.checkUserHasRole(profile)) {
         this.router.navigate(['/signup/complete']);
       }
-
     });
   }
 
@@ -205,8 +217,10 @@ export class Auth {
     localStorage.setItem('token', authResult.access_token || authResult.accessToken);
     localStorage.setItem('id_token', authResult.id_token || authResult.idToken);
     localStorage.setItem('profile', JSON.stringify(profile));
-    this.userProfile = profile;
+    this.idToken = authResult.id_token || authResult.idToken;
     this.setLoggedIn(true);
+    this.userProfile = profile;
+    this.checkUserHasRole(profile);
   }
 
   private processLogin(username?: string, password?: string): Promise<any> {
@@ -232,9 +246,7 @@ export class Auth {
     return this.http.post(postConfig.urlLogin, options, reqOpts)
       .toPromise()
       .then(this.extractData)
-      .then((data) => {
-        this._getProfile(data);
-      })
+      .then((data) => { this._getProfile(data); })
       .catch(this.handleLoginError);
   }
 
@@ -279,7 +291,7 @@ export class Auth {
     } catch (e) {
       body = res.toString();
     }
-    return body || {};
+    return body || { };
   }
 
   private handleError(error: Response | any) {

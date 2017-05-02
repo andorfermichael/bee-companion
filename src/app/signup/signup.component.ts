@@ -16,7 +16,7 @@ import { EventsService } from '../events.service';
 
 @Component({
   selector: 'signupPage',
-  styleUrls: ['./signup.component.scss'],
+  styleUrls: [ './signup.component.scss' ],
   templateUrl: './signup.component.html',
   animations: [
     trigger('fieldRequired', [
@@ -66,6 +66,7 @@ export class SignupPageComponent {
 
   constructor(public auth: Auth, private elemRef: ElementRef, public router: Router,
               public authHttp: AuthHttp, public _eventsService: EventsService) {
+
   }
 
   @HostListener('document:click', ['$event'])
@@ -81,18 +82,16 @@ export class SignupPageComponent {
     const headers = new Headers({
       Authorization: 'Bearer ' + this.auth.idToken
     });
-    const options = new RequestOptions({headers});
+    const options = new RequestOptions({ headers });
 
     this.authHttp.get('http://localhost:3000/api/user/set/role/' + role)
       .subscribe(
         (data) => {
           this._eventsService.broadcast('loginSuccess');
-          this.auth._updateProfile();
-        },
+          this.auth._updateProfile(); },
         (err) => {
           this._eventsService.broadcast('loginFail');
-          console.log(err);
-        });
+          console.log(err); });
   }
 
   public resetUsernamePasswordEmtpy() {
@@ -145,10 +144,9 @@ export class SignupPageComponent {
       this.errorMsg = 'Username or email-address are necessary!';
     } else {
       this.auth.forgotPassword(username, email).then(
-        (data: string) => {
+        (data: any) => {
           this.successMsg = data;
-          this.forgotPassword = false;
-        },
+          this.forgotPassword = false; },
         (error) => {
           this.errorMsg = error;
           this.forgotPassword = false;

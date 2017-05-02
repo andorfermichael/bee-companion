@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CanActivate } from '@angular/router';
-
+// Import our authentication service
 import { Auth } from './auth.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthRoleGuard implements CanActivate {
 
   constructor(private auth: Auth, private router: Router) {}
 
@@ -14,6 +14,9 @@ export class AuthGuard implements CanActivate {
     if (!this.auth.isAuthenticated()) {
       this.router.navigate(['/']);
       return false;
+    } else if (!this.auth.checkUserHasRole()) {
+        this.router.navigate(['/signup/complete']);
+        return false;
     }
     return true;
   }
