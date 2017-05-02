@@ -1,16 +1,11 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
-
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'beeRadar',
   styleUrls: ['./beeRadar.component.scss'],
   templateUrl: './beeRadar.component.html'
 })
-export class BeeRadarComponent implements OnInit {
+export class BeeRadarComponent {
   public styles: any = [{
     featureType: 'all',
     elementType: 'all',
@@ -84,8 +79,6 @@ export class BeeRadarComponent implements OnInit {
   public streetViewControl = false;
   public localState: any;
 
-  constructor(public route: ActivatedRoute) {}
-
   public setPosition(data: any) {
     if (data) {
       if (data.coords) {
@@ -93,35 +86,5 @@ export class BeeRadarComponent implements OnInit {
         this.lng = data.coords.longitude ? data.coords.longitude : this.lng;
       }
     }
-  }
-
-  public ngOnInit() {
-    this.route
-      .data
-      .subscribe((data: any) => {
-        // your resolved data from route
-        this.localState = data.yourData;
-      });
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(this.setPosition.bind(this));
-    }
-
-    this.asyncDataWithWebpack();
-  }
-
-  private asyncDataWithWebpack() {
-    // you can also async load mock data with 'es6-promise-loader'
-    // you would do this if you don't want the mock-data bundled
-    // remember that 'es6-promise-loader' is a promise
-    setTimeout(() => {
-
-      System.import('../../assets/mock-data/mock-data.json')
-        .then((json) => {
-          console.log('async mockData', json);
-          this.localState = json;
-        });
-
-    });
   }
 }

@@ -1,11 +1,11 @@
 import {
   Component,
-  OnInit,
   Input,
   ElementRef,
-  ViewChild,
-  trigger, state, animate, transition, keyframes, style
+  ViewChild
 } from '@angular/core';
+
+import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 
 import { Auth } from '../auth.service';
 import { Router } from '@angular/router';
@@ -42,7 +42,6 @@ import { Router } from '@angular/router';
 })
 
 export class SignupCardComponent {
-
   @Input() public activeTab: '"logIn" || "signUp"';
   public supporterActive: boolean;
   public signupActive: boolean;
@@ -59,11 +58,8 @@ export class SignupCardComponent {
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(
-    public auth: Auth,
-    public elemRef: ElementRef,
-    public router: Router
-  ) {}
+  constructor(public auth: Auth, public elemRef: ElementRef, public router: Router) {
+  }
 
   public resetUsernamePasswordEmtpy() {
     this.usernameEmpty = 'inactive';
@@ -95,8 +91,14 @@ export class SignupCardComponent {
         return;
       }
       this.auth.login(username, password).then(
-        (data) => { this.router.navigate(['/restricted']); },
-        (error) => { console.log(error); this.errorMsg = error; this.submitErr = 'active'; });
+        (data) => {
+          this.router.navigate(['/restricted']);
+        },
+        (error) => {
+          console.log(error);
+          this.errorMsg = error;
+          this.submitErr = 'active';
+        });
     }
   }
 
@@ -104,20 +106,21 @@ export class SignupCardComponent {
     this.errorMsg = '';
     this.successMsg = '';
     if (!username && !email) {
-       this.usernameEmpty = 'active';
-       this.username2Empty = 'active';
-       this.emailEmpty = 'active';
-       this.setFocus(this.usernameElementRef);
-       this.errorMsg = 'Username or email-address are necessary!';
+      this.usernameEmpty = 'active';
+      this.username2Empty = 'active';
+      this.emailEmpty = 'active';
+      this.setFocus(this.usernameElementRef);
+      this.errorMsg = 'Username or email-address are necessary!';
     } else {
       this.auth.forgotPassword(username, email).then(
-      (data) => {
-        this.successMsg = data;
-        this.forgotPassword = false; },
-      (error) => {
-        this.errorMsg = error;
-        this.forgotPassword = false;
-      });
+        (data: any) => {
+          this.successMsg = data;
+          this.forgotPassword = false;
+        },
+        (error) => {
+          this.errorMsg = error;
+          this.forgotPassword = false;
+        });
     }
   }
 
@@ -133,5 +136,4 @@ export class SignupCardComponent {
     this.resetUsernamePasswordEmtpy();
     this.errorMsg = '';
   }
-
 }

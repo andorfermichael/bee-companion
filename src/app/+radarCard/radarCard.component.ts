@@ -1,7 +1,6 @@
 import {
   Component,
-  Input,
-  OnInit
+  Input
 } from '@angular/core';
 
 @Component({
@@ -20,5 +19,4 @@ export class RadarCardComponent {
   @Input() public disableDoubleClickZoom: boolean;
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
-
 }

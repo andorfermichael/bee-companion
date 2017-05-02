@@ -3,9 +3,10 @@ import {
   OnInit,
   Input,
   ElementRef,
-  ViewChild,
-  trigger, state, animate, transition, keyframes, style
+  ViewChild
 } from '@angular/core';
+
+import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 
 import { Auth } from '../auth.service';
 import { Router } from '@angular/router';
@@ -13,7 +14,7 @@ import { EventsService } from '../events.service';
 
 @Component({
   selector: 'loginCard',
-  styleUrls: [ './loginCard.component.scss' ],
+  styleUrls: ['./loginCard.component.scss'],
   templateUrl: './loginCard.component.html',
   animations: [
     trigger('fieldRequired', [
@@ -58,12 +59,9 @@ export class LoginCardComponent implements OnInit {
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(
-    public auth: Auth,
-    public elemRef: ElementRef,
-    public router: Router,
-    public _eventsService: EventsService
-  ) {}
+  constructor(public auth: Auth, public elemRef: ElementRef, public router: Router,
+              public _eventsService: EventsService) {
+  }
 
   public setFocus(elementRef) {
     elementRef.nativeElement.focus();
@@ -153,21 +151,21 @@ export class LoginCardComponent implements OnInit {
     this.errorMsg = '';
     this.successMsg = '';
     if (!username && !email) {
-       this.usernameEmpty = 'active';
-       this.username2Empty = 'active';
-       this.emailEmpty = 'active';
-       this.setFocus(this.usernameElementRef);
-       this.errorMsg = 'Username or email-address are necessary!';
+      this.usernameEmpty = 'active';
+      this.username2Empty = 'active';
+      this.emailEmpty = 'active';
+      this.setFocus(this.usernameElementRef);
+      this.errorMsg = 'Username or email-address are necessary!';
     } else {
       this.auth.forgotPassword(username, email).then(
-      (data) => {
-        this.successMsg = data;
-        this.forgotPassword = false;
-      },
-      (error) => {
-        this.errorMsg = error;
-        this.forgotPassword = false;
-      });
+        (data: any) => {
+          this.successMsg = data;
+          this.forgotPassword = false;
+        },
+        (error) => {
+          this.errorMsg = error;
+          this.forgotPassword = false;
+        });
     }
   }
 

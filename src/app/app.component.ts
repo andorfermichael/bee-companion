@@ -31,10 +31,7 @@ export class AppComponent {
   public name = 'BeeCompanion';
   public url = 'https://www.bee-companion.com/';
 
-  constructor(
-    private auth: Auth
-  ) {
+  constructor(private auth: Auth) {
     this.auth.handleAuth();
   }
-
 }
