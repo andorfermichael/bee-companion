@@ -19,6 +19,7 @@ export class Auth {
     public lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
     // Store profile object in auth class
     public userProfile: any;
+    public idToken: string;
     public signUpIncomplete: boolean;
 
     // Configure Auth0
@@ -65,13 +66,14 @@ export class Auth {
         localStorage.removeItem('token');
         localStorage.removeItem('id_token');
         localStorage.removeItem('profile');
+        this.idToken = '';
         this.userProfile = null;
         this.setLoggedIn(false);
         // Go back to the home rout
         this.router.navigate(['/']);
     }
 
-        public loginWithWidget(): void {
+    public loginWithWidget(): void {
         this.lock.show();
     }
 
@@ -149,7 +151,7 @@ export class Auth {
             });
     }
 
-    public checkUserHasRole(profile?: any): boolean {
+    public checkUserHasRole(profile?: any): any {
         profile = profile ? profile : this.userProfile;
         let userHasNecessaryRole = false;
         if (!profile) {
@@ -164,7 +166,7 @@ export class Auth {
                         userHasNecessaryRole = true;
                         this.signUpIncomplete = null;
                         console.log('USER HAS ROLE! ' + userRole);
-                        return true;
+                        return userRole;
                     }
                 }
             }
@@ -173,6 +175,17 @@ export class Auth {
             console.log('User has no necessary role!');
             this.signUpIncomplete = true;
             return false;
+        }
+    }
+
+    public _updateProfile() {
+        const tokenId = localStorage.getItem('id_token');
+        const tokenAc = localStorage.getItem('token');
+
+        this.logout();
+
+        if (tokenId && tokenAc) {
+            this._getProfile({id_token: tokenId, access_token: tokenAc});
         }
     }
 
@@ -197,7 +210,6 @@ export class Auth {
             if (!this.checkUserHasRole(profile)) {
                 this.router.navigate(['/signup/complete']);
             }
-
         });
     }
 
@@ -206,8 +218,10 @@ export class Auth {
         localStorage.setItem('token', authResult.access_token || authResult.accessToken);
         localStorage.setItem('id_token', authResult.id_token || authResult.idToken);
         localStorage.setItem('profile', JSON.stringify(profile));
-        this.userProfile = profile;
+        this.idToken = authResult.id_token || authResult.idToken;
         this.setLoggedIn(true);
+        this.userProfile = profile;
+        this.checkUserHasRole(profile);
     }
 
     private processLogin(username?: string, password?: string): Promise<any> {

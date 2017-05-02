@@ -18,8 +18,11 @@ import {
 } from '@angular/router';
 import { Auth } from './auth.service';
 import { AuthGuard } from './auth-guard.service';
+import { AuthRoleGuard } from './auth-role-guard.service';
 import { NonAuthGuard } from './non-auth-guard.service';
 import { EventsService } from './events.service';
+
+import { AuthModule } from './auth.module';
 
 // Import Google Maps
 import { AgmCoreModule } from '@agm/core';
@@ -96,6 +99,7 @@ const APP_PROVIDERS = [
     NoContentComponent
   ],
   imports: [ // import Angular's modules
+    AuthModule,
     BrowserModule,
     FormsModule,
     HttpModule,
@@ -110,6 +114,7 @@ const APP_PROVIDERS = [
     APP_PROVIDERS,
     Auth,
     AuthGuard,
+    AuthRoleGuard,
     NonAuthGuard,
     EventsService
   ],

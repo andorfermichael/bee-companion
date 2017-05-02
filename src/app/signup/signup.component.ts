@@ -10,6 +10,9 @@ import {
 
 import { Auth } from '../auth.service';
 import { Router } from '@angular/router';
+import { RequestOptions, Headers } from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
+import { EventsService } from '../events.service';
 
 @Component({
   selector: 'signupPage',
@@ -62,9 +65,11 @@ export class SignupPageComponent {
     public successMsg: string;
 
     constructor(
-        private auth: Auth,
+        public auth: Auth,
         private elemRef: ElementRef,
-        public router: Router
+        public router: Router,
+        public authHttp: AuthHttp,
+        public _eventsService: EventsService
     ) {}
 
     @HostListener('document:click', ['$event'])
@@ -73,6 +78,23 @@ export class SignupPageComponent {
             this.extErrorMessage = 'Please complete your signup first :)';
             return false;
         }
+    }
+
+    public addUserRole(role) {
+        this._eventsService.broadcast('loginStart');
+        const headers = new Headers({
+            Authorization: 'Bearer ' + this.auth.idToken
+        });
+        const options = new RequestOptions({ headers });
+
+        this.authHttp.get('http://localhost:3000/api/user/set/role/' + role)
+            .subscribe(
+                (data) => {
+                    this._eventsService.broadcast('loginSuccess');
+                    this.auth._updateProfile(); },
+                (err) => {
+                    this._eventsService.broadcast('loginFail');
+                    console.log(err); });
     }
 
     public resetUsernamePasswordEmtpy() {

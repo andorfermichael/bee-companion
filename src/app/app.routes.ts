@@ -1,5 +1,6 @@
 import { Routes, RouterModule, CanActivate } from '@angular/router';
 import { AuthGuard } from './auth-guard.service';
+import { AuthRoleGuard } from './auth-role-guard.service';
 import { NonAuthGuard } from './non-auth-guard.service';
 
 import { HomeComponent } from './home';
@@ -26,9 +27,10 @@ export const ROUTES: Routes = [
     { path: 'contact', component: ContactUsComponent, pathMatch: 'full'},
     { path: 'login', component: LoginPageComponent, pathMatch: 'full', canActivate: [NonAuthGuard]},
     { path: 'signup', component: LoginPageComponent, pathMatch: 'full'},
-    { path: 'signup/complete', component: SignupPageComponent, pathMatch: 'full'},
-    { path: 'restricted', component: RestrictedComponent, pathMatch: 'full',
+    { path: 'signup/complete', component: SignupPageComponent, pathMatch: 'full',
     canActivate: [AuthGuard]},
+    { path: 'restricted', component: RestrictedComponent, pathMatch: 'full',
+    canActivate: [AuthRoleGuard]},
     { path: 'callback', component: CallbackComponent },
     { path: '**',    component: NoContentComponent },
 ];

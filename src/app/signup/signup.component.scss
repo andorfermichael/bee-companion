@@ -187,6 +187,7 @@ main {
     .role {
       &:hover {
         a {
+          cursor: pointer;
           text-decoration: none;
           color: #F6DD3B;
           img {
