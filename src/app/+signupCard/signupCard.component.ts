@@ -42,9 +42,6 @@ import { Router } from '@angular/router';
 })
 
 export class SignupCardComponent {
-  @Input() public activeTab: '"logIn" || "signUp"';
-  public supporterActive: boolean;
-  public signupActive: boolean;
   public forgotPassword: boolean;
   public usernameEmpty = 'inactive';
   public username2Empty = 'inactive';
@@ -52,13 +49,11 @@ export class SignupCardComponent {
   public emailEmpty = 'inactive';
   public submitErr = 'inactive';
   @ViewChild('username') public usernameElementRef;
-  @ViewChild('username2') public username2ElementRef;
   @ViewChild('password') public passwordElementRef;
-  @ViewChild('email') public emailElementRef;
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(public auth: Auth, public elemRef: ElementRef, public router: Router) {
+  constructor(public auth: Auth, public router: Router) {
   }
 
   public resetUsernamePasswordEmtpy() {
@@ -102,38 +97,7 @@ export class SignupCardComponent {
     }
   }
 
-  public checkForgotPasswordInputs(username?: string, email?: string) {
-    this.errorMsg = '';
-    this.successMsg = '';
-    if (!username && !email) {
-      this.usernameEmpty = 'active';
-      this.username2Empty = 'active';
-      this.emailEmpty = 'active';
-      this.setFocus(this.usernameElementRef);
-      this.errorMsg = 'Username or email-address are necessary!';
-    } else {
-      this.auth.forgotPassword(username, email).then(
-        (data: any) => {
-          this.successMsg = data;
-          this.forgotPassword = false;
-        },
-        (error) => {
-          this.errorMsg = error;
-          this.forgotPassword = false;
-        });
-    }
-  }
-
   public setFocus(elementRef) {
     elementRef.nativeElement.focus();
-  }
-
-  public toggleForgotPassword(toggleTo: boolean) {
-    if (toggleTo === undefined) {
-      toggleTo = !this.forgotPassword;
-    }
-    this.forgotPassword = toggleTo;
-    this.resetUsernamePasswordEmtpy();
-    this.errorMsg = '';
   }
 }

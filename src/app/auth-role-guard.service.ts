@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { CanActivate } from '@angular/router';
-// Import our authentication service
+
 import { Auth } from './auth.service';
 
 @Injectable()
 export class AuthRoleGuard implements CanActivate {
-
   constructor(private auth: Auth, private router: Router) {}
 
   public canActivate(): boolean {
@@ -20,5 +19,4 @@ export class AuthRoleGuard implements CanActivate {
     }
     return true;
   }
-
 }

@@ -16,7 +16,6 @@ import { myConfig, postConfig, necessaryRoles } from './auth.config';
 @Injectable()
 export class Auth {
   public lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
-  // Store profile object in auth class
   public userProfile: any;
   public idToken: string;
   public signUpIncomplete: boolean;
@@ -25,7 +24,6 @@ export class Auth {
   private auth0 = new auth0.WebAuth({
     domain: myConfig.domain,
     clientID: myConfig.clientID,
-    // specify your desired callback URL
     redirectUri: myConfig.redirectUri,
     responseType: myConfig.responseType
   });
@@ -68,6 +66,7 @@ export class Auth {
     this.idToken = '';
     this.userProfile = null;
     this.setLoggedIn(false);
+
     // Go back to the home rout
     this.router.navigate(['/']);
   }
@@ -107,8 +106,7 @@ export class Auth {
       email: email || '',
       username: username || ''
     };
-    // const lock = new Auth0Lock(myConfig.clientID, myConfig.domain, options);
-    // lock.show();
+
     return this.processForgotPassword(email, username);
   }
 
@@ -130,24 +128,6 @@ export class Auth {
         console.error(`Error: ${err.error}`);
       }
     });
-  }
-
-  // Call this method in app.component
-  // if using hash-based routing
-  public handleAuthWithHash(): void {
-    this
-      .router
-      .events
-      .filter((event) => event instanceof NavigationStart)
-      .filter((event: NavigationStart) => (/access_token|id_token|error/).test(event.url))
-      .subscribe(() => {
-        this.lock.resumeAuth(window.location.hash, (error, authResult) => {
-          if (error) {
-            return console.error(error);
-          }
-          this._getProfile(authResult);
-        });
-      });
   }
 
   public checkUserHasRole(profile?: any): any {
@@ -224,9 +204,6 @@ export class Auth {
   }
 
   private processLogin(username?: string, password?: string): Promise<any> {
-    // const options = postConfig
-    // options.body.email = email
-
     const options = {
       client_id: myConfig.clientID,
       connection: postConfig.body.connection,

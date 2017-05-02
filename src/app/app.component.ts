@@ -3,7 +3,6 @@
  */
 import {
   Component,
-  OnInit,
   ViewEncapsulation
 } from '@angular/core';
 
