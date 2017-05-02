@@ -2,21 +2,24 @@ const dotenv = require('dotenv').config();
 
 module.exports = {
   development: {
-    database: "beecompanion_development",
+    database: "beecompanion-development",
     host: "127.0.0.1",
     dialect: "postgres"
   },
   test: {
-    database: "beecompanion_test",
-    host: "127.0.0.1",
+    username: process.env.DB_TEST_USERNAME,
+    password: process.env.DB_TEST_PASSWORD,
+    database: process.env.DB_TEST_NAME,
+    host: process.env.DB_TEST_HOST,
+    port: process.env.DB_TEST_PORT,
     dialect: "postgres"
   },
   production: {
-    username: process.env.DB_USERNAME,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME,
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    username: process.env.DB_PRODUCTION_USERNAME,
+    password: process.env.DB_PRODUCTION_PASSWORD,
+    database: process.env.DB_PRODUCTION_NAME,
+    host: process.env.DB_PRODUCTION_HOST,
+    port: process.env.DB_PRODUCTION_PORT,
     dialect: "postgres"
   }
 };
