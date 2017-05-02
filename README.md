@@ -132,6 +132,10 @@ npm run server:dev
 # production
 npm run build:prod
 npm run server:prod
+
+# production using pm2 (living forever)
+npm run build:prod
+npm run server:prod:pm2
 ```
 
 ### api
@@ -141,6 +145,9 @@ npm run api:dev
 
 # production
 npm run api:prod
+
+# production using pm2 (living forever)
+npm run api:prod:pm2
 ```
 
 ## Other commands
