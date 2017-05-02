@@ -24,7 +24,7 @@ const OptimizeJsPlugin = require('optimize-js-plugin');
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8000;
-const AUTH_CB = process.env.AUTH_CB = (ENV === 'production' ? 'https://' : 'http://') + HOST + ':' + PORT + '/callback';
+const AUTH_CB = process.env.AUTH_CB = (ENV === 'production') ? ('https://bee-companion.com/callback') : ('http://' + HOST + ':' + PORT + '/callback');
 const METADATA = webpackMerge(commonConfig({
   env: ENV
 }).metadata, {
