@@ -1,5 +1,5 @@
-npm install -g sequelize-cli
-cd ..
+cd /var/lib/jenkins/workspace/BeeCompanion/
+npm install sequelize-cli
 sequelize --config config/dbconfig.js
 sequelize db:migrate --env test
 npm install
