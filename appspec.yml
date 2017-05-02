@@ -9,6 +9,8 @@ files:
      destination: /var/www/beecompanion/deployment/
    - source: dist/
      destination: /var/www/beecompanion/dist/
+   - source: ./.sequelizerc
+     destination: /var/www/beecompanion/
    - source: ./package.json
      destination: /var/www/beecompanion/
 permissions:
