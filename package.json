@@ -106,7 +106,8 @@
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
     "rxjs": "5.3.0",
-    "sequelize": "^3.30.0",
+    "sequelize": "^3.30.4",
+    "sequelize-cli": "^2.7.0",
     "zone.js": "0.8.9"
   },
   "devDependencies": {
