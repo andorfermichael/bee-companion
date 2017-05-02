@@ -58,6 +58,7 @@ declare module 'modern-lru' {
 
 // Extra variables that live on Global that will be replaced by webpack DefinePlugin
 declare var ENV: string;
+declare var AUTH_CB: string;
 declare var HMR: boolean;
 declare var System: SystemJS;
 
@@ -67,6 +68,7 @@ interface SystemJS {
 
 interface GlobalEnvironment {
   ENV: string;
+  AUTH_CB: string;
   HMR: boolean;
   SystemJS: SystemJS;
   System: SystemJS;

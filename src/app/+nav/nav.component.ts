@@ -70,7 +70,6 @@ import { EventsService } from '../events.service';
     ])
   ]
 })
-
 export class NavComponent implements OnInit {
   public loginClicked = false;
   public loginInputs = 'inactive';

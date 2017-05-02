@@ -21,14 +21,17 @@ const LoaderOptionsPlugin = require('webpack/lib/LoaderOptionsPlugin');
 const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8000;
+const AUTH_CB = process.env.AUTH_CB = (ENV === 'production') ? ('https://bee-companion.com/#/callback') : ('http://' + HOST + ':' + PORT + '/#/callback');
 const HMR = helpers.hasProcessFlag('hot');
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,
   port: PORT,
+  AUTH_CB: AUTH_CB,
   ENV: ENV,
   HMR: HMR
 });
 
+console.log(AUTH_CB);
 
 const DllBundlesPlugin = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
 
@@ -148,6 +151,7 @@ module.exports = function (options) {
         'HMR': METADATA.HMR,
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
+          'AUTH_CB': JSON.stringify(METADATA.AUTH_CB),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
         }

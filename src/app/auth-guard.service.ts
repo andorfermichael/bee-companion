@@ -11,7 +11,7 @@ export class AuthGuard implements CanActivate {
     // Instantiation
   }
 
-  public canActivate() {
+  public canActivate(): boolean {
     // If user is not logged in we'll send them to the homepage
     if (!this.auth.isAuthenticated()) {
       this.router.navigate(['/']);

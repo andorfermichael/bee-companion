@@ -9,30 +9,12 @@ interface AuthConfiguration {
   scope: string;
   algorithms: [string];
   lock: any;
-  // lock: {
-  // 	socialButtonStyle: 'big' | 'small',
-  // 	initialScreen: any,
-  // 	theme: {
-  // 		logo: string,
-  // 		primaryColor: string,
-  // 		foregroundColor: string,
-  // 		labeledSubmitButton: boolean
-  // 	},
-  // 	languageDictionary: {
-  // 		title: string
-  // 	},
-  // 	additionalSignUpFields: [{
-  // 		name: string,
-  // 		placeholder: string,
-  // 		validator: any
-  // 	}]
-  // }
 }
 
 export const myConfig: AuthConfiguration = {
   domain: 'bee-companion.eu.auth0.com',
   clientID: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
-  redirectUri: 'http://localhost:8000/callback',
+  redirectUri: process.env.AUTH_CB,
   responseType: 'token id_token',
   audience: 'https://bee-companion.com/api',
   issuer: 'https://bee-companion.eu.auth0.com',
@@ -54,7 +36,7 @@ export const myConfig: AuthConfiguration = {
       {
         name: 'first_name',
         placeholder: 'your first name',
-        validator: function (name) {
+        validator: (name) => {
           return {
             valid: name.length >= 3,
             hint: 'Must have 3 or more chars' // optional
@@ -64,7 +46,7 @@ export const myConfig: AuthConfiguration = {
       {
         name: 'last_name',
         placeholder: 'your last name',
-        validator: function (name) {
+        validator: (name) => {
           return {
             valid: name.length >= 3,
             hint: 'Must have 3 or more chars' // optional

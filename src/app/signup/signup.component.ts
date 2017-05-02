@@ -1,8 +1,8 @@
 import {
   Component,
-  OnInit,
   Input,
   ElementRef,
+  HostListener,
   ViewChild
 } from '@angular/core';
 
@@ -10,6 +10,9 @@ import { trigger, state, style, transition, keyframes, animate } from '@angular/
 
 import { Auth } from '../auth.service';
 import { Router } from '@angular/router';
+import { RequestOptions, Headers } from '@angular/http';
+import { AuthHttp } from 'angular2-jwt';
+import { EventsService } from '../events.service';
 
 @Component({
   selector: 'signupPage',
@@ -42,13 +45,13 @@ import { Router } from '@angular/router';
   ]
 })
 
-export class SignupPageComponent implements OnInit {
+export class SignupPageComponent {
   @Input() public activeTab: '"logIn" || "signUp"';
   public supporterActive: boolean;
   public signupActive: boolean;
   public forgotPassword: boolean;
   public usernameEmpty = 'inactive';
-  public username2Empty = 'inactive';
+  public publicusername2Empty = 'inactive';
   public passwordEmpty = 'inactive';
   public emailEmpty = 'inactive';
   public submitErr = 'inactive';
@@ -61,10 +64,11 @@ export class SignupPageComponent implements OnInit {
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(private auth: Auth, private elemRef: ElementRef, public router: Router) {
-    // Instantiation
+  constructor(public auth: Auth, private elemRef: ElementRef, public router: Router,
+              public authHttp: AuthHttp, public _eventsService: EventsService) {
   }
 
+  @HostListener('document:click', ['$event'])
   public onClick(event) {
     if (!this.signupCardElementRef.nativeElement.contains(event.target)) {
       this.extErrorMessage = 'Please complete your signup first :)';
@@ -72,9 +76,27 @@ export class SignupPageComponent implements OnInit {
     }
   }
 
+  public addUserRole(role) {
+    this._eventsService.broadcast('loginStart');
+    const headers = new Headers({
+      Authorization: 'Bearer ' + this.auth.idToken
+    });
+    const options = new RequestOptions({headers});
+
+    this.authHttp.get('http://localhost:3000/api/user/set/role/' + role)
+      .subscribe(
+        (data) => {
+          this._eventsService.broadcast('loginSuccess');
+          this.auth._updateProfile();
+        },
+        (err) => {
+          this._eventsService.broadcast('loginFail');
+          console.log(err);
+        });
+  }
+
   public resetUsernamePasswordEmtpy() {
     this.usernameEmpty = 'inactive';
-    this.username2Empty = 'inactive';
     this.passwordEmpty = 'inactive';
     this.emailEmpty = 'inactive';
     this.submitErr = 'inactive';
@@ -118,7 +140,6 @@ export class SignupPageComponent implements OnInit {
     this.successMsg = '';
     if (!username && !email) {
       this.usernameEmpty = 'active';
-      this.username2Empty = 'active';
       this.emailEmpty = 'active';
       this.setFocus(this.usernameElementRef);
       this.errorMsg = 'Username or email-address are necessary!';
@@ -146,9 +167,5 @@ export class SignupPageComponent implements OnInit {
     this.forgotPassword = toggleTo;
     this.resetUsernamePasswordEmtpy();
     this.errorMsg = '';
-  }
-
-  public ngOnInit() {
-    // Init
   }
 }

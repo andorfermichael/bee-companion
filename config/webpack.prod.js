@@ -24,11 +24,13 @@ const OptimizeJsPlugin = require('optimize-js-plugin');
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8000;
+const AUTH_CB = process.env.AUTH_CB = (ENV === 'production') ? ('https://bee-companion.com/#/callback') : ('http://' + HOST + ':' + PORT + '/#/callback');
 const METADATA = webpackMerge(commonConfig({
   env: ENV
 }).metadata, {
   host: HOST,
   port: PORT,
+  AUTH_CB: AUTH_CB,
   ENV: ENV,
   HMR: false
 });
@@ -159,6 +161,7 @@ module.exports = function (env) {
         'HMR': METADATA.HMR,
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
+          'AUTH_CB': JSON.stringify(METADATA.AUTH_CB),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
         }

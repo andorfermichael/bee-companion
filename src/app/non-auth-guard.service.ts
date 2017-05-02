@@ -11,7 +11,7 @@ export class NonAuthGuard implements CanActivate {
     // Instantiation
   }
 
-  public canActivate() {
+  public canActivate(): boolean {
     // If user is logged in we'll send him back to the homepage
     if (this.auth.isAuthenticated()) {
       this.router.navigate(['/home']);

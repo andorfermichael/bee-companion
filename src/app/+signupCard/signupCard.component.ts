@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
   Input,
   ElementRef,
   ViewChild
@@ -13,7 +12,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'signupCard',
-  styleUrls: ['./signupCard.component.scss'],
+  styleUrls: [ './signupCard.component.scss' ],
   templateUrl: './signupCard.component.html',
   animations: [
     trigger('fieldRequired', [
@@ -42,7 +41,7 @@ import { Router } from '@angular/router';
   ]
 })
 
-export class SignupCardComponent implements OnInit {
+export class SignupCardComponent {
   @Input() public activeTab: '"logIn" || "signUp"';
   public supporterActive: boolean;
   public signupActive: boolean;
@@ -59,8 +58,7 @@ export class SignupCardComponent implements OnInit {
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(public auth: Auth, private elemRef: ElementRef, public router: Router) {
-    // Instantiation
+  constructor(public auth: Auth, public elemRef: ElementRef, public router: Router) {
   }
 
   public resetUsernamePasswordEmtpy() {
@@ -115,7 +113,7 @@ export class SignupCardComponent implements OnInit {
       this.errorMsg = 'Username or email-address are necessary!';
     } else {
       this.auth.forgotPassword(username, email).then(
-        (data: string) => {
+        (data: any) => {
           this.successMsg = data;
           this.forgotPassword = false;
         },
@@ -137,9 +135,5 @@ export class SignupCardComponent implements OnInit {
     this.forgotPassword = toggleTo;
     this.resetUsernamePasswordEmtpy();
     this.errorMsg = '';
-  }
-
-  public ngOnInit() {
-    // Init
   }
 }

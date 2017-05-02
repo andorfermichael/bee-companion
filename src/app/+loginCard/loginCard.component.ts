@@ -44,6 +44,7 @@ import { EventsService } from '../events.service';
 })
 
 export class LoginCardComponent implements OnInit {
+
   @Input() public activeTab: '"logIn" || "signUp"';
   public forgotPassword: boolean;
   public usernameEmpty = 'inactive';
@@ -58,9 +59,33 @@ export class LoginCardComponent implements OnInit {
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(private auth: Auth, private elemRef: ElementRef, public router: Router,
+  constructor(public auth: Auth, public elemRef: ElementRef, public router: Router,
               public _eventsService: EventsService) {
-    // Instantiation
+  }
+
+  public setFocus(elementRef) {
+    elementRef.nativeElement.focus();
+  }
+
+  public toggleForgotPassword(toggleTo: boolean) {
+    if (toggleTo === undefined) {
+      toggleTo = !this.forgotPassword;
+    }
+    this.forgotPassword = toggleTo;
+    this.resetUsernamePasswordEmtpy();
+    this.errorMsg = '';
+  }
+
+  public restoreFields(data: any) {
+    this.usernameElementRef.nativeElement.value = data.username;
+    this.setFocus(this.passwordElementRef);
+  }
+
+  public ngOnInit() {
+    this._eventsService.on('loginFail', (err, data) => {
+      this.onLoginFail(err);
+      this.restoreFields(data);
+    });
   }
 
   public resetUsernamePasswordEmtpy() {
@@ -73,13 +98,12 @@ export class LoginCardComponent implements OnInit {
 
   public loginWithSocial(type: string) {
     this._eventsService.broadcast('loginStart');
-
     if (type.toLowerCase() === 'facebook') {
       this.auth.loginWithFacebook();
-    } else if (type.toLowerCase() === 'google') {
+    }
+    if (type.toLowerCase() === 'google') {
       this.auth.loginWithGoogle();
     }
-
     return false;
   }
 
@@ -117,18 +141,10 @@ export class LoginCardComponent implements OnInit {
           this.router.navigate(['/restricted']);
         },
         (error) => {
-          this._eventsService.broadcast('loginFail', error,
-            {username, password});
+          this._eventsService.broadcast('loginFail', error, {username, password});
           this.onLoginFail(error);
         });
     }
-  }
-
-  public onLoginFail(error): void {
-    this.errorMsg = error;
-    this.submitErr = 'active';
-    this.usernameEmpty = 'active';
-    this.passwordEmpty = 'active';
   }
 
   public checkForgotPasswordInputs(username?: string, email?: string) {
@@ -142,7 +158,7 @@ export class LoginCardComponent implements OnInit {
       this.errorMsg = 'Username or email-address are necessary!';
     } else {
       this.auth.forgotPassword(username, email).then(
-        (data: string) => {
+        (data: any) => {
           this.successMsg = data;
           this.forgotPassword = false;
         },
@@ -153,28 +169,10 @@ export class LoginCardComponent implements OnInit {
     }
   }
 
-  public setFocus(elementRef) {
-    elementRef.nativeElement.focus();
-  }
-
-  public toggleForgotPassword(toggleTo: boolean) {
-    if (toggleTo === undefined) {
-      toggleTo = !this.forgotPassword;
-    }
-    this.forgotPassword = toggleTo;
-    this.resetUsernamePasswordEmtpy();
-    this.errorMsg = '';
-  }
-
-  public restoreFields(data: any) {
-    this.usernameElementRef.nativeElement.value = data.username;
-    this.setFocus(this.passwordElementRef);
-  }
-
-  public ngOnInit() {
-    this._eventsService.on('loginFail', (err, data) => {
-      this.onLoginFail(err);
-      this.restoreFields(data);
-    });
+  private onLoginFail(error): void {
+    this.errorMsg = error;
+    this.submitErr = 'active';
+    this.usernameEmpty = 'active';
+    this.passwordEmpty = 'active';
   }
 }
