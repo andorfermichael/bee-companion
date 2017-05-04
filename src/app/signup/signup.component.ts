@@ -64,7 +64,7 @@ export class SignupPageComponent {
   public addUserRole(role) {
     this._eventsService.broadcast('loginStart');
 
-    this.authHttp.get('http://localhost:3000/api/user/set/role/' + role)
+    this.authHttp.get('http://localhost:3000/auth/api/user/set/role/' + role)
       .subscribe(
         (data) => {
           this._eventsService.broadcast('loginSuccess');
