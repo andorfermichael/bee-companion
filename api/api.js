@@ -1,3 +1,6 @@
+// Load environment variables
+const dotenv = require('dotenv').config({path: '../.env'});
+
 // Express
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -15,7 +18,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
-
 // Routes
 const beekeepers = require('./routes/beekeepers');
 const authUsers = require('./routes-external/users');
@@ -29,7 +31,6 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
     next();
   }
 });
-
 
 app.use('/api', beekeepers);
 app.use('/api', authUsers);
