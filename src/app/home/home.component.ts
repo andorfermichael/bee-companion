@@ -4,6 +4,7 @@ import {
 } from '@angular/core';
 
 import { Auth } from '../auth.service';
+import { Title } from '../title';
 
 @Component({
   selector: 'home',
