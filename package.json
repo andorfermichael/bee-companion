@@ -100,6 +100,7 @@
     "jasmine-core": "^2.5.47",
     "jquery": "^3.1.1",
     "jwks-rsa": "^1.1.1",
+    "karma-webdriver-launcher": "^1.0.5",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "postcss-loader": "^1.2.2",

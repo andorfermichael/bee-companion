@@ -5,6 +5,11 @@
 module.exports = function (config) {
   var testWebpackConfig = require('./webpack.test.js')({ env: 'test' });
 
+  var webdriverConfig = {
+    hostname: '172.17.0.1',
+    port: 5000
+  };
+
   var configuration = {
 
     // base path that will be used to resolve all patterns (e.g. files, exclude)
@@ -81,7 +86,7 @@ module.exports = function (config) {
     reporters: ['mocha', 'coverage', 'remap-coverage'],
 
     // web server port
-    port: 5000,
+    port: 9876,
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
@@ -107,6 +112,12 @@ module.exports = function (config) {
       ChromeTravisCi: {
         base: 'Chrome',
         flags: ['--no-sandbox']
+      },
+
+      chrome: {
+        base: 'WebDriver',
+        config: webdriverConfig,
+        browserName: 'chrome',
       }
     },
 
