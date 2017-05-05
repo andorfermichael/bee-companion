@@ -81,7 +81,7 @@ module.exports = function (config) {
     reporters: ['mocha', 'coverage', 'remap-coverage'],
 
     // web server port
-    port: 9876,
+    port: 5000,
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
