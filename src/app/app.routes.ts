@@ -1,4 +1,4 @@
-import { Routes, RouterModule } from '@angular/router';
+import { Routes } from '@angular/router';
 import { AuthGuard } from './auth-guard.service';
 import { AuthRoleGuard } from './auth-role-guard.service';
 import { NonAuthGuard } from './non-auth-guard.service';
@@ -32,5 +32,3 @@ export const ROUTES: Routes = [
   { path: 'callback', component: CallbackComponent },
   { path: '**',    component: NoContentComponent }
 ];
-
-export const routing = RouterModule.forRoot(ROUTES);
