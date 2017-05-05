@@ -8,5 +8,5 @@ sequelize db:migrate --env test
 npm run api:prod:pm2
 npm run build:prod
 npm run server:prod:pm2
-docker run -p 127.0.0.1:5000:5000 --rm -it -v "$PWD":/ markadams/chromium-xvfb npm run ci:testall
+docker run -p 127.0.0.1:5000:5000 --rm -it markadams/chromium-xvfb
 npm run ci:testall
