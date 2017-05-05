@@ -5,11 +5,6 @@
 module.exports = function (config) {
   var testWebpackConfig = require('./webpack.test.js')({ env: 'test' });
 
-  var webdriverConfig = {
-    hostname: '172.17.0.1',
-    port: 5000
-  };
-
   var configuration = {
 
     // base path that will be used to resolve all patterns (e.g. files, exclude)
@@ -86,7 +81,7 @@ module.exports = function (config) {
     reporters: ['mocha', 'coverage', 'remap-coverage'],
 
     // web server port
-    port: 9876,
+    port: 5000,
 
     // enable / disable colors in the output (reporters and logs)
     colors: true,
@@ -105,19 +100,13 @@ module.exports = function (config) {
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
     browsers: [
-      'Chrome', 'chromium-webdriver'
+      'Chrome'
     ],
 
     customLaunchers: {
       ChromeTravisCi: {
         base: 'Chrome',
         flags: ['--no-sandbox']
-      },
-
-      'chromium-webdriver': {
-        base: 'WebDriver',
-        config: webdriverConfig,
-        browserName: 'chrome',
       }
     },
 
