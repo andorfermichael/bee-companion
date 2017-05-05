@@ -4,7 +4,7 @@ import { inject, TestBed } from '@angular/core/testing';
 // Load the implementations that should be tested
 import { BeeRadarComponent } from './beeRadar.component';
 
-describe('About', () => {
+describe('BeeRadar', () => {
   // provide our implementations or mocks to the dependency injector
   beforeEach(() => TestBed.configureTestingModule({
     providers: [
@@ -22,13 +22,4 @@ describe('About', () => {
       BeeRadarComponent
     ]
   }));
-
-  it('should log ngOnInit', inject([BeeRadarComponent], (beeradar: BeeRadarComponent) => {
-    spyOn(console, 'log');
-    expect(console.log).not.toHaveBeenCalled();
-
-    beeradar.ngOnInit();
-    expect(console.log).toHaveBeenCalled();
-  }));
-
 });

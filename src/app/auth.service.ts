@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { tokenNotExpired } from 'angular2-jwt';
-import { Router, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 import { Http, Headers, RequestOptions, RequestMethod, Response } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/filter';
 import Auth0Lock from 'auth0-lock';
-import auth0 from 'auth0-js';
+import Auth0 from 'auth0-js';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { myConfig, postConfig, necessaryRoles } from './auth.config';
@@ -21,7 +21,7 @@ export class Auth {
   public signUpIncomplete: boolean;
 
   // Configure Auth0
-  private auth0 = new auth0.WebAuth({
+  private auth0 = new Auth0.WebAuth({
     domain: myConfig.domain,
     clientID: myConfig.clientID,
     redirectUri: myConfig.redirectUri,
