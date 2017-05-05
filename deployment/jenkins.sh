@@ -1,6 +1,7 @@
 cp /var/lib/jenkins/workspace/.env /var/lib/jenkins/workspace/BeeCompanion/.env
 cd /var/lib/jenkins/workspace/BeeCompanion/
 export NODE_ENV=test
+export CHROME_BIN=/usr/bin/chromium-browser
 npm install
 sequelize --config config/dbconfig.js
 sequelize db:migrate --env test

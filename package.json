@@ -49,7 +49,7 @@
     "start:hmr": "npm run server:dev:hmr",
     "start": "npm run server:dev",
     "start:api": "npm run api:dev",
-    "test": "npm run lint && karma start",
+    "test": "npm run lint && karma start --browsers chromium-webdriver",
     "test:all": "npm run lint && npm run test && npm run build:prod && npm run e2e && npm run build:aot:prod && npm run e2e",
     "tslint": "tslint",
     "typedoc": "typedoc",

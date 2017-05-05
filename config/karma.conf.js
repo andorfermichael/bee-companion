@@ -105,7 +105,7 @@ module.exports = function (config) {
      * available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
      */
     browsers: [
-      'Chrome'
+      'Chrome', 'chromium-webdriver'
     ],
 
     customLaunchers: {
@@ -114,7 +114,7 @@ module.exports = function (config) {
         flags: ['--no-sandbox']
       },
 
-      chrome: {
+      'chromium-webdriver': {
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'chrome',
