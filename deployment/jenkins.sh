@@ -1,5 +1,5 @@
-cp /var/lib/jenkins/workspace/.env /var/lib/jenkins/workspace/BeeCompanion/.env
-cd /var/lib/jenkins/workspace/BeeCompanion/
+cp /var/lib/jenkins/workspace/.env /var/lib/jenkins/workspace/BeeCompanionTask/.env
+cd /var/lib/jenkins/workspace/BeeCompanionTask/
 export NODE_ENV=test
 export CHROME_BIN=/usr/bin/google-chrome
 npm install
