@@ -7,5 +7,3 @@ npm rebuild node-sass
 npm run webdriver-manager update
 sequelize --config config/dbconfig.js
 sequelize db:migrate --env test
-chmod 755 -R /var/lib/jenkins/workspace/BeeCompanionTask/
-npm run ci:testall
