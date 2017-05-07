@@ -1,5 +1,7 @@
-// Load environment variables
-const dotenv = require('dotenv').config({path: '../.env'});
+if (process.env.NODE_ENV === 'test') {
+  // Load environment variables
+  const dotenv = require('dotenv').config({path: '../.env'});
+}
 
 module.exports = {
   development: {
