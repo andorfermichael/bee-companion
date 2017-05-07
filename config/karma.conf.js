@@ -121,6 +121,16 @@ module.exports = function (config) {
       }
     },
 
+    plugins: [
+      'karma-chrome-launcher',
+      'karma-coverage',
+      'karma-jasmine',
+      'karma-mocha-reporter',
+      'karma-remap-coverage',
+      'karma-sourcemap-loader',
+      'karma-webpack',
+    ],
+
     /*
      * Continuous Integration mode
      * if true, Karma captures browsers, runs the tests and exits
