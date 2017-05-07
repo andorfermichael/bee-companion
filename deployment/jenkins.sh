@@ -1,4 +1,3 @@
-sudo su
 cp /var/lib/jenkins/workspace/.env /var/lib/jenkins/workspace/BeeCompanionTask/.env
 cd /var/lib/jenkins/workspace/BeeCompanionTask/
 export NODE_ENV=test
