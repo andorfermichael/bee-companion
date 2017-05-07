@@ -1,3 +1,6 @@
+// Load environment variables
+const dotenv = require('dotenv').config({path: '../.env'});
+
 module.exports = {
   development: {
     database: "beecompanion-development",
