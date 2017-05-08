@@ -38,6 +38,7 @@
       true,
       100
     ],
+    "no-var-requires": false,
     "no-string-literal": false,
     "no-use-before-declare": true,
     "object-literal-sort-keys": false,
