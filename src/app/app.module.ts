@@ -50,6 +50,7 @@ import { MainContentRowComponent } from './+mainContentRow';
 import { RadarCardComponent } from './+radarCard';
 import { CallbackComponent } from './callback';
 import { RestrictedComponent } from './restricted';
+import { PayPalFormComponent } from './+paypalForm';
 import { NoContentComponent } from './no-content';
 
 import '../styles/styles.scss';
@@ -86,6 +87,7 @@ const APP_PROVIDERS = [
     CallbackComponent,
     RestrictedComponent,
     RadarCardComponent,
+    PayPalFormComponent,
     NoContentComponent
   ],
   imports: [ // import Angular's modules
