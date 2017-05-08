@@ -10,4 +10,8 @@ sequelize db:migrate --env test
 npm run api:prod:pm2
 npm run build:prod
 npm run server:prod:pm2
-#npm run ci:testall
+
+# Add the following commands to build step / shell script section to run this script on build
+# cd deployment/
+# sh jenkins.sh
+# npm run ci:testall
