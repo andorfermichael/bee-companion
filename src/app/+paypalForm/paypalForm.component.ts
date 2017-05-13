@@ -1,26 +1,26 @@
 import { Component } from '@angular/core';
-import { PayPalAdaptive } from '../providers/paypal.provider';
+
+import { PayPalFormService } from './paypalForm.service';
 
 @Component({
   selector: 'paypalForm',
   styleUrls: [ './paypalForm.component.scss' ],
   templateUrl: './paypalForm.component.html',
-  providers: [ PayPalAdaptive ]
+  providers: [
+    PayPalFormService
+  ]
 })
 export class PayPalFormComponent {
-  private paypalAdaptiveSDK: any;
-
-  constructor(private paypalAdaptive: PayPalAdaptive) {
-    this.paypalAdaptive = paypalAdaptive.getSDK();
+  constructor(private paypalFormService: PayPalFormService) {
   }
 
-  public instantiatePayPalAdaptiveSDK(userId: string, password: string,
-                                      signature: string, sandbox: boolean) {
-    this.paypalAdaptiveSDK = new this.paypalAdaptiveSDK({
-      userId,
-      password,
-      signature,
-      sandbox // Defaults to false
-    });
+  public executeDonation(receiverMail: string, amount: string) {
+    this.paypalFormService.executeAdaptivePayment(receiverMail, amount).subscribe(
+      (payment) => {
+        window.open(payment.paymentApprovalUrl);
+      },
+      (err) => {
+        console.log(err);
+      });
   }
 }
