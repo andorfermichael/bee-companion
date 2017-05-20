@@ -10,7 +10,7 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 let access_token;
 
-const auth0BaseDomain = 'http://bee-companion.eu.auth0.com/';
+const auth0BaseDomain = process.env.AUTH0_BASE_DOMAIN;
 
 const auth0 = new AuthenticationClient({
   domain: auth0BaseDomain,
