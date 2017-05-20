@@ -2,6 +2,9 @@
  * @author: @AngularClass
  */
 
+// Load environment variables
+const dotenv = require('dotenv').config({path: '.env'});
+
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const webpackMergeDll = webpackMerge.strategy({plugins: 'replace'});
@@ -22,16 +25,25 @@ const ENV = process.env.ENV = process.env.NODE_ENV = 'development';
 const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8000;
 const AUTH_CB = process.env.AUTH_CB = (ENV === 'production') ? ('https://bee-companion.com/#/callback') : ('http://' + HOST + ':' + PORT + '/#/callback');
+const AUTH0_BASE_DOMAIN = process.env.AUTH0_BASE_DOMAIN;
+const AUTH0_BASE_DOMAIN_ONLY = process.env.AUTH0_BASE_DOMAIN_ONLY
+const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
+const AUTH0_API_CLIENT_ID = process.env.AUTH0_API_CLIENT_ID;
 const HMR = helpers.hasProcessFlag('hot');
+
+console.log(process.env.AUTH0_BASE_DOMAIN);
+
 const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   host: HOST,
   port: PORT,
   AUTH_CB: AUTH_CB,
+  AUTH0_BASE_DOMAIN: AUTH0_BASE_DOMAIN,
+  AUTH0_BASE_DOMAIN_ONLY: AUTH0_BASE_DOMAIN_ONLY,
+  AUTH0_CLIENT_ID: AUTH0_CLIENT_ID,
+  AUTH0_API_CLIENT_ID: AUTH0_API_CLIENT_ID,
   ENV: ENV,
   HMR: HMR
 });
-
-console.log(AUTH_CB);
 
 const DllBundlesPlugin = require('webpack-dll-bundles-plugin').DllBundlesPlugin;
 
@@ -152,6 +164,10 @@ module.exports = function (options) {
         'process.env': {
           'ENV': JSON.stringify(METADATA.ENV),
           'AUTH_CB': JSON.stringify(METADATA.AUTH_CB),
+          'AUTH0_BASE_DOMAIN': JSON.stringify(AUTH0_BASE_DOMAIN),
+          'AUTH0_BASE_DOMAIN_ONLY': JSON.stringify(AUTH0_BASE_DOMAIN_ONLY),
+          'AUTH0_CLIENT_ID': JSON.stringify(AUTH0_CLIENT_ID),
+          'AUTH0_API_CLIENT_ID': JSON.stringify(AUTH0_API_CLIENT_ID),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
         }

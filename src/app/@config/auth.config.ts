@@ -12,12 +12,12 @@ interface AuthConfiguration {
 }
 
 export const myConfig: AuthConfiguration = {
-  domain: 'bee-companion.eu.auth0.com',
-  clientID: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
+  domain: process.env.AUTH0_BASE_DOMAIN_ONLY,
+  clientID: process.env.AUTH0_CLIENT_ID,
   redirectUri: process.env.AUTH_CB,
   responseType: 'token id_token',
   audience: 'https://bee-companion.com/api',
-  issuer: 'https://bee-companion.eu.auth0.com',
+  issuer: process.env.AUTH0_BASE_DOMAIN,
   tenant: 'bee-companion',
   scope: 'openid profile email',
   algorithms: ['RS512'],
@@ -59,13 +59,13 @@ export const myConfig: AuthConfiguration = {
 
 export const postConfig = {
   method: 'POST',
-  urlForgotPassword: 'https://bee-companion.eu.auth0.com/dbconnections/change_password',
-  urlLogin: 'https://bee-companion.eu.auth0.com/oauth/ro',
+  urlForgotPassword: process.env.AUTH0_BASE_DOMAIN + 'dbconnections/change_password',
+  urlLogin: process.env.AUTH0_BASE_DOMAIN + 'oauth/ro',
   headers: {
     'content-type': 'application/json'
   },
   body: {
-    client_id: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
+    client_id: process.env.AUTH0_CLIENT_ID,
     email: '',
     connection: 'Username-Password-Authentication'
   },

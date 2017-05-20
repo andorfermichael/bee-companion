@@ -13,7 +13,7 @@ let access_token;
 const auth0BaseDomain = process.env.AUTH0_BASE_DOMAIN;
 
 const auth0 = new AuthenticationClient({
-  domain: auth0BaseDomain,
+  domain: process.env.AUTH0_BASE_DOMAIN_ONLY,
   clientId: process.env.AUTH0_CLIENT_ID
 });
 
