@@ -91,14 +91,14 @@ export class NavComponent implements OnInit {
               public auth: Auth, private router: Router, public _eventsService: EventsService) {
   }
 
-  @HostListener('document:click', ['$event'])
+  @HostListener('click', ['$event'])
   public onClick(event) {
     if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
       this.clickedLogin();
     }
   }
 
-  @HostListener('document:mouseover', ['$event'])
+  @HostListener('mouseover', ['$event'])
   public onMouseOver(event) {
     if (!this.transitionInProgress) {
       this.transitionInProgress = true;
@@ -106,7 +106,7 @@ export class NavComponent implements OnInit {
     }
   }
 
-  @HostListener('document:mouseleave', ['$event'])
+  @HostListener('mouseleave', ['$event'])
   public onMouseLeave(event) {
     this.gradientBarBackground = '';
   }
