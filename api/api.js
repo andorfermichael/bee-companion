@@ -21,7 +21,6 @@ app.use(cors());
 app.use(helmet());
 
 // Routes
-const beekeepers = require('./routes/beekeepers');
 const auth = require('./routes-external/auth');
 const paypal = require('./routes-external/paypal');
 const paypalTransactions = require('./routes/paypaltransactions');
