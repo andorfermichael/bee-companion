@@ -8,11 +8,11 @@ import {
 
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 
-import { Auth } from '../auth.service';
+import { Auth } from '../@services/auth.service';
 import { Router } from '@angular/router';
 import { RequestOptions, Headers } from '@angular/http';
 import { AuthHttp } from 'angular2-jwt';
-import { EventsService } from '../events.service';
+import { EventsService } from '../@services/events.service';
 
 @Component({
   selector: 'signupPage',

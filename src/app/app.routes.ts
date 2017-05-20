@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './auth-guard.service';
-import { AuthRoleGuard } from './auth-role-guard.service';
-import { NonAuthGuard } from './non-auth-guard.service';
+import { AuthGuard } from './@services/auth-guard.service';
+import { AuthRoleGuard } from './@services/auth-role-guard.service';
+import { NonAuthGuard } from './@services/non-auth-guard.service';
 
 import { HomeComponent } from './home';
 import { AboutUsComponent } from './about';

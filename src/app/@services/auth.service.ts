@@ -8,7 +8,7 @@ import Auth0Lock from 'auth0-lock';
 import Auth0 from 'auth0-js';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
-import { myConfig, postConfig, necessaryRoles } from './auth.config';
+import { myConfig, postConfig, necessaryRoles } from '../auth.config';
 
 // Avoid name not found warnings
 // declare var auth0: any;

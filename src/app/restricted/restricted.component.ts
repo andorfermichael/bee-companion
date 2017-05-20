@@ -3,7 +3,7 @@ import {
   OnInit
 } from '@angular/core';
 
-import { Auth } from '../auth.service';
+import { Auth } from '../@services/auth.service';
 
 @Component({
   selector: 'restricted',

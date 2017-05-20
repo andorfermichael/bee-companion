@@ -7,10 +7,10 @@ import { Location } from '@angular/common';
 
 import 'rxjs/add/operator/switchMap';
 
-import { Auth } from '../auth.service';
+import { Auth } from '../@services/auth.service';
 import { Title } from '../title';
 
-import { PayPalService } from '../paypal.service';
+import { PayPalService } from '../@services/paypal.service';
 
 import { LocalStorageService } from 'ngx-webstorage';
 

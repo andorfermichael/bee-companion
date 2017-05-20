@@ -12,11 +12,11 @@ import {
   RouterModule,
   PreloadAllModules
 } from '@angular/router';
-import { Auth } from './auth.service';
-import { AuthGuard } from './auth-guard.service';
-import { AuthRoleGuard } from './auth-role-guard.service';
-import { NonAuthGuard } from './non-auth-guard.service';
-import { EventsService } from './events.service';
+import { Auth } from './@services/auth.service';
+import { AuthGuard } from './@services/auth-guard.service';
+import { AuthRoleGuard } from './@services/auth-role-guard.service';
+import { NonAuthGuard } from './@services/non-auth-guard.service';
+import { EventsService } from './@services/events.service';
 
 import { AuthModule } from './auth.module';
 

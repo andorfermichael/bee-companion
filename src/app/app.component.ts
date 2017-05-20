@@ -6,7 +6,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 
-import { Auth } from './auth.service';
+import { Auth } from './@services/auth.service';
 
 /*
  * App Component

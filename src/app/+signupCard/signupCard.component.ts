@@ -7,7 +7,7 @@ import {
 
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 
-import { Auth } from '../auth.service';
+import { Auth } from '../@services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -15,7 +15,7 @@ import { MockBackend } from '@angular/http/testing';
 
 // Load the implementations that should be tested
 import { AppComponent } from './app.component';
-import { Auth } from './auth.service';
+import { Auth } from './@services/auth.service';
 
 // Mock our Auth service
 export class MockAuth0 {
