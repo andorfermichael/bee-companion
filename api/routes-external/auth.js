@@ -32,7 +32,7 @@ const checkJwt = jwt({
   // Validate the audience and the issuer. (BeeCompanion)
   audience: process.env.AUTH0_CLIENT_ID,
   issuer: `https://bee-companion.eu.auth0.com/`,
-  algorithms: ['RS256']
+  algorithms: ['RS512']
 });
 
 // Authentication middleware. When used, the
