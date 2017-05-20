@@ -10,8 +10,10 @@ const jwt = require('express-jwt');
 const jwksRsa = require('jwks-rsa');
 let access_token;
 
+const auth0BaseDomain = 'http://bee-companion.eu.auth0.com/';
+
 const auth0 = new AuthenticationClient({
-  domain: 'bee-companion.eu.auth0.com',
+  domain: auth0BaseDomain,
   clientId: process.env.AUTH0_CLIENT_ID
 });
 
@@ -26,12 +28,12 @@ const checkJwt = jwt({
     cache: true,
     rateLimit: true,
     jwksRequestsPerMinute: 5,
-    jwksUri: `https://bee-companion.eu.auth0.com/.well-known/jwks.json`
+    jwksUri: `${auth0BaseDomain}.well-known/jwks.json`
   }),
 
   // Validate the audience and the issuer. (BeeCompanion)
   audience: process.env.AUTH0_CLIENT_ID,
-  issuer: `https://bee-companion.eu.auth0.com/`,
+  issuer: auth0BaseDomain,
   algorithms: ['RS512']
 });
 
@@ -39,13 +41,13 @@ const checkJwt = jwt({
 // access token must exist and be verified against
 // the Auth0 JSON Web Key Set
 const authOptions = { method: 'POST',
-  url: 'https://bee-companion.eu.auth0.com/oauth/token',
+  url: `${auth0BaseDomain}oauth/token`,
   headers: { 'content-type': 'application/json' },
   body:
     { grant_type: 'client_credentials',
       client_id: process.env.AUTH0_API_CLIENT_ID,
       client_secret: process.env.AUTH0_API_CLIENT_SECRET,
-      audience: 'https://bee-companion.eu.auth0.com/api/v2/'
+      audience: `${auth0BaseDomain}api/v2/`
     },
   json: true
 };
@@ -102,7 +104,7 @@ function getApiOpts(data, options) {
 
 function getRoleChangeOpts(role, user_id) {
   return {
-    url: 'https://bee-companion.eu.auth0.com/api/v2/users/' + encodeURIComponent(user_id),
+    url: `${auth0BaseDomain}api/v2/users/` + encodeURIComponent(user_id),
     body: {
       app_metadata: {
         roles: [
@@ -127,7 +129,7 @@ function getJWTToken(req){
 
 // Get all users
 router.get('/users', function(req, res) {
-  const url = 'https://bee-companion.eu.auth0.com/api/v2/users';
+  const url = `${auth0BaseDomain}api/v2/users`;
   makeApiCall({ url: url }, (data) => { res.json(data); });
 });
 
