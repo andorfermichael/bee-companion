@@ -1,13 +1,10 @@
 <form>
-  <label for="receiver_mail">Receiver Mail</label>
-  <input #receiverMail id="receiver_mail" name="receiver_mail" type="email" value="" placeholder="Receiver's email">
-
   <label for="amount">Amount</label>
   <input #amount id="amount" name="amount" type="number" value="1" min="0.01" max="100.00" step="0.01">
 
   <input type="image"
          id="execute_donation"
          name="execute_donation"
-         (click)="executeDonation(receiverMail.value, amount.value)"
+         (click)="executeDonation(amount.value)"
          src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_cc_147x47.png">
 </form>

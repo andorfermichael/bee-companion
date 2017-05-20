@@ -5,6 +5,7 @@ const dotenv = require('dotenv').config({path: '../.env'});
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const helmet = require('helmet');
 
 // Express App
 const app = express();
@@ -17,11 +18,13 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
+app.use(helmet());
 
 // Routes
 const beekeepers = require('./routes/beekeepers');
 const authUsers = require('./routes-external/users');
 const paypal = require('./routes-external/paypal');
+const paypalTransactions = require('./routes/paypaltransactions');
 
 // Angular Http content type for POST etc defaults to text/plain at
 app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
@@ -33,9 +36,9 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
   }
 });
 
-app.use('/api', beekeepers);
+app.use('/api/paypal', paypal);
 app.use('/api', authUsers);
-app.use('/api', paypal);
+app.use('/api/paypaltransaction', paypalTransactions);
 
 app.listen(PORT, function() {
   console.log('Listen on http://localhost:' + PORT + ' in ' + NODE_ENV);

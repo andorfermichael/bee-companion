@@ -11,7 +11,7 @@ const paypalSdk = new Paypal({
 });
 
 // Execute payment
-router.post('/paypal/pay', function(req, res) {
+router.post('/pay', function(req, res) {
   let payload = {
     requestEnvelope: {
       errorLanguage:  'en_US'
@@ -23,7 +23,7 @@ router.post('/paypal/pay', function(req, res) {
     receiverList: {
       receiver: [
         {
-          email:  req.body.receiverMail,
+          email:  req.body.receiverEmail,
           amount: req.body.amount
         }
       ]
@@ -41,13 +41,29 @@ router.post('/paypal/pay', function(req, res) {
 });
 
 // Payment has been approved
-router.get('/paypal/pay/approved', function(req, res) {
-  res.redirect('http://localhost:8000/#/home');
+router.get('/pay/approved', function(req, res) {
+  res.redirect('http://localhost:8000/#/home/payment/approved');
 });
 
 // Payment has been cancelled
-router.get('/paypal/pay/cancelled', function(req, res) {
-  res.redirect('http://localhost:8000/#/home');
+router.get('/pay/cancelled', function(req, res) {
+  res.redirect('http://localhost:8000/#/home/payment/cancelled');
+});
+
+// Get payment details
+router.post('/pay/payment-details', function(req, res) {
+  let payload = {
+    payKey: req.body.payKey
+  };
+
+  paypalSdk.paymentDetails(payload, function (err, response) {
+    if (err) {
+      return res.json(err);
+    } else {
+      // Payments details for this payKey
+      return res.json(response)
+    }
+  });
 });
 
 module.exports = router;

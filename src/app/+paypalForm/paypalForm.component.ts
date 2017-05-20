@@ -1,26 +1,34 @@
 import { Component } from '@angular/core';
 
-import { PayPalFormService } from './paypalForm.service';
+import { PayPalService } from '../paypal.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'paypalForm',
   styleUrls: [ './paypalForm.component.scss' ],
   templateUrl: './paypalForm.component.html',
   providers: [
-    PayPalFormService
+    PayPalService
   ]
 })
 export class PayPalFormComponent {
-  constructor(private paypalFormService: PayPalFormService) {
+  constructor(private paypalService: PayPalService, private localStorage: LocalStorageService) {
   }
 
-  public executeDonation(receiverMail: string, amount: string) {
-    this.paypalFormService.executeAdaptivePayment(receiverMail, amount).subscribe(
+  public executeDonation(amount: number) {
+    // TODO: Replace email with email from profile page owner (real receiver)
+    // TODO: Replace ids with real ids
+    this.paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
       (payment) => {
-        window.open(payment.paymentApprovalUrl);
+        // Store payment key for later use
+        this.localStorage.store('lastPayKey', payment.payKey);
+
+        // Redirect to approval url
+        window.location.href = payment.paymentApprovalUrl;
       },
       (err) => {
         console.log(err);
-      });
+      }
+    );
   }
 }

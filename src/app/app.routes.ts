@@ -18,6 +18,8 @@ import { NoContentComponent } from './no-content';
 export const ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'home',  component: HomeComponent, pathMatch: 'full'},
+  { path: 'home/payment/:status', component: HomeComponent, pathMatch: 'full',
+    canActivate: [AuthGuard]},
   { path: 'bee-radar',  component: BeeRadarComponent, pathMatch: 'full'},
   { path: 'about', component: AboutUsComponent, pathMatch: 'full'},
   { path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
