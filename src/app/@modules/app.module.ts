@@ -101,7 +101,7 @@ const APP_PROVIDERS = [
     RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAzRGKSl4vUt5C9ub3tvpIysxcuBeJbUJg'
+      apiKey: process.env.GOOGLE_MAPS_API_KEY
     }),
     Ng2Webstorage
   ],

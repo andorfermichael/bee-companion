@@ -26,9 +26,10 @@ const HOST = process.env.HOST || 'localhost';
 const PORT = process.env.PORT || 8000;
 const AUTH_CB = process.env.AUTH_CB = (ENV === 'production') ? ('https://bee-companion.com/#/callback') : ('http://' + HOST + ':' + PORT + '/#/callback');
 const AUTH0_BASE_DOMAIN = process.env.AUTH0_BASE_DOMAIN;
-const AUTH0_BASE_DOMAIN_ONLY = process.env.AUTH0_BASE_DOMAIN_ONLY
+const AUTH0_BASE_DOMAIN_ONLY = process.env.AUTH0_BASE_DOMAIN_ONLY;
 const AUTH0_CLIENT_ID = process.env.AUTH0_CLIENT_ID;
 const AUTH0_API_CLIENT_ID = process.env.AUTH0_API_CLIENT_ID;
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
 const HMR = helpers.hasProcessFlag('hot');
 
 console.log(process.env.AUTH0_BASE_DOMAIN);
@@ -41,6 +42,7 @@ const METADATA = webpackMerge(commonConfig({env: ENV}).metadata, {
   AUTH0_BASE_DOMAIN_ONLY: AUTH0_BASE_DOMAIN_ONLY,
   AUTH0_CLIENT_ID: AUTH0_CLIENT_ID,
   AUTH0_API_CLIENT_ID: AUTH0_API_CLIENT_ID,
+  GOOGLE_MAPS_API_KEY: GOOGLE_MAPS_API_KEY,
   ENV: ENV,
   HMR: HMR
 });
@@ -168,6 +170,7 @@ module.exports = function (options) {
           'AUTH0_BASE_DOMAIN_ONLY': JSON.stringify(AUTH0_BASE_DOMAIN_ONLY),
           'AUTH0_CLIENT_ID': JSON.stringify(AUTH0_CLIENT_ID),
           'AUTH0_API_CLIENT_ID': JSON.stringify(AUTH0_API_CLIENT_ID),
+          'GOOGLE_MAPS_API_KEY': JSON.stringify(GOOGLE_MAPS_API_KEY),
           'NODE_ENV': JSON.stringify(METADATA.ENV),
           'HMR': METADATA.HMR,
         }

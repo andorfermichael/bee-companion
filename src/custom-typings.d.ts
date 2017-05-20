@@ -63,6 +63,7 @@ declare var AUTH0_BASE_DOMAIN: string;
 declare var AUTH0_CLIENT_ID: string;
 declare var AUTH0_API_CLIENT_ID: string;
 declare var AUTH0_BASE_DOMAIN_ONLY: string;
+declare var GOOGLE_MAPS_API_KEY: string;
 declare var HMR: boolean;
 declare var System: SystemJS;
 
@@ -77,6 +78,7 @@ interface GlobalEnvironment {
   AUTH0_BASE_DOMAIN_ONLY: string;
   AUTH0_CLIENT_ID: string;
   AUTH0_API_CLIENT_ID: string;
+  GOOGLE_MAPS_API_KEY: string;
   HMR: boolean;
   SystemJS: SystemJS;
   System: SystemJS;
