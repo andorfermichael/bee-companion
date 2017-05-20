@@ -12,7 +12,7 @@ let access_token;
 
 const auth0 = new AuthenticationClient({
   domain: 'bee-companion.eu.auth0.com',
-  clientId: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr'
+  clientId: process.env.AUTH0_CLIENT_ID
 });
 
 // Authentication middleware. When used, the
@@ -30,7 +30,7 @@ const checkJwt = jwt({
   }),
 
   // Validate the audience and the issuer. (BeeCompanion)
-  audience: 'GYa4pWTXDi17cBIf8bDtaFhTS1LiJwGr',
+  audience: process.env.AUTH0_CLIENT_ID,
   issuer: `https://bee-companion.eu.auth0.com/`,
   algorithms: ['RS256']
 });
@@ -43,8 +43,8 @@ const authOptions = { method: 'POST',
   headers: { 'content-type': 'application/json' },
   body:
     { grant_type: 'client_credentials',
-      client_id: '5HvyCPjCe75nZi43rfQ7B53b1v3tvBM2',
-      client_secret: 'd9EBicpcgizDe-F995-lCupvhgvZtTT5SuGznq5L5uGeTTBoMjmXBsGOFunyPYFt',
+      client_id: process.env.AUTH0_API_CLIENT_ID,
+      client_secret: process.env.AUTH0_API_CLIENT_SECRET,
       audience: 'https://bee-companion.eu.auth0.com/api/v2/'
     },
   json: true
