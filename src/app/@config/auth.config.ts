@@ -20,7 +20,7 @@ export const myConfig: AuthConfiguration = {
   issuer: 'https://bee-companion.eu.auth0.com',
   tenant: 'bee-companion',
   scope: 'openid profile email',
-  algorithms: ['RS256'],
+  algorithms: ['RS512'],
   lock: {
     socialButtonStyle: 'small',
     theme: {
