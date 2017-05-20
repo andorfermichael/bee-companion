@@ -22,7 +22,7 @@ app.use(helmet());
 
 // Routes
 const beekeepers = require('./routes/beekeepers');
-const authUsers = require('./routes-external/users');
+const auth = require('./routes-external/auth');
 const paypal = require('./routes-external/paypal');
 const paypalTransactions = require('./routes/paypaltransactions');
 
@@ -37,7 +37,7 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
 });
 
 app.use('/api/paypal', paypal);
-app.use('/api', authUsers);
+app.use('/api/auth', auth);
 app.use('/api/paypaltransaction', paypalTransactions);
 
 app.listen(PORT, function() {

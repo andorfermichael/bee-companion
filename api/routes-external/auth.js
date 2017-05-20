@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 
-const request = require("request");
+const request = require('request');
 const rp = require('request-promise');
 
 // Auth0 dependencies
@@ -126,13 +126,13 @@ function getJWTToken(req){
 }
 
 // Get all users
-router.get('/auth/users', function(req, res) {
+router.get('/users', function(req, res) {
   const url = 'https://bee-companion.eu.auth0.com/api/v2/users';
   makeApiCall({ url: url }, (data) => { res.json(data); });
 });
 
 // Set the role of a user
-router.get('/auth/user/set/role/:role', checkJwt, function(req, res) {
+router.get('/user/set/role/:role', checkJwt, function(req, res) {
   const role = req.params.role;
   if (!role || (role !== 'Supporter' && role !== 'Beekeeper')) {
     return res.status(403);
