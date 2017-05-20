@@ -23,6 +23,9 @@ import { AuthModule } from './auth.module';
 // Import Google Maps
 import { AgmCoreModule } from '@agm/core';
 
+// Import Web Storage
+import { Ng2Webstorage } from 'ngx-webstorage';
+
 /*
  * Platform and Environment providers/directives/pipes
  */
@@ -50,6 +53,7 @@ import { MainContentRowComponent } from './+mainContentRow';
 import { RadarCardComponent } from './+radarCard';
 import { CallbackComponent } from './callback';
 import { RestrictedComponent } from './restricted';
+import { PayPalFormComponent } from './+paypalForm';
 import { NoContentComponent } from './no-content';
 
 import '../styles/styles.scss';
@@ -86,6 +90,7 @@ const APP_PROVIDERS = [
     CallbackComponent,
     RestrictedComponent,
     RadarCardComponent,
+    PayPalFormComponent,
     NoContentComponent
   ],
   imports: [ // import Angular's modules
@@ -97,7 +102,8 @@ const APP_PROVIDERS = [
     BrowserAnimationsModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAzRGKSl4vUt5C9ub3tvpIysxcuBeJbUJg'
-    })
+    }),
+    Ng2Webstorage
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,
