@@ -24,7 +24,7 @@ export class HeaderComponent {
   }
 
   public locationError() {
-    this.message = 'Unfortunately we could not aquire your location which is recommended ' +
+    this.message = 'Unfortunately we could not acquire your location which is recommended ' +
                    'for best user experience with our service.';
     this.messageType = 'danger';
   }

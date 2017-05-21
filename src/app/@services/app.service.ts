@@ -11,10 +11,10 @@ export class AppState {
 
   // already return a clone of the current state
   public get state() {
-    return this._state = this._clone(this._state);
+    return this._state = AppState._clone(this._state);
   }
   // never allow mutation
-  public set state(value) {
+  public static set state(value) {
     throw new Error('do not mutate the `.state` directly');
   }
 
@@ -29,7 +29,7 @@ export class AppState {
     return this._state[prop] = value;
   }
 
-  private _clone(object: InternalStateType) {
+  private static _clone(object: InternalStateType) {
     // simple object clone
     return JSON.parse(JSON.stringify( object ));
   }

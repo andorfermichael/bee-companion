@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   styleUrls: [ './no-content.component.scss' ],
   templateUrl: './no-content.component.html',
 })
-export class NoContentComponent {
-
-}
+export class NoContentComponent {}

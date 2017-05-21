@@ -1,17 +1,10 @@
-import {
-  Component,
-  Input,
-  ElementRef,
-  HostListener,
-  ViewChild
-} from '@angular/core';
-
+import { Component, HostListener, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
+import { Router } from '@angular/router';
+
+import { AuthHttp } from 'angular2-jwt';
 
 import { Auth } from '../@services/auth.service';
-import { Router } from '@angular/router';
-import { RequestOptions, Headers } from '@angular/http';
-import { AuthHttp } from 'angular2-jwt';
 import { EventsService } from '../@services/events.service';
 
 @Component({
@@ -53,7 +46,7 @@ export class SignupPageComponent {
               public authHttp: AuthHttp, public _eventsService: EventsService) {
   }
 
-  @HostListener('document:click', ['$event'])
+  @HostListener('click', ['$event'])
   public onClick(event) {
     if (!this.signupCardElementRef.nativeElement.contains(event.target)) {
       this.extErrorMessage = 'Please complete your signup first :)';
@@ -66,7 +59,7 @@ export class SignupPageComponent {
 
     this.authHttp.get('http://localhost:3000/api/auth/user/set/role/' + role)
       .subscribe(
-        (data) => {
+        () => {
           this._eventsService.broadcast('loginSuccess');
           this.auth._updateProfile(); },
         (err) => {

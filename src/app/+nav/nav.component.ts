@@ -1,16 +1,8 @@
-import {
-  Component,
-  OnInit,
-  ElementRef,
-  HostListener,
-  ViewChild,
-  Input
-} from '@angular/core';
-
+import { Component, OnInit, ElementRef, HostListener, ViewChild, Input } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
-
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+
 import { Auth } from '../@services/auth.service';
 import { EventsService } from '../@services/events.service';
 
@@ -71,16 +63,25 @@ import { EventsService } from '../@services/events.service';
   ]
 })
 export class NavComponent implements OnInit {
-  public loginClicked = false;
-  public loginInputs = 'inactive';
-  public loginButtons = 'active';
-  public gradientBarBackground;
-  public lastPosition = 0;
-  public transitionInProgress = false;
-  public usernameEmpty = 'inactive';
-  public passwordEmpty = 'inactive';
-  @ViewChild('username') public usernameElementRef;
-  @ViewChild('password') public passwordElementRef;
+  public static getOffsetLeft(element) {
+    return (element.offsetWidth / 2) + element.offsetLeft +
+      (element.offsetParent ? element.offsetParent.offsetLeft : 0);
+  }
+
+  public static setFocus(elementRef) {
+    elementRef.nativeElement.focus();
+  }
+
+  public loginClicked: boolean = false;
+  public loginInputs: string = 'inactive';
+  public loginButtons: string = 'active';
+  public gradientBarBackground: any;
+  public lastPosition: number = 0;
+  public transitionInProgress: boolean = false;
+  public usernameEmpty: string = 'inactive';
+  public passwordEmpty: string = 'inactive';
+  @ViewChild('username') public usernameElementRef: any;
+  @ViewChild('password') public passwordElementRef: any;
   @Input() public disableInlineLogin: boolean;
   @Input() public extErrorMessage: string;
   public errorMsg: string;
@@ -102,12 +103,12 @@ export class NavComponent implements OnInit {
   public onMouseOver(event) {
     if (!this.transitionInProgress) {
       this.transitionInProgress = true;
-      this.createGradientTransition(this.getOffsetLeft(event.srcElement));
+      this.createGradientTransition(NavComponent.getOffsetLeft(event.srcElement));
     }
   }
 
   @HostListener('mouseleave', ['$event'])
-  public onMouseLeave(event) {
+  public onMouseLeave() {
     this.gradientBarBackground = '';
   }
 
@@ -147,12 +148,12 @@ export class NavComponent implements OnInit {
   public checkInputs(username?: string, password?: string) {
     if (!password) {
       this.passwordEmpty = 'active';
-      this.setFocus(this.passwordElementRef);
+      NavComponent.setFocus(this.passwordElementRef);
       this.errorMsg = 'Password is required!';
     }
     if (!username) {
       this.usernameEmpty = 'active';
-      this.setFocus(this.usernameElementRef);
+      NavComponent.setFocus(this.usernameElementRef);
       this.errorMsg = 'Username is required!';
     }
     if (!username && !password) {
@@ -165,7 +166,7 @@ export class NavComponent implements OnInit {
       }
       this._eventsService.broadcast('loginStart');
       this.auth.login(username, password).then(
-        (data: any) => this.onLoginSuccess(data),
+        (data: any) => this.onLoginSuccess(),
         (error) => this.onLoginError(error, username));
     }
   }
@@ -176,23 +177,14 @@ export class NavComponent implements OnInit {
     this.transitionInProgress = isLoading;
   }
 
-  public setFocus(elementRef) {
-    elementRef.nativeElement.focus();
-  }
-
   public createGradient(position) {
     const gradient = 'linear-gradient(to right, #292b2c ' + (position - 80) +
                      'px, #f6dd3b ' + (position) + 'px, #292b2c ' + (position + 80) + 'px)';
     this.gradientBarBackground = this.sanitizer.bypassSecurityTrustStyle(gradient);
   }
 
-  public getOffsetLeft(element) {
-    return (element.offsetWidth / 2) + element.offsetLeft +
-           (element.offsetParent ? element.offsetParent.offsetLeft : 0);
-  }
-
   public ngOnInit() {
-    this.isError = this.extErrorMessage ? true : false;
+    this.isError = !!this.extErrorMessage;
 
     this._eventsService.on('loginStart', () => {
       this.toggleIsLoading(true);
@@ -200,7 +192,7 @@ export class NavComponent implements OnInit {
     this._eventsService.on('loginSuccess', () => {
       this.toggleIsLoading(false);
     });
-    this._eventsService.on('loginFail', (err) => {
+    this._eventsService.on('loginFail', () => {
       this.toggleIsLoading(false);
       this.isError = true;
     });
@@ -221,9 +213,9 @@ export class NavComponent implements OnInit {
     }
   }
 
-  private onLoginSuccess(data: any) {
+  private onLoginSuccess() {
     this.toggleIsLoading();
-    console.log("ROUTER, MOVE YOUR ASS TO '/RESTRICTED' !!!");
+    console.log("Router, go to '/RESTRICTED' !");
     this.router.navigate(['/restricted']);
     this._eventsService.broadcast('loginSuccess');
   }

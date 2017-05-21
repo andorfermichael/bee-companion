@@ -12,8 +12,7 @@ import { LocalStorageService } from 'ngx-webstorage';
   ]
 })
 export class PayPalFormComponent {
-  constructor(private paypalService: PayPalService, private localStorage: LocalStorageService) {
-  }
+  constructor(private paypalService: PayPalService, private localStorage: LocalStorageService) {}
 
   public executeDonation(amount: number) {
     // TODO: Replace email with email from profile page owner (real receiver)

@@ -1,10 +1,7 @@
 /*
  * Angular 2 decorators and services
  */
-import {
-  Component,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 import { Auth } from './@services/auth.service';
 
@@ -16,14 +13,8 @@ import { Auth } from './@services/auth.service';
   selector: 'app',
   providers: [ Auth ],
   encapsulation: ViewEncapsulation.None,
-  styleUrls: [
-    './app.component.scss'
-  ],
-  template: `
-  <div class="container-fluid">
-    <router-outlet></router-outlet>
-  </div>
-  `
+  styleUrls: [ './app.component.scss' ],
+  templateUrl: './app.component.html',
 })
 export class AppComponent {
   public angularclassLogo = 'assets/img/BeeCompanion_smallLogo.png';

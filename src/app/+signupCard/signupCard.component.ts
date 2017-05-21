@@ -1,14 +1,8 @@
-import {
-  Component,
-  Input,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
-
+import { Component, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 import { Auth } from '../@services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'signupCard',
@@ -42,19 +36,22 @@ import { Router } from '@angular/router';
 })
 
 export class SignupCardComponent {
+  public static setFocus(elementRef) {
+    elementRef.nativeElement.focus();
+  }
+
   public forgotPassword: boolean;
-  public usernameEmpty = 'inactive';
-  public username2Empty = 'inactive';
-  public passwordEmpty = 'inactive';
-  public emailEmpty = 'inactive';
-  public submitErr = 'inactive';
-  @ViewChild('username') public usernameElementRef;
-  @ViewChild('password') public passwordElementRef;
+  public usernameEmpty: string = 'inactive';
+  public username2Empty: string = 'inactive';
+  public passwordEmpty: string = 'inactive';
+  public emailEmpty: string = 'inactive';
+  public submitErr: string = 'inactive';
+  @ViewChild('username') public usernameElementRef: any;
+  @ViewChild('password') public passwordElementRef: any;
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(public auth: Auth, public router: Router) {
-  }
+  constructor(public auth: Auth, public router: Router) {}
 
   public resetUsernamePasswordEmtpy() {
     this.usernameEmpty = 'inactive';
@@ -69,12 +66,12 @@ export class SignupCardComponent {
     this.successMsg = '';
     if (!password) {
       this.passwordEmpty = 'active';
-      this.setFocus(this.passwordElementRef);
+      SignupCardComponent.setFocus(this.passwordElementRef);
       this.errorMsg = 'Password is required!';
     }
     if (!username) {
       this.usernameEmpty = 'active';
-      this.setFocus(this.usernameElementRef);
+      SignupCardComponent.setFocus(this.usernameElementRef);
       this.errorMsg = 'Username is required!';
     }
     if (!username && !password) {
@@ -86,7 +83,7 @@ export class SignupCardComponent {
         return;
       }
       this.auth.login(username, password).then(
-        (data) => {
+        () => {
           this.router.navigate(['/restricted']);
         },
         (error) => {
@@ -95,9 +92,5 @@ export class SignupCardComponent {
           this.submitErr = 'active';
         });
     }
-  }
-
-  public setFocus(elementRef) {
-    elementRef.nativeElement.focus();
   }
 }

@@ -77,13 +77,4 @@ export class BeeRadarComponent {
   public disableDoubleClickZoom = true;
   public scrollwheel = false;
   public streetViewControl = false;
-
-  public setPosition(data: any) {
-    if (data) {
-      if (data.coords) {
-        this.lat = data.coords.latitude ? data.coords.latitude : this.lat;
-        this.lng = data.coords.longitude ? data.coords.longitude : this.lng;
-      }
-    }
-  }
 }

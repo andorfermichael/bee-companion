@@ -1,15 +1,6 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import {
-  async,
-  TestBed,
-  ComponentFixture
-} from '@angular/core/testing';
-import {
-  BaseRequestOptions,
-  HttpModule,
-  Http,
-  XHRBackend,
-} from '@angular/http';
+import { async,  TestBed,  ComponentFixture } from '@angular/core/testing';
+import { BaseRequestOptions, HttpModule, Http, XHRBackend } from '@angular/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 

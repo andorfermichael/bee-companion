@@ -1,18 +1,13 @@
-import {
-  Component,
-  OnInit
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import 'rxjs/add/operator/switchMap';
 
 import { Auth } from '../@services/auth.service';
-import { Title } from '../title';
-
 import { PayPalService } from '../@services/paypal.service';
-
 import { LocalStorageService } from 'ngx-webstorage';
+import { Title } from '../title';
 
 @Component({
   selector: 'home',
@@ -41,7 +36,7 @@ export class HomeComponent implements OnInit {
         this.paypalService.getPaymentDetails(lastPayKey).subscribe(
           (paymentDetails) => {
             this.paypalService.storePaymentDetailsInDatabase(paymentDetails).subscribe(
-              (transaction) => {
+              () => {
                 // Clear payment key from local storage
                 this.localStorage.clear('lastPayKey');
 

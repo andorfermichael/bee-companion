@@ -2,16 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {
-  NgModule,
-  ApplicationRef,
-  NO_ERRORS_SCHEMA
-} from '@angular/core';
+import { NgModule,  ApplicationRef, NO_ERRORS_SCHEMA } from '@angular/core';
+import { RouterModule, PreloadAllModules } from '@angular/router';
 
-import {
-  RouterModule,
-  PreloadAllModules
-} from '@angular/router';
 import { Auth } from '../@services/auth.service';
 import { AuthGuard } from '../@services/auth-guard.service';
 import { AuthRoleGuard } from '../@services/auth-role-guard.service';
@@ -31,31 +24,35 @@ import { Ng2Webstorage } from 'ngx-webstorage';
  */
 import { ENV_PROVIDERS } from '../environment';
 import { ROUTES } from '../app.routes';
+
 // App is our top level component
 import { AppComponent } from '../app.component';
 import { APP_RESOLVER_PROVIDERS } from '../app.resolver';
-import { HomeComponent } from '../home';
+
+// Second level components
 import { AboutUsComponent } from '../about';
-import { ContactUsComponent } from '../contact';
-import { TermsAndConditionsComponent } from '../terms';
-import { LoginPageComponent } from '../login';
-import { LoginCardComponent } from '../+loginCard';
-import { SignupPageComponent } from '../signup';
-import { SignupCardComponent } from '../+signupCard';
-import { PrivacyPolicyComponent } from '../privacy';
 import { BeeRadarComponent } from '../beeRadar';
-import { NavComponent } from '../+nav';
-import { HeaderComponent } from '../+header';
+import { CallbackComponent } from '../callback';
+import { ContactUsComponent } from '../contact';
 import { FooterComponent } from '../+footer';
+import { HeaderComponent } from '../+header';
+import { HomeComponent } from '../home';
+import { LoginCardComponent } from '../+loginCard';
+import { LoginPageComponent } from '../login';
 import { MainCardComponent } from '../+mainCard';
 import { MainContentComponent } from '../+mainContent';
 import { MainContentRowComponent } from '../+mainContentRow';
-import { RadarCardComponent } from '../+radarCard';
-import { CallbackComponent } from '../callback';
-import { RestrictedComponent } from '../restricted';
-import { PayPalFormComponent } from '../+paypalForm';
+import { NavComponent } from '../+nav';
 import { NoContentComponent } from '../no-content';
+import { PayPalFormComponent } from '../+paypalForm';
+import { PrivacyPolicyComponent } from '../privacy';
+import { RadarCardComponent } from '../+radarCard';
+import { RestrictedComponent } from '../restricted';
+import { SignupCardComponent } from '../+signupCard';
+import { SignupPageComponent } from '../signup';
+import { TermsAndConditionsComponent } from '../terms';
 
+// Styles
 import '../../styles/styles.scss';
 import '../../styles/headings.css';
 
@@ -70,40 +67,38 @@ const APP_PROVIDERS = [
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
-    AppComponent,
     AboutUsComponent,
-    ContactUsComponent,
-    TermsAndConditionsComponent,
-    LoginPageComponent,
-    LoginCardComponent,
-    SignupPageComponent,
-    SignupCardComponent,
-    PrivacyPolicyComponent,
-    HomeComponent,
+    AppComponent,
     BeeRadarComponent,
-    NavComponent,
-    HeaderComponent,
+    CallbackComponent,
+    ContactUsComponent,
     FooterComponent,
+    HeaderComponent,
+    HomeComponent,
+    LoginCardComponent,
+    LoginPageComponent,
     MainCardComponent,
     MainContentComponent,
     MainContentRowComponent,
-    CallbackComponent,
-    RestrictedComponent,
-    RadarCardComponent,
+    NavComponent,
+    NoContentComponent,
     PayPalFormComponent,
-    NoContentComponent
+    PrivacyPolicyComponent,
+    RadarCardComponent,
+    RestrictedComponent,
+    SignupCardComponent,
+    SignupPageComponent,
+    TermsAndConditionsComponent
   ],
   imports: [ // import Angular's modules
+    AgmCoreModule.forRoot({ apiKey: process.env.GOOGLE_MAPS_API_KEY }),
     AuthModule,
+    BrowserAnimationsModule,
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules }),
-    BrowserAnimationsModule,
-    AgmCoreModule.forRoot({
-      apiKey: process.env.GOOGLE_MAPS_API_KEY
-    }),
-    Ng2Webstorage
+    Ng2Webstorage,
+    RouterModule.forRoot(ROUTES, { useHash: true, preloadingStrategy: PreloadAllModules })
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

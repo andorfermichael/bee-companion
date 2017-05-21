@@ -1,10 +1,5 @@
-import {
-  TestBed,
-  inject
-} from '@angular/core/testing';
-import {
-  Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod
-} from '@angular/http';
+import { TestBed, inject } from '@angular/core/testing';
+import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { PayPalService } from './paypal.service';

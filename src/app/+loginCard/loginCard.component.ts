@@ -1,15 +1,8 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
-
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
+import { Router } from '@angular/router';
 
 import { Auth } from '../@services/auth.service';
-import { Router } from '@angular/router';
 import { EventsService } from '../@services/events.service';
 
 @Component({
@@ -55,8 +48,7 @@ export class LoginCardComponent implements OnInit {
   public errorMsg: string;
   public successMsg: string;
 
-  constructor(public auth: Auth, public router: Router, public _eventsService: EventsService) {
-  }
+  constructor(public auth: Auth, public router: Router, public _eventsService: EventsService) {}
 
   public setFocus(elementRef) {
     elementRef.nativeElement.focus();
@@ -131,7 +123,7 @@ export class LoginCardComponent implements OnInit {
       }
       this._eventsService.broadcast('loginStart');
       this.auth.login(username, password).then(
-        (data) => {
+        () => {
           this._eventsService.broadcast('loginSuccess');
           this.router.navigate(['/restricted']);
         },
