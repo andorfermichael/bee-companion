@@ -53,6 +53,9 @@ export class HomeComponent implements OnInit {
             console.log(err);
           });
       } else {
+        // Clear payment key from local storage
+        this.localStorage.clear('lastPayKey');
+
         // Remove state query param from url after a few seconds
         setTimeout(() => {
           this.location.replaceState('/home');

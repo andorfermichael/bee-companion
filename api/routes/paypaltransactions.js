@@ -1,9 +1,12 @@
 const models  = require('../models');
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
+const corsConfig = require('../config/cors');
 
 // Save a transaction (payment)
-router.post('/create', function(req, res) {
+router.use('/create', cors(corsConfig));
+router.post('/create', cors(), function(req, res) {
   models.PaypalTransaction.create({
     responseEnvelopeTimestamp: req.body.responseEnvelopeTimestamp,
     responseEnvelopeAck: req.body.responseEnvelopeAck,

@@ -4,7 +4,6 @@ const dotenv = require('dotenv').config({path: '../.env'});
 // Express and middleware
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const helmet = require('helmet');
 const crypto = require('crypto');
 
@@ -20,7 +19,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // Config
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
 app.use(helmet()); // Use default helmet packages for better security
 
 // Use HTTP Public Key Pinning to prevent person-in-the-middle attacks

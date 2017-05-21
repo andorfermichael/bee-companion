@@ -1,7 +1,9 @@
-const Paypal = require('paypal-adaptive');
-
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
+const corsConfig = require('../config/cors');
+
+const Paypal = require('paypal-adaptive');
 
 const paypalSdk = new Paypal({
   userId:    process.env.PAYPAL_SANDBOX_API_USERID,
@@ -11,6 +13,7 @@ const paypalSdk = new Paypal({
 });
 
 // Execute payment
+router.use('/pay', cors(corsConfig));
 router.post('/pay', function(req, res) {
   let payload = {
     requestEnvelope: {
@@ -18,8 +21,8 @@ router.post('/pay', function(req, res) {
     },
     actionType:     'PAY',
     currencyCode:   'EUR',
-    cancelUrl:      'http://localhost:3000/api/paypal/pay/cancelled',
-    returnUrl:      'http://localhost:3000/api/paypal/pay/approved',
+    cancelUrl:      'http://localhost:8000/#/home/payment/cancelled',
+    returnUrl:      'http://localhost:8000/#/home/payment/approved',
     receiverList: {
       receiver: [
         {
@@ -40,17 +43,8 @@ router.post('/pay', function(req, res) {
   });
 });
 
-// Payment has been approved
-router.get('/pay/approved', function(req, res) {
-  res.redirect('http://localhost:8000/#/home/payment/approved');
-});
-
-// Payment has been cancelled
-router.get('/pay/cancelled', function(req, res) {
-  res.redirect('http://localhost:8000/#/home/payment/cancelled');
-});
-
 // Get payment details
+router.use('/pay/payment-details', cors(corsConfig));
 router.post('/pay/payment-details', function(req, res) {
   let payload = {
     payKey: req.body.payKey
