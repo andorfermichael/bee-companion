@@ -1,6 +1,6 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
-  var PaypalTransaction = sequelize.define('PaypalTransaction', {
+  const PaypalTransaction = sequelize.define('PaypalTransaction', {
     responseEnvelopeTimestamp: DataTypes.DATE,
     responseEnvelopeAck: DataTypes.STRING,
     responseEnvelopeCorrelationId: DataTypes.STRING,
