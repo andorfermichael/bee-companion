@@ -21,7 +21,10 @@ module.exports = function (config) {
     exclude: [],
 
     client: {
-      captureConsole: false
+      captureConsole: true,
+      mocha: {
+        bail: true
+      }
     },
 
     /*
