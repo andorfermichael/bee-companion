@@ -16,7 +16,9 @@ BeeCompanion is a platform for both beekeepers and their supporters.
   * [General](#general)
   * [Angular](#angular)
   * [Express](#express)
-* [AoT Don'ts](#aot-donts)
+* [Performance](#performance)
+  * [Angular](#angular)
+  * [Express](#express)
 * [TypeScript](#typescript)
 
 ## Supported Tools
@@ -55,6 +57,7 @@ We use the component approach in our project. This is the new standard for devel
 ```
 bee-companion/
  ├──api/                           * our API
+ │   ├──config                     * our API configuration
  │   ├──migrations                 * sequelize migrations
  │   ├──models                     * our API models
  │   ├──routes                     * our API routes
@@ -318,19 +321,26 @@ so do not use other packages for session handling. Additionally, it is important
   * Set domain and sameSite properties if possible
   
 For further security best practices according to ExpressJS have a look at the following resources:
-* [Production Best Practices: Security](http://expressjs.com/en/advanced/best-practice-security.html)
+* [ExpressJS - Production Best Practices: Security](http://expressjs.com/en/advanced/best-practice-security.html)
 * [Node.js Security Checklist](https://blog.risingstack.com/node-js-security-checklist/)
 * [SNYK Vulnerability DB](https://snyk.io/vuln)
 
-# AoT Don'ts
-The following are some things that will make AoT compile fail.
+# Performance
+## Angular (Frontend)
+For frontend performance we recommend to follow [Angular Deployment Guide](https://angular.io/docs/ts/latest/guide/deployment.html).
+Especially, the AoT section may be of highest interest.
 
-- Don’t use require statements for your templates or styles, use styleUrls and templateUrls, the angular2-template-loader plugin will change it to require at build time.
-- Don’t use default exports.
-- Don’t use `form.controls.controlName`, use `form.get(‘controlName’)`
-- Don’t use `control.errors?.someError`, use `control.hasError(‘someError’)`
-- Don’t use functions in your providers, routes or declarations, export a function and then reference that function name.
-- @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public.
+For AoT there are additional recommendations:
+* Don’t use require statements for your templates or styles, use styleUrls and templateUrls, the angular2-template-loader plugin will change it to require at build time.
+* Don’t use default exports.
+* Don’t use `form.controls.controlName`, use `form.get(‘controlName’)`
+* Don’t use `control.errors?.someError`, use `control.hasError(‘someError’)`
+* Don’t use functions in your providers, routes or declarations, export a function and then reference that function name.
+* @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public.
+
+## Express (Backend)
+For backend performance we recommend to follow 
+[ExpressJS - Production best practices: performance and reliability](http://expressjs.com/en/advanced/best-practice-performance.html).
 
 # Authors
 
