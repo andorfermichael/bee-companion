@@ -331,3 +331,12 @@ The following are some things that will make AoT compile fail.
 - Don’t use `control.errors?.someError`, use `control.hasError(‘someError’)`
 - Don’t use functions in your providers, routes or declarations, export a function and then reference that function name.
 - @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public.
+
+# Authors
+
+- [Michael Andorfer](mailto:mandorfer.mmt-b2014@fh-salzburg.ac.at)
+- [Nico Deufemia](mailto:ndeufemia.mmt-b2014@fh-salzburg.ac.at)
+
+# License
+
+The project is currently under development and underlies the copyright law.
