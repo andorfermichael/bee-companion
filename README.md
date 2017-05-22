@@ -11,10 +11,13 @@ BeeCompanion is a platform for both beekeepers and their supporters.
     * [Installing](#installing)
     * [Database](#database)
     * [Running the app](#running-the-app)
-* [Configuration](#configuration)
+* [Deployment](#deployment)
+* [Security](#security)
+  * [General](#general)
+  * [Angular](#angular)
+  * [Express](#express)
 * [AoT Don'ts](#aot-donts)
 * [TypeScript](#typescript)
-* [Deployment](#deployment)
 
 ## Supported Tools
 This project is based on [Angular2 Webpack Starter](https://github.com/AngularClass/angular2-webpack-starter) from [AngularClass](https://github.com/AngularClass). 
@@ -28,13 +31,17 @@ It supports:
   * [Services](https://gist.github.com/gdi2290/634101fec1671ee12b3e#_follow_@AngularClass_on_twitter) 
 * [Codelyzer](https://github.com/mgechev/codelyzer)
 * [Dotenv](https://github.com/motdotla/dotenv)
+* [ExpressJS](http://expressjs.com/)
+  * [BodyParser](https://github.com/expressjs/body-parser)
+  * [Cors](https://github.com/expressjs/cors)
+  * [Helmet](https://helmetjs.github.io/)
 * [Sequelize](http://docs.sequelizejs.com/en/v3/)
 * [Testing](https://angular.io/docs/ts/latest/guide/testing.html)
   * [E2E](https://angular.github.io/protractor/#/faq#what-s-the-difference-between-karma-and-protractor-when-do-i-use-which-)
+  * [Istanbul](https://github.com/gotwarlost/istanbul)
+  * [Jasmine](https://github.com/jasmine/jasmine)
   * [Karma](https://karma-runner.github.io/)
   * [Protractor](https://angular.github.io/protractor/)
-  * [Jasmine](https://github.com/jasmine/jasmine)
-  * [Istanbul](https://github.com/gotwarlost/istanbul)
 * [TypeScript](http://www.typescriptlang.org/)
 * [@types](https://www.npmjs.com/~types)
 * [TsLint](http://palantir.github.io/tslint/)
@@ -117,6 +124,8 @@ Once you have those, you should install these globals with `npm install --global
 * `protractor` (`npm install --global protractor`)
 * `typescript` (`npm install --global typescript`)
 * `sequelize-cli` (`npm install --global sequelize-cli`)
+* `npm-check` (`npm install --global npm-check`)
+* `nsp` (`npm install --global nsp`)
 
 ## Installing
 * `npm install webpack-dev-server rimraf webpack sequelize sequelize-cli -g` to install required global dependencies
@@ -221,43 +230,6 @@ npm run ci:testall
 npm run e2e:live
 ```
 
-# Configuration
-Configuration files live in `config/` we are currently using webpack, karma, and protractor for different stages of your application.
-
-# AoT Don'ts
-The following are some things that will make AoT compile fail.
-
-- Don’t use require statements for your templates or styles, use styleUrls and templateUrls, the angular2-template-loader plugin will change it to require at build time.
-- Don’t use default exports.
-- Don’t use `form.controls.controlName`, use `form.get(‘controlName’)`
-- Don’t use `control.errors?.someError`, use `control.hasError(‘someError’)`
-- Don’t use functions in your providers, routes or declarations, export a function and then reference that function name.
-- @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public.
-
-
-# TypeScript
-> To take full advantage of TypeScript with autocomplete you would have to install it globally and use an editor with the correct TypeScript plugins.
-
-## Use latest TypeScript compiler
-TypeScript 2.1.x includes everything you need. Make sure to upgrade, even if you installed TypeScript previously.
-
-```
-npm install --global typescript
-```
-
-## Use a TypeScript-aware editor
-We have good experience using these editors:
-
-* [Visual Studio Code](https://code.visualstudio.com/)
-* [Webstorm 10](https://www.jetbrains.com/webstorm/download/)
-* [Atom](https://atom.io/) with [TypeScript plugin](https://atom.io/packages/atom-typescript)
-* [Sublime Text](http://www.sublimetext.com/3) with [Typescript-Sublime-Plugin](https://github.com/Microsoft/Typescript-Sublime-plugin#installation)
-
-### Visual Studio Code + Debugger for Chrome
-> Install [Debugger for Chrome](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome) and see docs for instructions to launch Chrome
-
-The included `.vscode` automatically connects to the webpack development server on port `8000`.
-
 # Deployment
 
 BeeCompanion uses [AWS Codepipeline](https://aws.amazon.com/de/codepipeline/) and [Jenkins](https://jenkins.io/) for CD/CI.
@@ -275,3 +247,87 @@ For that reason, a `.env` file which declares those variables is placed in the r
 (deployment and Jenkins).
 It is important that not only those files but also the sample.env (root of this repository) are kept up-to-date.
 The update of those files must be done before releasing any changes, otherwise the deployment will fail.
+
+# Security
+## General
+* Be aware of [OWASP Top 10](https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project#tab=Main)
+* Keep servers up-to-date
+* Keep packages up-to-date and secure
+  * run `npm-check` to get an overview about the up-to-dateness of the installed packages 
+  (see [npm-check](https://github.com/dylang/npm-check) for more details)
+  * run `nsp check` to get information about security vulnerabilities in any of the installed packages
+   (see [nsp](https://github.com/nodesecurity/nsp) for more details)
+* Be careful with sensitive data (company data and user data)
+* Keep in mind that security is more important than any new feature
+
+## Angular (Frontend)
+Angular already handles most security problems by default, for example, Angular treats all values as
+untrusted by default. However, it is important to follow Angular's best practices and to keep frontend
+security in mind in all stages of development. Please inform yourself regularly about the latest
+security recommendations of Angular which can be found in Angular's Guide [Security Section](https://angular.io/docs/ts/latest/guide/security.html).
+
+Be aware that you must not include any sensitive information (e. g. credentials, API keys, etc.) directly in typescript.
+Instead, include them via `config/webpack.dev.js` / `config/webpack.prod.js` / `config/webpack.test.js`.  
+
+How does that work:
+1. Add the value to `.env` in the project's root (do not forget to update sample.env too)
+2. Create a new constant and read the value from process environment under Webpack Constants section
+ in `config/webpack.env.js`, for example, `const MY_SECRET_VARIABLE = process.env.MY_SECRET_VARIABLE;`
+3. Add an entry to const METADATA which can be found directly under Webpack Constants section,
+for example, `MY_SECRET_VARIABLE: MY_SECRET_VARIABLE`
+4. Go to plugins section and search for `new DefinePlugin`, and add a new entry to `process.env`,
+for example, `MY_SECRET_VARIABLE': JSON.stringify(MY_SECRET_VARIABLE)`
+5. Go to `src/app/custom-typings.d.ts` and add a new entry
+`declare var MY_SECRET_VARIABLE: string;`
+6. Add a new entry to interface GlobalEnvironment `MY_SECRET_VARIABLE: string;`
+
+
+All variables defined in `.env` are then loaded as environment variables
+by [Dotenv](https://github.com/motdotla/dotenv) and are accessible in
+TypeScript via `process.env.MY_SECRET_VARIABLE`.
+
+## Express (Backend)
+There are several security aspects which have to be kept in mind during
+development, plus several security concepts which have already been implemented:
+
+* The [Helmet](https://github.com/helmetjs/helmet) packages has been integrated
+into our API. It comes along with several security concepts (HTTP Security Headers), some are enabled by default,
+while some have to be activated and configured manually. It is important to
+always trade of the benefits against the drawbacks of each component.
+We decided to additionally activate *HTTP Public Key Pinning*, *referrerPolicy* and *contentSecurityPolicy*
+to prevent man-in-the-middle attacks, to increase privacy, and to prevent XSS attacks.
+* Avoid to use `bodyParser.urlencoded` if not necessary, meaning API does not
+get any content other than JSON. `bodyParser.urlencoded` enables CSRF attacks
+if no CSRF token is used on each request. For more info see [Dangerous Use of Express Body-Parser](https://fosterelli.co/dangerous-use-of-express-body-parser.html)
+* The [Cors](https://github.com/expressjs/cors) package has been integrated into our API.
+It enables us to do Cross Origin Request Sharing. It is important to keep some points in mind:
+  * Do not enable cors for each route, instead enable it only for those 
+  routes which have need of cors. This can be done with `router.use('/route', cors(corsConfig));`
+  * Only allow specific origins by declaring them using the whitelist in `api/config/cors.js`
+  * Only allow methods, allow headers and credentials if needed in `api/config/cors.js`
+* If sessions are needed use either [Express-Session](https://github.com/expressjs/session)
+or [Cookie-Session](https://github.com/expressjs/cookie-session) depending on the use case. Both
+packages are developed and maintained by [ExpressJS](https://github.com/expressjs)
+so do not use other packages for session handling. Additionally, it is important to correctly configure the session:
+  * Do not use the default session name
+  * Set HttpOnly property to true to ensure the cookie cannot be
+  read by JavaScript
+  * Set Secure property to true to ensure that the cookie is only
+  send via HTTPS
+  * Set the expire property to a date in the near future (a cookie should only live as long as necessary)
+  * Set domain and sameSite properties if possible
+  
+For further security best practices according to ExpressJS have a look at the following resources:
+* [Production Best Practices: Security](http://expressjs.com/en/advanced/best-practice-security.html)
+* [Node.js Security Checklist](https://blog.risingstack.com/node-js-security-checklist/)
+* [SNYK Vulnerability DB](https://snyk.io/vuln)
+
+# AoT Don'ts
+The following are some things that will make AoT compile fail.
+
+- Don’t use require statements for your templates or styles, use styleUrls and templateUrls, the angular2-template-loader plugin will change it to require at build time.
+- Don’t use default exports.
+- Don’t use `form.controls.controlName`, use `form.get(‘controlName’)`
+- Don’t use `control.errors?.someError`, use `control.hasError(‘someError’)`
+- Don’t use functions in your providers, routes or declarations, export a function and then reference that function name.
+- @Inputs, @Outputs, View or Content Child(ren), Hostbindings, and any field you use from the template or annotate for Angular should be public.
