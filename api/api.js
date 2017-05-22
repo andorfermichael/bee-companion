@@ -16,7 +16,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Config
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet()); // Use default helmet packages for better security
 
 // Use HTTP Public Key Pinning to prevent person-in-the-middle attacks
