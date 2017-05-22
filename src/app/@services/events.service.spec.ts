@@ -1,4 +1,3 @@
-import { OnInit } from '@angular/core';
 import { TestBed, inject } from '@angular/core/testing';
 
 import { EventsService } from './events.service';
