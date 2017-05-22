@@ -43,7 +43,7 @@
     "server:dev:hmr": "npm run server:dev -- --inline --hot",
     "server:dev": "webpack-dev-server --config config/webpack.dev.js --progress --profile --watch --content-base src/",
     "server:test": "http-server dist -p 5000 -c-1 --cors",
-    "server:prod": "http-server dist -c-1 --cors",
+    "server:prod": "http-server dist -c-1 --cors -p 8000",
     "server:prod:pm2": "pm2 start http-server -i 0 --name beecompanionFrontend -- dist -p 8000",
     "server:prod:ci": "http-server dist -p 8000 -c-1 --cors",
     "server": "npm run server:dev",
