@@ -15,14 +15,22 @@ const paypalSdk = new Paypal({
 // Execute payment
 router.use('/pay', cors(corsConfig));
 router.post('/pay', function(req, res) {
+  // Define payment return and cancel urls for different environment
+  let returnUrl = 'http://localhost:8000/#/home/payment/approved';
+  let cancelUrl = 'http://localhost:8000/#/home/payment/cancelled';
+  if (process.env.ENV === 'production') {
+    returnUrl = 'https://bee-companion.com/#/home/payment/approved';
+    cancelUrl = 'https://bee-companion.com/#/home/payment/cancelled';
+  }
+
   let payload = {
     requestEnvelope: {
       errorLanguage:  'en_US'
     },
     actionType:     'PAY',
     currencyCode:   'EUR',
-    cancelUrl:      'http://localhost:8000/#/home/payment/cancelled',
-    returnUrl:      'http://localhost:8000/#/home/payment/approved',
+    cancelUrl:      cancelUrl,
+    returnUrl:      returnUrl,
     receiverList: {
       receiver: [
         {
