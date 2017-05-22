@@ -18,7 +18,7 @@ router.post('/pay', function(req, res) {
   // Define payment return and cancel urls for different environment
   let returnUrl = 'http://localhost:8000/#/home/payment/approved';
   let cancelUrl = 'http://localhost:8000/#/home/payment/cancelled';
-  if (process.env.ENV === 'production') {
+  if (process.env.NODE_ENV === 'production') {
     returnUrl = 'https://bee-companion.com/#/home/payment/approved';
     cancelUrl = 'https://bee-companion.com/#/home/payment/cancelled';
   }
