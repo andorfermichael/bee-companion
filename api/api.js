@@ -7,8 +7,6 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const crypto = require('crypto');
 
-const randomstring = require("randomstring");
-
 // Express App
 const app = express();
 
@@ -22,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(helmet()); // Use default helmet packages for better security
 
 // Use HTTP Public Key Pinning to prevent person-in-the-middle attacks
-const secret = randomstring.generate({ length: 12, charset: 'alphabetic' });
+const secret = process.env.API_PUBLIC_KEY_PINNING_SECRET;
 const hash1 = crypto.createHash('sha256').update(secret).digest('hex');
 const hash2 = crypto.createHash('sha256').update(secret).digest('hex');
 const thirtyDaysInSeconds = 2592000;
