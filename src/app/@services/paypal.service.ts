@@ -27,8 +27,8 @@ export class PayPalService {
     });
 
     return this.http.post(this.paypalApiUrl + '/pay', JSON.stringify(params), requestOptions)
-      .map( (res: Response) => res.json() )
-      .catch( (error: any) => Observable.throw(error.json().error || 'Server error') );
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public getPaymentDetails(payKey: string) {
@@ -46,8 +46,8 @@ export class PayPalService {
 
     return this.http.post(this.paypalApiUrl + '/pay/payment-details', JSON.stringify(params),
       requestOptions)
-      .map( (res: Response) => res.json() )
-      .catch( (error: any) => Observable.throw(error.json().error || 'Server error') );
+      .map(this.extractData)
+      .catch(this.handleError);
   }
 
   public storePaymentDetailsInDatabase(payment: any): Observable<any> {
@@ -85,7 +85,24 @@ export class PayPalService {
     });
 
     return this.http.post(this.paypalDBApiUrl + '/create', JSON.stringify(params), requestOptions)
-      .map( (res: Response) => res.json() )
-      .catch( (error: any) => Observable.throw(error.json().error || 'Server error') );
+      .map(this.extractData)
+      .catch(this.handleError);
+  }
+
+  public extractData(res: Response) {
+    return res.json() || { };
+  }
+
+  public handleError(error: Response | any) {
+    let errMsg: string;
+    if (error instanceof Response) {
+      const body = error.json() || '';
+      const err = body.error || JSON.stringify(body);
+      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+    } else {
+      errMsg = error.message ? error.message : error.toString();
+    }
+    console.error(errMsg);
+    return Observable.throw(errMsg);
   }
 }
