@@ -19,7 +19,8 @@ BeeCompanion is a platform for both beekeepers and their supporters.
 * [Performance](#performance)
   * [Angular](#angular)
   * [Express](#express)
-* [TypeScript](#typescript)
+* [Authors](#authors)
+* [License](#license)
 
 ## Supported Tools
 This project is based on [Angular2 Webpack Starter](https://github.com/AngularClass/angular2-webpack-starter) from [AngularClass](https://github.com/AngularClass). 
@@ -78,7 +79,7 @@ bee-companion/
  │   └──webpack.test.js            * our testing webpack config
  │
  ├──deployment/                    * deployment scripts and configurations
- │   ├──application-start.sh       * a shell script to install and run our application on production server
+ │   ├──application-start.sh       * a shell script to install and run our application on prod server
  │   └──jenkins.sh                 * a shell script to install, run and test our application on Jenkins
  │
  ├──src/                           * our source files that will be compiled to javascript
@@ -131,8 +132,7 @@ Once you have those, you should install these globals with `npm install --global
 * `nsp` (`npm install --global nsp`)
 
 ## Installing
-* `npm install webpack-dev-server rimraf webpack sequelize sequelize-cli -g` to install required global dependencies
-* `npm install` to install all dependencies
+* `npm install` to install all local dependencies
 
 ## Database
 BeeCompanion uses Sequelize ORM for database requests via API. The database configuration is placed at `config/dbconfig.js`.
