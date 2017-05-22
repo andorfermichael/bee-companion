@@ -22,7 +22,7 @@ const options = {
     }
   },
   methods: ['GET', 'PUT', 'POST'],
-  allowedHeaders: ['Content-Type', 'application/json'],
+  allowedHeaders: ['Content-Type'],
   credentials: false,
   optionsSuccessStatus: 200
 };
