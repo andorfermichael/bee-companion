@@ -108,7 +108,7 @@ export class NavComponent implements OnInit {
   }
 
   @HostListener('mouseleave', ['$event'])
-  public onMouseLeave() {
+  public onMouseLeave(event) {
     this.gradientBarBackground = '';
   }
 
