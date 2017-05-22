@@ -16,7 +16,7 @@
   "scripts": {
     "api:dev": "cd api && nodemon api.js",
     "api:prod": "cd api && node api.js",
-    "api:prod:pm2": "cd api && pm2 start api.js",
+    "api:prod:pm2": "cd api && pm2 start api.js -i 0 --name beecompanionAPI",
     "build:aot:prod": "npm run clean:dist && npm run clean:aot && webpack --config config/webpack.prod.js  --progress --profile --bail",
     "build:dev": "npm run clean:dist && webpack --config config/webpack.dev.js --progress --profile",
     "build:prod": "npm run clean:dist && webpack --config config/webpack.prod.js --progress --profile --bail",
@@ -44,7 +44,7 @@
     "server:dev": "webpack-dev-server --config config/webpack.dev.js --progress --profile --watch --content-base src/",
     "server:test": "http-server dist -p 5000 -c-1 --cors",
     "server:prod": "http-server dist -c-1 --cors",
-    "server:prod:pm2": "pm2 start http-server --name beecompanion -- dist -p 8000",
+    "server:prod:pm2": "pm2 start http-server -i 0 --name beecompanionFrontend -- dist -p 8000",
     "server:prod:ci": "http-server dist -p 8000 -c-1 --cors",
     "server": "npm run server:dev",
     "start:hmr": "npm run server:dev:hmr",
