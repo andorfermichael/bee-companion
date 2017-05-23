@@ -29,7 +29,7 @@ export const ROUTES: Routes = [
   { path: 'privacy', component: PrivacyPolicyComponent, pathMatch: 'full'},
   { path: 'restricted', component: RestrictedComponent, pathMatch: 'full',
     canActivate: [AuthRoleGuard]},
-  { path: 'signup', component: LoginPageComponent, pathMatch: 'full'},
+  { path: 'signup', component: LoginPageComponent, pathMatch: 'full', canActivate: [NonAuthGuard]},
   { path: 'signup/complete', component: SignupPageComponent, pathMatch: 'full',
     canActivate: [AuthGuard]},
   { path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
