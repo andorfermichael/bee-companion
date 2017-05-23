@@ -1,23 +1,21 @@
-import {DebugElement, NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, TestBed, ComponentFixture, inject} from '@angular/core/testing';
-import {BaseRequestOptions, ConnectionBackend, Http} from '@angular/http';
-import {MockBackend} from '@angular/http/testing';
+import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
+import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import {AuthHttp} from 'angular2-jwt';
+import { AuthHttp} from 'angular2-jwt';
+import { Observable } from "rxjs/Observable";
 
 // Load the implementations that should be tested
 import { Auth } from '../@services/auth.service';
 import { EventsService } from '../@services/events.service';
 import { SignupPageComponent } from './signup.component';
-import {Observable} from "rxjs/Observable";
 
 describe(`SignupPageComponent`, () => {
   let comp: SignupPageComponent;
   let fixture: ComponentFixture<SignupPageComponent>;
   let eventsService: EventsService;
-  let authHttp: MockAuthHttp;
   let authService: Auth;
-  let backend: MockBackend;
 
   class MockAuth {
     public _updateProfile() {
@@ -26,7 +24,7 @@ describe(`SignupPageComponent`, () => {
   }
 
   class MockAuthHttp {
-    get(url: string): Observable<any> {
+    public get(url: string): Observable<any> {
       return Observable.of({});
     }
   }
@@ -53,22 +51,17 @@ describe(`SignupPageComponent`, () => {
         { provide: AuthHttp, useClass: MockAuthHttp },
       ]
     })
-    .compileComponents().then(() => {
-      fixture = TestBed.createComponent(SignupPageComponent);
-      comp = fixture.componentInstance;
-    }); // compile template and css
+    .compileComponents() // compile template and css
   }));
 
-  describe(`successfull signup/login`, () => {
+  describe(`successful signup/login`, () => {
     // synchronous beforeEach
-    beforeEach(inject([MockBackend], (mockBackend: MockBackend) => {
+    beforeEach(() => {
       fixture = TestBed.createComponent(SignupPageComponent);
       comp = fixture.componentInstance;
       eventsService = TestBed.get(EventsService);
-      authHttp = TestBed.get(AuthHttp);
       authService = TestBed.get(Auth);
-      backend = mockBackend;
-    }));
+    });
 
     it('addUserRole should force event service to broadcast "loginStart"', () => {
       spyOn(eventsService, 'broadcast');
