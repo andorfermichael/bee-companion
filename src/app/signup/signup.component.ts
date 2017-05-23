@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 
@@ -39,19 +39,10 @@ import { EventsService } from '../@services/events.service';
 })
 
 export class SignupPageComponent {
-  @ViewChild('signupCard') public signupCardElementRef;
   public extErrorMessage: string;
 
   constructor(public auth: Auth, public router: Router,
               public authHttp: AuthHttp, public _eventsService: EventsService) {
-  }
-
-  @HostListener('click', ['$event'])
-  public onClick(event) {
-    if (!this.signupCardElementRef.nativeElement.contains(event.target)) {
-      this.extErrorMessage = 'Please complete your signup first :)';
-      return false;
-    }
   }
 
   public addUserRole(role) {
