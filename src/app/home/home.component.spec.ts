@@ -104,4 +104,11 @@ describe(`HomeComponent`, () => {
     comp.ngOnInit();
     expect(authService.isAuthenticated).toHaveBeenCalled();
   });
+
+  it('ngOnInit should check if authenticated user has role', () => {
+    spyOn(authService, 'checkUserHasRole');
+    authService.authenticated = true;
+    comp.ngOnInit();
+    expect(authService.checkUserHasRole).toHaveBeenCalled();
+  });
 });
