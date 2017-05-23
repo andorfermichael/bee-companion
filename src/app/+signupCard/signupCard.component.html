@@ -1,5 +1,5 @@
 <div class="signup-card">
-    <div class="signup-content navbar-inverse">
+    <div class="signup-content navbar-inverse" *ngIf="!successMsg">
         <p>Come on board and be part of our unique community! <span class="txt-bee">Bees for life, life for bees!</span></p>
         <div class="flex-row no-gutters d-flex justify-content-between social-signup" *ngIf="!forgotPassword">
             <div class="">
@@ -10,48 +10,42 @@
             </div>
         </div>
         <form class="signup signup-supporter">
-            <div class="flex-row">
-                <div class="d-flex name">
-                    <label for="email">Your name:</label>
-                    <input #name class="nav-link" type="text" placeholder="First Name" title="Your first Name"[@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
-                    <input class="nav-link" type="text" placeholder="Last Name" title="Your last Name"[@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
-                </div>
+            <div class="justify-content-sm-between row no-gutters">
+                    <label for="name" class="col-12 col-sm-auto">Your name:</label>
+                    <input #firstName class="col-12 col-sm-4" type="text" placeholder="First Name" title="Your first Name" [@fieldRequired]="fieldEmpty.firstName" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="2" maxlength="24" name="firstName">
+                    <input #lastName class="col-12 col-sm-4" type="text" placeholder="Last Name" title="Your last Name"[@fieldRequired]="fieldEmpty.lastName" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="2" maxlength="24" name="lastName">
             </div>
-            <div class="flex-row username">
-                <div class="d-flex">
-                    <label for="email">Desired username:</label>
-                    <input #username class="nav-link" type="text" placeholder="Username" title="Your desired username"[@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
-                </div>
+            <div class="justify-content-sm-between row no-gutters username">
+                    <label for="username" class="col-12 col-sm-auto">Desired username:</label>
+                    <input #userName class="col-12 col-sm-6" type="text" placeholder="Username" title="Your desired username"[@fieldRequired]="fieldEmpty.userName" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="4" maxlength="24" name="userName">
             </div>
-            <div class="flex-row email">
-                <div class="d-flex">
-                    <label for="email">Your email address:</label>
-                    <input #email class="nav-link" type="email" placeholder="Email address" title="Your email address"[@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
-                </div>
+            <div class="justify-content-sm-between row no-gutters email">
+                    <label for="email" class="col-12 col-sm-auto">Your email address:</label>
+                    <input #email class="col-12 col-sm-6" type="email" placeholder="Email address" title="Your email address"[@fieldRequired]="fieldEmpty.email" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="6" maxlength="255" name="email">
             </div>
-            <div class="flex-row password">
-                <div class="d-flex">
-                    <label for="email">Your password:</label>
-                    <input #password class="nav-link" type="password" placeholder="Password" title="Your password"[@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
-                </div>
+            <div class="justify-content-sm-between row no-gutters password">
+                    <label for="password" class="col-12 col-sm-auto">Your password:</label>
+                    <input #password class="col-12 col-sm-6" type="password" placeholder="Password" title="Your password"[@fieldRequired]="fieldEmpty.password" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="4" name="password">
             </div>
-            <div class="flex-row passwordconfirm">
-                <div class="d-flex">
-                    <label for="email">Confirm your password:</label>
-                    <input #passwordconfirm class="nav-link" type="password" placeholder="Repeat password" title="Repeat your password for security reasons"[@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
-                </div>
+            <div class="justify-content-sm-between row no-gutters passwordconfirm">
+                    <label for="passwordconfirm" class="col-12 col-sm-auto">Confirm your password:</label>
+                    <input #passwordconfirm class="col-12 col-sm-6" type="password" placeholder="Repeat password" title="Repeat your password for security reasons"[@fieldRequired]="fieldEmpty.passwordConfirm" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="4" name="passwordCheck">
             </div>
-            <div class="row">
+            <div class="row no-gutters">
                 <div class="col-9 log-message">
                     <span class="error">{{errorMsg}}</span>
                     <span class="success">{{successMsg}}</span>
                 </div>
                 <div class="col-3 justify-content-end">
                     <div class="signup-button continue">
-                        <button type="submit" class="btn btn-link" (click)="checkInputs(username.value, password.value)"><i class="arrow_carrot-right_alt2"></i></button>
+                        <button type="submit" class="btn btn-link" (click)="checkInputs(firstName.value, lastName.value, userName.value, email.value, password.value, passwordconfirm.value)"><i class="arrow_carrot-right_alt2"></i></button>
                     </div>
                 </div>
             </div>
         </form>
+    </div>
+    <div class="signup-content navbar-inverse" *ngIf="successMsg">
+        <h3>Welcome on board,<br><span class="txt-bee">{{fullName}}!</span></h3>
+        <p>Please check your email inbox for the activation email.</p>
     </div>
 </div>

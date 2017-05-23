@@ -266,7 +266,7 @@ export class Auth {
     try {
       body = res.json();
     } catch (e) {
-      body = res.toString();
+      body = res.text() || res.toString();
     }
     return body || { };
   }
