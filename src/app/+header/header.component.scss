@@ -1,5 +1,4 @@
 :host {
-  min-height: 150px;
   width: 100%;
   position: relative;
   text-align: center;
@@ -27,9 +26,13 @@
     margin: 0 10px 0 0;
 }
 
-.bc-header-logo img {
-    width: 144px;
-    height: 150px;
+.bc-header-logo {
+    transition: opacity 1s ease;
+    opacity: 1;
+    img {
+        width: 144px;
+        height: 150px;
+    }
 }
 
 .header-icons-left {
@@ -50,4 +53,12 @@
 
 .header-wrapper {
     position: relative;
+    transition: height 1s ease;
+    height: 150px;
+    &.loggedIn {
+        height: 60px;
+        .bc-header-logo {
+            opacity: 0;
+        }
+    }
 }

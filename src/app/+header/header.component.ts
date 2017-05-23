@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Auth } from '../@services/auth.service';
 
 @Component({
   selector: 'header',
@@ -10,6 +11,9 @@ export class HeaderComponent {
   public lng: number = 21.1644;
   public message: string;
   public messageType: string;
+
+  constructor(public auth: Auth) {
+  }
 
   public processLocation(data: any) {
     if (data) {

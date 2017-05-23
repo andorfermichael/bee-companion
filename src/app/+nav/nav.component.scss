@@ -15,10 +15,25 @@
 
     nav {
         text-align: center;
+        min-height: 55px;
 
         a {
             background-color: transparent;
         }
+
+        .nav-brand-icon-wrapper {
+          margin-bottom: 2.5em;
+          .nav-brand-icon {
+            width: 100px;
+            height: auto;
+            position: absolute;
+            left: 50%;
+            top: 0;
+            transform: translate(-50%,-50%);
+            z-index: 5;
+          }
+        }
+
         .gradient-bar {
             position: absolute;
             bottom: -4px;
