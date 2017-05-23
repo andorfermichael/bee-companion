@@ -1,5 +1,5 @@
 import { Injectable, NO_ERRORS_SCHEMA} from '@angular/core';
-import {async, TestBed, ComponentFixture, fakeAsync, tick} from '@angular/core/testing';
+import { async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
