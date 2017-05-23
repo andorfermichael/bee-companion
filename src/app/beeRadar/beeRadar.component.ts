@@ -68,8 +68,8 @@ export class BeeRadarComponent {
       {saturation: '31'}
     ]
   }];
-  public lat = 56.713;
-  public lng = 21.1644;
+  public lat = 47.718757;
+  public lng = 13.093238;
   public zoom = 11;
   public zoomControl = false;
   public disableDefaultUI = true;
