@@ -3,7 +3,7 @@
 .signup-card {
   padding: 1.25em;
   .signup-content {
-    max-height: 400px;
+    //max-height: 400px;
 
     .social-signup {
       padding-bottom: 1.25em;
@@ -83,7 +83,6 @@
     input {
       background-color: transparent;
       padding: .125em;
-      width: 8em;
       padding-left: .25em;
       padding-right: .25em;
       cursor: initial !important;
@@ -93,21 +92,22 @@
       outline: none;
       color: rgba(255, 255, 255, 0.75);
       font-size: small;
-      width: 175px;
+      margin-bottom: .25em;
+      @media (min-width: 768px) { 
+        margin-bottom: 0;
+      }
     }
 
     label {
-        margin-right: 1em;
     }
 
-    > .flex-row > div {
+    > .row {
         align-items: baseline;
         margin-bottom: .5em;
         width: 100%;
         justify-content: space-between;
     }
     .name input{
-      width: 125px;
     }
     .forgotPassword {
       display: none;

@@ -18,7 +18,7 @@ main {
       }
     }
     .main-content-row {
-      max-height: 600px;
+      //max-height: 600px;
     }
   }
   .card-tabs {
@@ -62,6 +62,11 @@ main {
   .signup-card {
     padding: 1.25em;
     form.signup {
+      padding-bottom: 2em;
+      @media (min-width: 768px) { 
+        padding-bottom: 0;
+      }
+
       input {
         background-color: transparent;
         padding: .125em;
