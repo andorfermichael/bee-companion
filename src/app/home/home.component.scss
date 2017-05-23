@@ -94,7 +94,10 @@ main {
   box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.09);
 }
 
-.rounded {border-radius:100em!important;}
+.rounded {
+  border-radius:100em!important;
+  min-width: 15em;
+}
 
 .lightGrey {
   color: #bbb;
