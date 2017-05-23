@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const request = require('request');
+const _ = require('lodash');
 const rp = require('request-promise');
 
 // Auth0 dependencies
@@ -115,6 +115,22 @@ function getRoleChangeOpts(role, user_id) {
   };
 }
 
+function getSignupOpts(data) {
+  return _.assign({}, authOptions, {
+    url: 'https://bee-companion.eu.auth0.com/dbconnections/signup',
+    body: {
+      email: _.get(data, 'email'),
+      password: _.get(data, 'password'),
+      username: _.get(data, 'userName') || _.get(data, 'username'),
+      user_metadata: {
+        firstName: _.get(data, 'firstName'),
+        lastName: _.get(data, 'lastName')
+      },
+      connection: 'Username-Password-Authentication'
+    }
+  });
+}
+
 function getJWTToken(req){
   const parts = req.headers.authorization.split(' ');
   if (parts.length === 2) {
@@ -147,10 +163,19 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
         return res.status(400).json({'error':'User has already this role!'});
       }
       const opts = getRoleChangeOpts(role, userInfo.user_id);
-      console.log(opts);
       makeApiCall(opts, (data) => { res.json(data); });
     });
   }
+});
+
+// Signup Process
+router.post('/auth/signup', function(req, res) {
+  const userdata = _.get(req, 'body.user');
+  const opts = getSignupOpts(userdata);
+  rp(opts)
+    .then((data) => { res.json(data); })
+    .catch((error) => {
+      res.status(400).json({ error }); });
 });
 
 module.exports = router;
