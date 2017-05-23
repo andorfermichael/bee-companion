@@ -172,9 +172,12 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
   }
 });
 
+// Enabling CORS Pre-Flight 
+router.options('/signup', cors(corsConfig));
+router.use('/signup', cors(corsConfig));
+
 // Signup Process
-router.use('/auth/signup', cors(corsConfig));
-router.post('/auth/signup', function(req, res) {
+router.post('/signup', function(req, res) {
   const userdata = _.get(req, 'body.user');
   const opts = getSignupOpts(userdata);
   rp(opts)
