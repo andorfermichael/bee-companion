@@ -1,9 +1,18 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
+
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 
 import { Auth } from '../@services/auth.service';
 import { EventsService } from '../@services/events.service';
+
+import * as _ from 'lodash';
 
 @Component({
   selector: 'loginCard',
@@ -36,7 +45,7 @@ import { EventsService } from '../@services/events.service';
   ]
 })
 
-export class LoginCardComponent implements OnInit {
+export class LoginCardComponent implements OnInit, OnDestroy {
   public forgotPassword: boolean;
   public usernameEmpty = 'inactive';
   public username2Empty = 'inactive';
@@ -51,6 +60,9 @@ export class LoginCardComponent implements OnInit {
   constructor(public auth: Auth, public router: Router, public _eventsService: EventsService) {}
 
   public setFocus(elementRef) {
+    if (!elementRef) {
+      return;
+    }
     elementRef.nativeElement.focus();
   }
 
@@ -64,7 +76,7 @@ export class LoginCardComponent implements OnInit {
   }
 
   public restoreFields(data: any) {
-    this.usernameElementRef.nativeElement.value = data.username;
+    this.usernameElementRef.nativeElement.value = _.get(data, 'username', '');
     this.setFocus(this.passwordElementRef);
   }
 
@@ -73,6 +85,10 @@ export class LoginCardComponent implements OnInit {
       this.onLoginFail(err);
       this.restoreFields(data);
     });
+  }
+
+  public ngOnDestroy() {
+    this._eventsService.off('loginFail');
   }
 
   public resetUsernamePasswordEmtpy() {
@@ -144,11 +160,13 @@ export class LoginCardComponent implements OnInit {
       this.setFocus(this.usernameElementRef);
       this.errorMsg = 'Username or email-address are necessary!';
     } else {
-      this.auth.forgotPassword(username, email).then(
-        (data: any) => {
+      this.auth.forgotPassword(username, email)
+      .then(
+        (data) => {
           this.successMsg = data;
           this.forgotPassword = false;
-        },
+        })
+      .catch(
         (error) => {
           this.errorMsg = error;
           this.forgotPassword = false;

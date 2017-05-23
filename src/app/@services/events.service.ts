@@ -31,6 +31,12 @@ export class EventsService {
     this.listeners[name].push(listener);
   }
 
+  public off(name) {
+    if (this.listeners[name]) {
+      this.listeners[name] = [];
+    }
+  }
+
   public broadcast(name, ...args) {
     this.eventsSubject.next({
       name,
