@@ -1,18 +1,11 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  ElementRef,
-  ViewChild
-} from '@angular/core';
-
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 import { Router } from '@angular/router';
 
+import * as _ from 'lodash';
+
 import { Auth } from '../@services/auth.service';
 import { EventsService } from '../@services/events.service';
-
-import * as _ from 'lodash';
 
 @Component({
   selector: 'loginCard',
@@ -47,13 +40,13 @@ import * as _ from 'lodash';
 
 export class LoginCardComponent implements OnInit, OnDestroy {
   public forgotPassword: boolean;
-  public usernameEmpty = 'inactive';
-  public username2Empty = 'inactive';
-  public passwordEmpty = 'inactive';
-  public emailEmpty = 'inactive';
-  public submitErr = 'inactive';
-  @ViewChild('username') public usernameElementRef;
-  @ViewChild('password') public passwordElementRef;
+  public usernameEmpty: string = 'inactive';
+  public username2Empty: string = 'inactive';
+  public passwordEmpty: string = 'inactive';
+  public emailEmpty: string = 'inactive';
+  public submitErr: string = 'inactive';
+  @ViewChild('username') public usernameElementRef: any;
+  @ViewChild('password') public passwordElementRef: any;
   public errorMsg: string;
   public successMsg: string;
 

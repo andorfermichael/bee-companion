@@ -3,10 +3,9 @@ import { trigger, state, style, transition, keyframes, animate } from '@angular/
 import { Router } from '@angular/router';
 import { Http } from '@angular/http';
 
-import { EventsService } from '../@services/events.service';
-
 import * as _ from 'lodash';
 
+import { EventsService } from '../@services/events.service';
 import { Auth } from '../@services/auth.service';
 
 @Component({
