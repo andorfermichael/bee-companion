@@ -12,24 +12,24 @@
         <form class="signup signup-supporter">
             <div class="justify-content-sm-between row no-gutters">
                     <label for="name" class="col-12 col-sm-auto">Your name:</label>
-                    <input #firstName class="col-12 col-sm-4" type="text" placeholder="First Name" title="Your first Name" [@fieldRequired]="fieldEmpty.firstName" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="2" maxlength="24" name="firstName">
-                    <input #lastName class="col-12 col-sm-4" type="text" placeholder="Last Name" title="Your last Name"[@fieldRequired]="fieldEmpty.lastName" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="2" maxlength="24" name="lastName">
+                    <input #firstName class="col-12 col-sm-4" type="text" placeholder="First Name" title="Your first Name" [@fieldRequired]="getFieldEmpty('firstName')" (@fieldRequired.done)="resetFieldEmpty()" required minlength="2" maxlength="24" name="firstName">
+                    <input #lastName class="col-12 col-sm-4" type="text" placeholder="Last Name" title="Your last Name"[@fieldRequired]="getFieldEmpty('lastName')" (@fieldRequired.done)="resetFieldEmpty()" required minlength="2" maxlength="24" name="lastName">
             </div>
             <div class="justify-content-sm-between row no-gutters username">
                     <label for="username" class="col-12 col-sm-auto">Desired username:</label>
-                    <input #userName class="col-12 col-sm-6" type="text" placeholder="Username" title="Your desired username"[@fieldRequired]="fieldEmpty.userName" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="4" maxlength="24" name="userName">
+                    <input #userName class="col-12 col-sm-6" type="text" placeholder="Username" title="Your desired username"[@fieldRequired]="getFieldEmpty('userName')" (@fieldRequired.done)="resetFieldEmpty()" required minlength="4" maxlength="24" name="userName">
             </div>
             <div class="justify-content-sm-between row no-gutters email">
                     <label for="email" class="col-12 col-sm-auto">Your email address:</label>
-                    <input #email class="col-12 col-sm-6" type="email" placeholder="Email address" title="Your email address"[@fieldRequired]="fieldEmpty.email" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="6" maxlength="255" name="email">
+                    <input #email class="col-12 col-sm-6" type="email" placeholder="Email address" title="Your email address"[@fieldRequired]="getFieldEmpty('email')" (@fieldRequired.done)="resetFieldEmpty()" required minlength="6" maxlength="255" name="email">
             </div>
             <div class="justify-content-sm-between row no-gutters password">
                     <label for="password" class="col-12 col-sm-auto">Your password:</label>
-                    <input #password class="col-12 col-sm-6" type="password" placeholder="Password" title="Your password"[@fieldRequired]="fieldEmpty.password" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="4" name="password">
+                    <input #password class="col-12 col-sm-6" type="password" placeholder="Password" title="Your password"[@fieldRequired]="getFieldEmpty('password')" (@fieldRequired.done)="resetFieldEmpty()" required minlength="4" name="password">
             </div>
             <div class="justify-content-sm-between row no-gutters passwordconfirm">
                     <label for="passwordconfirm" class="col-12 col-sm-auto">Confirm your password:</label>
-                    <input #passwordconfirm class="col-12 col-sm-6" type="password" placeholder="Repeat password" title="Repeat your password for security reasons"[@fieldRequired]="fieldEmpty.passwordConfirm" (@fieldRequired.done)="resetFieldEmtpy()" required minlength="4" name="passwordCheck">
+                    <input #passwordconfirm class="col-12 col-sm-6" type="password" placeholder="Repeat password" title="Repeat your password for security reasons"[@fieldRequired]="getFieldEmpty('passwordConfirm')" (@fieldRequired.done)="resetFieldEmpty()" required minlength="4" name="passwordCheck">
             </div>
             <div class="row no-gutters">
                 <div class="col-9 log-message">

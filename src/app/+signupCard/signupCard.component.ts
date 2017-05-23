@@ -56,12 +56,6 @@ export class SignupCardComponent {
     elementRef.nativeElement.focus();
   }
 
-  public static resetFieldEmtpy() {
-    _.forOwn(SignupCardComponent.fieldEmpty, (val, key) => {
-      _.set(SignupCardComponent.fieldEmpty, key, 'inactive');
-    });
-  }
-
   public forgotPassword: boolean;
 
   @ViewChild('firstName') public firstNameElementRef: any;
@@ -89,7 +83,18 @@ export class SignupCardComponent {
               public _eventsService: EventsService) {
   }
 
-  public setActive(fieldname: string, active = true) {
+  public getFieldEmpty(parameter?: string): any {
+    return parameter ? _.get(SignupCardComponent.fieldEmpty, parameter) :
+    SignupCardComponent.fieldEmpty;
+  }
+
+  public resetFieldEmpty(): void {
+    _.forOwn(SignupCardComponent.fieldEmpty, (val, key) => {
+      _.set(SignupCardComponent.fieldEmpty, key, 'inactive');
+    });
+  }
+
+  public setActive(fieldname: string, active = true): void {
     _.set(SignupCardComponent.fieldEmpty, fieldname, active ? 'active' : 'inactive');
     if (active) {
       SignupCardComponent.setFocus(_.get(this.elementRefs, fieldname));
@@ -102,7 +107,7 @@ export class SignupCardComponent {
     username?: string,
     email?: string,
     password?: string,
-    passwordConfirm?: string) {
+    passwordConfirm?: string): void {
 
     this.errorMsg = '';
     this.successMsg = '';
@@ -169,11 +174,11 @@ export class SignupCardComponent {
           }
           this.errorMsg = _.get(err, 'error.description', 'An unknown error ocurred!');
           this.submitErr = 'active';
-          if (err.error.code === 'user_exists') {
+          if (_.get(err, 'error.code') === 'user_exists') {
             this.setActive('userName');
             this.setActive('email');
           }
-          if (err.error.code === 'username_exists') {
+          if (_.get(err, 'error.code') === 'username_exists') {
             this.setActive('userName');
           }
         });
