@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const cors = require('cors');
+const corsConfig = require('../config/cors');
 
 const _ = require('lodash');
 const rp = require('request-promise');
@@ -34,7 +36,7 @@ const checkJwt = jwt({
   // Validate the audience and the issuer. (BeeCompanion)
   audience: process.env.AUTH0_CLIENT_ID,
   issuer: auth0BaseDomain,
-  algorithms: ['RS512']
+  algorithms: ['RS256']
 });
 
 // Authentication middleware. When used, the
@@ -117,7 +119,7 @@ function getRoleChangeOpts(role, user_id) {
 
 function getSignupOpts(data) {
   return _.assign({}, authOptions, {
-    url: 'https://bee-companion.eu.auth0.com/dbconnections/signup',
+    url: `${auth0BaseDomain}dbconnections/signup`,
     body: {
       email: _.get(data, 'email'),
       password: _.get(data, 'password'),
@@ -144,12 +146,14 @@ function getJWTToken(req){
 }
 
 // Get all users
+router.use('/users', cors(corsConfig));
 router.get('/users', function(req, res) {
   const url = `${auth0BaseDomain}api/v2/users`;
   makeApiCall({ url: url }, (data) => { res.json(data); });
 });
 
 // Set the role of a user
+router.use('/user/set/role/:role', cors(corsConfig));
 router.get('/user/set/role/:role', checkJwt, function(req, res) {
   const role = req.params.role;
   if (!role || (role !== 'Supporter' && role !== 'Beekeeper')) {
@@ -169,6 +173,7 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
 });
 
 // Signup Process
+router.use('/auth/signup', cors(corsConfig));
 router.post('/auth/signup', function(req, res) {
   const userdata = _.get(req, 'body.user');
   const opts = getSignupOpts(userdata);

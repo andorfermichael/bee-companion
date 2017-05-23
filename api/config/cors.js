@@ -22,8 +22,8 @@ const options = {
     }
   },
   methods: ['GET', 'PUT', 'POST'],
-  allowedHeaders: ['Content-Type'],
-  credentials: false,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
   optionsSuccessStatus: 200
 };
 
