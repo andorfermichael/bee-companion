@@ -4,10 +4,10 @@ import { EventsService } from './events.service';
 
 describe('EventsService', () => {
   let service: EventsService;
-  let broadcastComponent: mockBroadcastComponent;
-  let listenerComponent: mockListenerComponent;
+  let broadcastComponent: MockBroadcastComponent;
+  let listenerComponent: MockListenerComponent;
 
-  class mockBroadcastComponent {
+  class MockBroadcastComponent {
     constructor(public _eventsService: EventsService) {}
 
     public sendBroadcast(success: boolean) {
@@ -19,7 +19,7 @@ describe('EventsService', () => {
     }
   }
 
-  class mockListenerComponent {
+  class MockListenerComponent {
     constructor(public _eventsService: EventsService) {
     }
 
@@ -43,8 +43,8 @@ describe('EventsService', () => {
 
   beforeEach(inject([EventsService], (eventsService: EventsService) => {
     service = eventsService;
-    broadcastComponent = new mockBroadcastComponent(service);
-    listenerComponent = new mockListenerComponent(service);
+    broadcastComponent = new MockBroadcastComponent(service);
+    listenerComponent = new MockListenerComponent(service);
   }));
 
   it('EventsService should send success broadcast message from component to another component', () => {
