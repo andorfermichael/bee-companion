@@ -31,7 +31,7 @@ export class PayPalService {
       .catch(this.handleError);
   }
 
-  public getPaymentDetails(payKey: string) {
+  public getPaymentDetails(payKey: string): Observable<any>  {
     const headers = new Headers({
       'Content-Type': 'application/json'
     });
