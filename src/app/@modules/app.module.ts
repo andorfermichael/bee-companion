@@ -43,6 +43,7 @@ import { MainCardComponent } from '../+mainCard';
 import { MainContentComponent } from '../+mainContent';
 import { MainContentRowComponent } from '../+mainContentRow';
 import { NavComponent } from '../+nav';
+import { SideNavComponent } from '../+sidenav';
 import { NoContentComponent } from '../no-content';
 import { PayPalFormComponent } from '../+paypalForm';
 import { PrivacyPolicyComponent } from '../privacy';
@@ -81,6 +82,7 @@ const APP_PROVIDERS = [
     MainContentComponent,
     MainContentRowComponent,
     NavComponent,
+    SideNavComponent,
     NoContentComponent,
     PayPalFormComponent,
     PrivacyPolicyComponent,

@@ -1,8 +1,11 @@
-<header>Loading...</header>
+<header [ngClass]="{'loggedIn': auth.isAuthenticated()}">
+	<nav-bar *ngIf="auth.isAuthenticated()"></nav-bar>
+</header>
 
-<main [ngClass]="'home'">
-	<nav-bar>Loading...</nav-bar>
+<main [ngClass]="{'home': true, 'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled}">
+	<nav-bar *ngIf="!auth.isAuthenticated()"></nav-bar>
 	<mainContent>
+		<side-nav *ngIf="auth.isAuthenticated()"></side-nav>
 		<mainContentRow>
 			<mainCard>
 					<h1 class="card-title" *ngIf="!auth.isAuthenticated() || !auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span></h1><br>

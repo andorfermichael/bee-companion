@@ -1,9 +1,20 @@
 /*styles for home content only*/
 
+/deep/ main.loggedIn {
+  padding-top: 120px;
+  &.headerIsToggled {
+    padding-top: 60px; 
+  }
+  .main-content:after {
+    opacity: 0;
+  }
+}
+
 main {
   width: 100%;
   position: relative;
   height: auto;
+  transition: padding .75s ease;
 
   .txt-bee {
     color: #F6DD3B;

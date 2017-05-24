@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { Auth } from '../@services/auth.service';
 import { EventsService } from '../@services/events.service';
+import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
   selector: 'nav-bar',
@@ -83,13 +84,15 @@ export class NavComponent implements OnInit {
   @ViewChild('username') public usernameElementRef: any;
   @ViewChild('password') public passwordElementRef: any;
   @Input() public disableInlineLogin: boolean;
+  @Input() public headerToggle: boolean = false;
   @Input() public extErrorMessage: string;
   public errorMsg: string;
   public isError: boolean;
   public isLoading = false;
 
   constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer,
-              public auth: Auth, private router: Router, public _eventsService: EventsService) {
+              public auth: Auth, private router: Router, public _eventsService: EventsService,
+              private localStorage: LocalStorageService) {
   }
 
   @HostListener('click', ['$event'])
@@ -171,6 +174,10 @@ export class NavComponent implements OnInit {
     }
   }
 
+  public toggleHeader() {
+    this._eventsService.broadcast('headerToggled', !this.headerToggle);
+  }
+
   public toggleIsLoading(isLoading?: boolean): void {
     isLoading = (isLoading !== undefined) ? isLoading : !this.isLoading;
     this.isLoading = isLoading;
@@ -195,6 +202,10 @@ export class NavComponent implements OnInit {
     this._eventsService.on('loginFail', () => {
       this.toggleIsLoading(false);
       this.isError = true;
+    });
+    this.headerToggle = this.localStorage.retrieve('headerIsToggled');
+    this._eventsService.on('headerToggled', (toggle) => {
+      this.headerToggle = toggle;
     });
   }
 

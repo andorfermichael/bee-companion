@@ -1,7 +1,18 @@
 :host {
-  width: 100%;
-  position: relative;
-  text-align: center;
+    width: 100%;
+    position: relative;
+    text-align: center;
+    &.loggedIn .header-wrapper {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 20;
+        background-color: white;
+        .bc-header-logo {
+            height: 60px;
+            opacity: 0;
+        }
+    }
 }
 
 .main-icon {
@@ -27,8 +38,9 @@
 }
 
 .bc-header-logo {
-    transition: opacity 1s ease;
+    transition: all .75s ease;
     opacity: 1;
+    height: 150px;
     img {
         width: 144px;
         height: 150px;
@@ -51,14 +63,25 @@
     top: 10px;
 }
 
-.header-wrapper {
-    position: relative;
-    transition: height 1s ease;
-    height: 150px;
+:host {
     &.loggedIn {
-        height: 60px;
-        .bc-header-logo {
-            opacity: 0;
+        /deep/ {
+            .header-wrapper {
+                position: relative;
+                transition: height 1s ease;
+                &.toggled {
+                    .bc-header-logo {
+                        height: 0px!important;
+                    }
+                    .main-icon {
+                        display: none;
+                    }
+                    nav-bar .main-nav .nav-brand-icon-wrapper .nav-brand-icon {
+                        width: 50px!important;
+                        transform: translate(-50%, 2.5px)!important;
+                    }
+                }
+            }
         }
     }
 }

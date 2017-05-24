@@ -35,6 +35,11 @@
           </div>
           <div class="login-menu login-menu-desktop hidden-sm-down" *ngIf="!disableInlineLogin">
             <div class="login-buttons d-flex" [@loginButtonsState]="loginButtons">
+              <li class="nav-item" (mouseover)="onMouseOver($event)" *ngIf="headerToggle && auth.isAuthenticated()">
+                <a class="nav-link" (click)="toggleHeader()">
+                  <i _ngcontent-c2="" class="hidden-xs-down arrow_carrot-up"></i>
+                </a>
+              </li>
               <li class="nav-item " (mouseover)="onMouseOver($event)" *ngIf="!auth.isAuthenticated()">
                 <a class="nav-link" [routerLink]="['/signup']">SignUp</a>
               </li>

@@ -7,6 +7,8 @@ import 'rxjs/add/operator/switchMap';
 import { Auth } from '../@services/auth.service';
 import { PayPalService } from '../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { EventsService } from '../@services/events.service';
+
 import { Title } from '../title';
 
 @Component({
@@ -18,14 +20,13 @@ import { Title } from '../title';
   ]
 })
 export class HomeComponent implements OnInit {
+  public headerIsToggled: boolean = false;
+
   constructor(private paypalService: PayPalService, public auth: Auth,
               private route: ActivatedRoute, private location: Location,
-              private localStorage: LocalStorageService) {}
+              private localStorage: LocalStorageService, public _eventsService: EventsService) {}
 
-  public ngOnInit() {
-    if (this.auth.isAuthenticated()) {
-      this.auth.checkUserHasRole();
-
+  public checkPayments(): void {
       // Get payment status, approved or cancelled
       const paymentStatus = this.route.snapshot.params['status'];
       if (paymentStatus === 'approved') {
@@ -64,6 +65,16 @@ export class HomeComponent implements OnInit {
         // If payment is cancelled, nothing has to be done, since pay keys are only valid for
         // three hours
       }
+  }
+
+  public ngOnInit() {
+    if (this.auth.isAuthenticated()) {
+      this.auth.checkUserHasRole();
+      this.checkPayments();
+      this.headerIsToggled = this.localStorage.retrieve('headerIsToggled');
+      this._eventsService.on('headerToggled', (toggle) => {
+        this.headerIsToggled = toggle;
+      });
     }
   }
 }

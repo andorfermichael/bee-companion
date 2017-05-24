@@ -3,22 +3,22 @@ html, body{
   font-family: 'Open Sans', sans-serif;
 }
 
-a:not(.btn):not(.button) {
-	color: white;
-	text-decoration: none;
-}
+// a:not(.btn):not(.button) {
+// 	color: white;
+// 	text-decoration: none;
+// }
 
-a:not(.btn):not(.button):not(.nav-link):hover {
-	text-decoration: underline;
-}
+// a:not(.btn):not(.button):not(.nav-link):hover {
+// 	text-decoration: underline;
+// }
 
-a:not(.btn):not(.button):visited {
-	color: white;
-}
+// a:not(.btn):not(.button):visited {
+// 	color: white;
+// }
 
-a:not(.btn):not(.button).active {
-  color: #F6DD3B;
-}
+// a:not(.btn):not(.button).active {
+//   color: #F6DD3B;
+// }
 
 .no-gutter {
 	padding: 0;
