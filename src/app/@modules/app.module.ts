@@ -30,27 +30,30 @@ import { AppComponent } from '../app.component';
 import { APP_RESOLVER_PROVIDERS } from '../app.resolver';
 
 // Second level components
-import { AboutUsComponent } from '../about';
-import { BeeRadarComponent } from '../beeRadar';
-import { CallbackComponent } from '../callback';
-import { ContactUsComponent } from '../contact';
-import { FooterComponent } from '../+footer';
-import { HeaderComponent } from '../+header';
-import { HomeComponent } from '../home';
-import { LoginCardComponent } from '../+loginCard';
-import { LoginPageComponent } from '../login';
-import { MainCardComponent } from '../+mainCard';
-import { MainContentComponent } from '../+mainContent';
-import { MainContentRowComponent } from '../+mainContentRow';
-import { NavComponent } from '../+nav';
-import { NoContentComponent } from '../no-content';
-import { PayPalFormComponent } from '../+paypalForm';
-import { PrivacyPolicyComponent } from '../privacy';
-import { RadarCardComponent } from '../+radarCard';
-import { RestrictedComponent } from '../restricted';
-import { SignupCardComponent } from '../+signupCard';
-import { SignupPageComponent } from '../signup';
-import { TermsAndConditionsComponent } from '../terms';
+// @pages
+import { HomeComponent } from '../@pages/home';
+import { BeeRadarComponent } from '../@pages/beeRadar';
+import { AboutUsComponent } from '../@pages/about';
+import { RestrictedComponent } from '../@pages/restricted';
+import { LoginPageComponent } from '../@pages/login';
+import { SignupPageComponent } from '../@pages/signup';
+import { CallbackComponent } from '../@pages/callback';
+import { ContactUsComponent } from '../@pages/contact';
+import { TermsAndConditionsComponent } from '../@pages/terms';
+import { PrivacyPolicyComponent } from '../@pages/privacy';
+import { NoContentComponent } from '../@pages/no-content';
+// @elements
+import { FooterComponent } from '../@elements/+footer';
+import { HeaderComponent } from '../@elements/+header';
+import { LoginCardComponent } from '../@elements/+loginCard';
+import { MainCardComponent } from '../@elements/+mainCard';
+import { MainContentComponent } from '../@elements/+mainContent';
+import { MainContentRowComponent } from '../@elements/+mainContentRow';
+import { NavComponent } from '../@elements/+nav';
+import { SideNavComponent } from '../@elements/+sidenav';
+import { PayPalFormComponent } from '../@elements/+paypalForm';
+import { RadarCardComponent } from '../@elements/+radarCard';
+import { SignupCardComponent } from '../@elements/+signupCard';
 
 // Styles
 import '../../styles/styles.scss';
@@ -81,6 +84,7 @@ const APP_PROVIDERS = [
     MainContentComponent,
     MainContentRowComponent,
     NavComponent,
+    SideNavComponent,
     NoContentComponent,
     PayPalFormComponent,
     PrivacyPolicyComponent,

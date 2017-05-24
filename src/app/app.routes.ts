@@ -4,17 +4,17 @@ import { AuthGuard } from './@services/auth-guard.service';
 import { AuthRoleGuard } from './@services/auth-role-guard.service';
 import { NonAuthGuard } from './@services/non-auth-guard.service';
 
-import { AboutUsComponent } from './about';
-import { BeeRadarComponent } from './beeRadar';
-import { CallbackComponent } from './callback';
-import { ContactUsComponent } from './contact';
-import { HomeComponent } from './home';
-import { LoginPageComponent } from './login';
-import { NoContentComponent } from './no-content';
-import { PrivacyPolicyComponent } from './privacy';
-import { RestrictedComponent } from './restricted';
-import { SignupPageComponent } from './signup';
-import { TermsAndConditionsComponent } from './terms';
+import { AboutUsComponent } from './@pages/about';
+import { BeeRadarComponent } from './@pages/beeRadar';
+import { CallbackComponent } from './@pages/callback';
+import { ContactUsComponent } from './@pages/contact';
+import { HomeComponent } from './@pages/home';
+import { LoginPageComponent } from './@pages/login';
+import { NoContentComponent } from './@pages/no-content';
+import { PrivacyPolicyComponent } from './@pages/privacy';
+import { RestrictedComponent } from './@pages/restricted';
+import { SignupPageComponent } from './@pages/signup';
+import { TermsAndConditionsComponent } from './@pages/terms';
 
 export const ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },

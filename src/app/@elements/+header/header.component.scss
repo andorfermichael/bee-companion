@@ -1,0 +1,84 @@
+:host {
+    width: 100%;
+    position: relative;
+    text-align: center;
+    a {
+        cursor: pointer;
+    }
+}
+
+.main-icon {
+    font-size: 1.5em;
+    a {
+        color: rgba(0, 0, 0, 0.5);
+        &:hover {
+            color: rgba(0, 0, 0, 0.75)!important;
+            text-decoration: none;
+        }
+    }
+    i {
+        vertical-align: baseline;
+        &[class*=flag], &[class*=flag]:before {
+            border-radius: 100%;
+            overflow: hidden;
+        }   
+    }
+}
+
+.header-icons-right a:not(:last-child) {
+    margin: 0 10px 0 0;
+}
+
+.bc-header-logo {
+    transition: all .75s ease;
+    opacity: 1;
+    height: 150px;
+    img {
+        width: 144px;
+        height: 150px;
+    }
+}
+
+.header-icons-left {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.15em;
+    i {
+        vertical-align: middle;
+    }
+}
+
+.header-icons-right {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.header-wrapper {
+    position: relative;
+    transition: height 1s ease;
+    &.loggedIn {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 20;
+        background-color: white;
+        .bc-header-logo {
+            height: 60px;
+            opacity: 0;
+        }
+        &.toggled {
+            .bc-header-logo {
+                height: 0px!important;
+            }
+            .main-icon {
+                display: none;
+            }
+            /deep/ .nav-brand-icon-wrapper .nav-brand-icon {
+                width: 50px!important;
+                transform: translate(-50%, 2.5px)!important;
+            }
+        }
+    }
+}

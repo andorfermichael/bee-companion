@@ -1,0 +1,34 @@
+/*styles for about content only*/
+
+.card-quote {
+  margin-left: -1.25rem;
+  margin-right: -1.25rem;
+  margin-bottom: 1.25rem;
+  background-color: black;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+
+  .inner-quote {
+    margin: 0 1.25rem;
+  }
+
+  .lead {
+    text-align: left;
+    @media (min-width: 576px) { 
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+
+  .author {
+  }
+
+  img.einstein {
+    width: 100%;
+    height: auto;
+    background-color: white;
+  }
+}
+a {
+  color: white;
+}

@@ -1,0 +1,8 @@
+/*styles for bee-radar content only*/
+
+.bee-radar {
+    /deep/ .main-content-row {
+      height: auto;
+      background-color: white;
+    }
+}
