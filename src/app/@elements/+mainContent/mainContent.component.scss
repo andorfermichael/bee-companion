@@ -10,7 +10,7 @@ main {
   width: 100%;
   position: relative;
   height: auto;
-  transition: padding .75s ease;
+  //transition: padding .75s ease;
   // iphone 5: 320x568
   // 100% - header - footer
   min-height: calc(100% - 150px - 239px);
@@ -29,6 +29,7 @@ main {
 
   &.loggedIn {
     padding-top: 120px;
+    transition: padding .75s ease;
     //as header is fixed now, header does not need to be substracted anymore
     min-height: calc(100% - 239px);
     @media (min-width: 576px) {
