@@ -1,4 +1,4 @@
-import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -25,7 +25,11 @@ describe(`SignupPageComponent`, () => {
 
   class MockAuthHttp {
     public get(url: string): Observable<any> {
-      return Observable.of({});
+      if (url === 'http://localhost:3000/api/auth/user/set/role/Error') {
+        return Observable.throw({});
+      } else {
+        return Observable.of({});
+      }
     }
   }
 
@@ -79,6 +83,14 @@ describe(`SignupPageComponent`, () => {
       spyOn(authService, '_updateProfile');
       comp.addUserRole('Beekeeper');
       expect(authService._updateProfile).toHaveBeenCalled();
+    });
+  });
+
+  describe(`failed signup/login`, () => {
+    it('addUserRole should log error on failed auth api call', () => {
+      spyOn(console, 'error');
+      comp.addUserRole('Error');
+      expect(console.error).toHaveBeenCalled();
     });
   });
 });

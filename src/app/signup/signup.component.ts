@@ -55,6 +55,6 @@ export class SignupPageComponent {
           this.auth._updateProfile(); },
         (err) => {
           this._eventsService.broadcast('loginFail');
-          console.log(err); });
+          console.error(err); });
   }
 }
