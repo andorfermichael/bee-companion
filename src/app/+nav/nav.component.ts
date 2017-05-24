@@ -140,7 +140,7 @@ export class NavComponent implements OnInit {
     }
   }
 
-  public resetUsernamePasswordEmtpy() {
+  public resetUsernamePasswordEmpty() {
     this.usernameEmpty = 'inactive';
     this.passwordEmpty = 'inactive';
   }
