@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { PayPalService } from '../@services/paypal.service';
+import { PayPalService } from '../../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({

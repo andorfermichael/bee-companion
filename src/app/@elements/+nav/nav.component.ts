@@ -3,8 +3,8 @@ import { trigger, state, style, transition, keyframes, animate } from '@angular/
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
-import { Auth } from '../@services/auth.service';
-import { EventsService } from '../@services/events.service';
+import { Auth } from '../../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({

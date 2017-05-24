@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 
 import * as _ from 'lodash';
 
-import { Auth } from '../@services/auth.service';
-import { EventsService } from '../@services/events.service';
+import { Auth } from '../../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
 
 @Component({
   selector: 'loginCard',

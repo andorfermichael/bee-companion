@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Auth } from '../@services/auth.service';
+import { Auth } from '../../@services/auth.service';
 
 @Component({
   selector: 'restricted',

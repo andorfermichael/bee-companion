@@ -5,8 +5,8 @@ import { Http } from '@angular/http';
 
 import * as _ from 'lodash';
 
-import { EventsService } from '../@services/events.service';
-import { Auth } from '../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
+import { Auth } from '../../@services/auth.service';
 
 @Component({
   selector: 'signupCard',

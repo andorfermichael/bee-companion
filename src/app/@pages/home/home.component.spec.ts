@@ -9,8 +9,8 @@ import { Location, LocationStrategy } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 // Load the implementations that should be tested
-import { Auth } from '../@services/auth.service';
-import { PayPalService } from '../@services/paypal.service';
+import { Auth } from '../../@services/auth.service';
+import { PayPalService } from '../../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { HomeComponent } from './home.component';
 

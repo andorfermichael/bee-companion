@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 
 import { AuthHttp } from 'angular2-jwt';
 
-import { Auth } from '../@services/auth.service';
-import { EventsService } from '../@services/events.service';
+import { Auth } from '../../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
 
 @Component({
   selector: 'signupPage',

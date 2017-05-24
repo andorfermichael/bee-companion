@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Auth } from '../@services/auth.service';
-import { EventsService } from '../@services/events.service';
+import { Auth } from '../../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({

@@ -4,10 +4,10 @@ import { Location } from '@angular/common';
 
 import 'rxjs/add/operator/switchMap';
 
-import { Auth } from '../@services/auth.service';
-import { PayPalService } from '../@services/paypal.service';
+import { Auth } from '../../@services/auth.service';
+import { PayPalService } from '../../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { EventsService } from '../@services/events.service';
+import { EventsService } from '../../@services/events.service';
 
 import { Title } from '../title';
 
