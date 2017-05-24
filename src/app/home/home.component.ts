@@ -46,11 +46,11 @@ export class HomeComponent implements OnInit {
                 }, 4000);
               },
               (err) => {
-                console.log(err);
+                console.error(err);
               });
           },
           (err) => {
-            console.log(err);
+            console.error(err);
           });
       } else {
         // Clear payment key from local storage

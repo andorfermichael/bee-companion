@@ -52,23 +52,20 @@ export class LoginCardComponent implements OnInit, OnDestroy {
 
   constructor(public auth: Auth, public router: Router, public _eventsService: EventsService) {}
 
-  public setFocus(elementRef) {
+  public setFocus(elementRef): any {
     if (!elementRef) {
       return;
     }
     elementRef.nativeElement.focus();
   }
 
-  public toggleForgotPassword(toggleTo: boolean) {
-    if (toggleTo === undefined) {
-      toggleTo = !this.forgotPassword;
-    }
+  public toggleForgotPassword(toggleTo: boolean): void {
     this.forgotPassword = toggleTo;
     this.resetUsernamePasswordEmpty();
     this.errorMsg = '';
   }
 
-  public restoreFields(data: any) {
+  public restoreFields(data: any): void {
     this.usernameElementRef.nativeElement.value = _.get(data, 'username', '');
     this.setFocus(this.passwordElementRef);
   }
@@ -80,11 +77,11 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this._eventsService.off('loginFail');
   }
 
-  public resetUsernamePasswordEmpty() {
+  public resetUsernamePasswordEmpty(): void {
     this.usernameEmpty = 'inactive';
     this.username2Empty = 'inactive';
     this.passwordEmpty = 'inactive';
@@ -92,7 +89,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     this.submitErr = 'inactive';
   }
 
-  public loginWithSocial(type: string) {
+  public loginWithSocial(type: string): any {
     this._eventsService.broadcast('loginStart');
     if (type.toLowerCase() === 'facebook') {
       this.auth.loginWithFacebook();
@@ -103,7 +100,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  public checkInputs(username?: string, password?: string) {
+  public checkInputs(username?: string, password?: string): any  {
     this.errorMsg = '';
     this.successMsg = '';
     if (!password) {
@@ -137,7 +134,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     }
   }
 
-  public checkForgotPasswordInputs(username?: string, email?: string) {
+  public checkForgotPasswordInputs(username?: string, email?: string): any {
     this.errorMsg = '';
     this.successMsg = '';
     if (!username && !email) {
