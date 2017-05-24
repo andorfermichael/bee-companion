@@ -64,7 +64,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
       toggleTo = !this.forgotPassword;
     }
     this.forgotPassword = toggleTo;
-    this.resetUsernamePasswordEmtpy();
+    this.resetUsernamePasswordEmpty();
     this.errorMsg = '';
   }
 
@@ -84,7 +84,7 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     this._eventsService.off('loginFail');
   }
 
-  public resetUsernamePasswordEmtpy() {
+  public resetUsernamePasswordEmpty() {
     this.usernameEmpty = 'inactive';
     this.username2Empty = 'inactive';
     this.passwordEmpty = 'inactive';
@@ -100,12 +100,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     if (type.toLowerCase() === 'google') {
       this.auth.loginWithGoogle();
     }
-    return false;
-  }
-
-  public loginWithFacebook() {
-    this._eventsService.broadcast('loginStart');
-    this.auth.loginWithGoogle();
     return false;
   }
 
