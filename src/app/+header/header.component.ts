@@ -11,6 +11,11 @@ export class HeaderComponent {
   public message: string;
   public messageType: string;
 
+  constructor() {
+    this.processLocation = this.processLocation.bind(this);
+    this.locationError = this.locationError.bind(this);
+  }
+
   public processLocation(data: any) {
     if (data) {
       if (data.coords) {
@@ -32,8 +37,8 @@ export class HeaderComponent {
   public enableNavigatorLocation() {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        this.processLocation.bind(this),
-        this.locationError.bind(this)
+        this.processLocation,
+        this.locationError
       );
     }
   }
