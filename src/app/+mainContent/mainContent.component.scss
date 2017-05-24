@@ -11,11 +11,39 @@ main {
   position: relative;
   height: auto;
   transition: padding .75s ease;
-  min-height: calc(100% - 150px - 82px);
+  display: flex;
+  // iphone 5: 320x568
+  // 100% - header - footer
+  min-height: calc(100% - 150px - 239px);
+  @media (min-width: 576px) {
+    min-height: calc(100% - 150px - 119px);
+  }
+  @media (min-width: 768px) {
+    min-height: calc(100% - 150px - 106px);
+  }
+  @media (min-width: 992px) {
+    //same as 768px
+  }
+  @media (min-width: 1044px) { 
+    min-height: calc(100% - 150px - 82px);
+  }
 
   &.loggedIn {
     padding-top: 120px;
-    min-height: calc(100% - 82px);
+    //as header is fixed now, header does not need to be substracted anymore
+    min-height: calc(100% - 239px);
+    @media (min-width: 576px) {
+      min-height: calc(100% - 119px);
+    }
+    @media (min-width: 768px) {
+      min-height: calc(100% - 106px);
+    }
+    @media (min-width: 992px) {
+      //same as 768px
+    }
+    @media (min-width: 1044px) { 
+      min-height: calc(100% - 82px);
+    }
     &.headerIsToggled {
       padding-top: 60px; 
     }

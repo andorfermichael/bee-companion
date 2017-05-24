@@ -1,3 +1,10 @@
+:host {
+    width: 100%;
+    @media (min-width: 768px) {
+        width: auto;
+    }
+}
+
 .main-card {
     background-color: rgba(0,0,0,.85);
     border-color: #292b2c;
@@ -9,5 +16,14 @@
     @media (min-width: 768px) {
       border-radius: 12px;
       max-width: 750px;
+
+    }
+
+    .card-block {
+        padding: .625em;
+        word-break: break-word;
+        @media (min-width: 768px) {
+            padding: 1.25em;
+        }
     }
 }
