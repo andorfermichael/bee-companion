@@ -59,12 +59,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     elementRef.nativeElement.focus();
   }
 
-  public toggleForgotPassword(toggleTo: boolean): void {
-    this.forgotPassword = toggleTo;
-    this.resetUsernamePasswordEmpty();
-    this.errorMsg = '';
-  }
-
   public restoreFields(data: any): void {
     this.usernameElementRef.nativeElement.value = _.get(data, 'username', '');
     this.setFocus(this.passwordElementRef);
@@ -87,6 +81,12 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     this.passwordEmpty = 'inactive';
     this.emailEmpty = 'inactive';
     this.submitErr = 'inactive';
+  }
+
+  public toggleForgotPassword(toggleTo: boolean): void {
+    this.forgotPassword = toggleTo;
+    this.resetUsernamePasswordEmpty();
+    this.errorMsg = '';
   }
 
   public loginWithSocial(type: string): any {

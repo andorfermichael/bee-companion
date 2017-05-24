@@ -7,6 +7,6 @@ import { Auth } from '../../@services/auth.service';
   styleUrls: [ './restricted.component.scss' ],
   templateUrl: './restricted.component.html'
 })
-export class RestrictedComponent{
-  constructor(public auth: Auth) {}
+export class RestrictedComponent {
+  constructor( public auth: Auth ) {}
 }

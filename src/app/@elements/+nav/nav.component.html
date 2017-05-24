@@ -57,10 +57,10 @@
                   <a class="nav-link" (click)="auth.loginWithGoogle(); toggleIsLoading();">Google</a>
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmpty()">
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)">
-                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmpty()">
                 </li>
                 <li class="nav-item" (mouseover)="onMouseOver($event)" (click)="checkInputs(username.value, password.value)">
                   <button type="submit" class="login">

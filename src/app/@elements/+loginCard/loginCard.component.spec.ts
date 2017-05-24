@@ -7,8 +7,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AuthHttp} from 'angular2-jwt';
 
 // Load the implementations that should be tested
-import { Auth } from '../@services/auth.service';
-import { EventsService } from '../@services/events.service';
+import { Auth } from '../../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
 import { LoginCardComponent } from './loginCard.component';
 
 describe(`LoginCardComponent`, () => {

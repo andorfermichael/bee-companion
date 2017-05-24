@@ -8,8 +8,8 @@ import { AuthHttp} from 'angular2-jwt';
 import { DomSanitizer } from '@angular/platform-browser';
 
 // Load the implementations that should be tested
-import { Auth } from '../@services/auth.service';
-import { EventsService } from '../@services/events.service';
+import { Auth } from '../../@services/auth.service';
+import { EventsService } from '../../@services/events.service';
 import { NavComponent } from './nav.component';
 
 describe(`NavComponent`, () => {

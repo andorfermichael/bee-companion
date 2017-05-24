@@ -17,9 +17,6 @@ export class HeaderComponent implements OnInit {
 
   constructor(public auth: Auth, public _eventsService: EventsService,
               private localStorage: LocalStorageService) {
-  }
-
-  constructor() {
     this.processLocation = this.processLocation.bind(this);
     this.locationError = this.locationError.bind(this);
   }

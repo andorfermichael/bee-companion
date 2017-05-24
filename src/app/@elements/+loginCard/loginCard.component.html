@@ -8,23 +8,23 @@
 				<a href="#" (click)="loginWithSocial('google')" class="button rounded">Google <i class="social_googleplus icon"></i></a>
 			</div>
 		</div>
-		<form [ngClass]="{'forgotPassword': forgotPassword, 'login': !forgotPassword}" [@fieldRequired]="submitErr" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+		<form [ngClass]="{'forgotPassword': forgotPassword, 'login': !forgotPassword}" [@fieldRequired]="submitErr" (@fieldRequired.done)="resetUsernamePasswordEmpty()">
 			<ul class="navbar-nav login">
 				<li class="nav-item">
-                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                  <input #username class="nav-link" type="text" placeholder="Username" [@fieldRequired]="usernameEmpty" (@fieldRequired.done)="resetUsernamePasswordEmpty()">
                 </li>
                 <li class="nav-item">
-                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                  <input #password class="nav-link" type="password" placeholder="Password" [@fieldRequired]="passwordEmpty" (@fieldRequired.done)="resetUsernamePasswordEmpty()">
                 </li>
             </ul>
             <ul class="navbar-nav forgotPassword">
             	<p>To reset your password, enter your</p>
 				<li class="nav-item">
-                  <input #username2 class="nav-link" type="text" placeholder="Username" [@fieldRequired]="username2Empty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()" [attr.value]="username.value">
+                  <input #username2 class="nav-link" type="text" placeholder="Username" [@fieldRequired]="username2Empty" (@fieldRequired.done)="resetUsernamePasswordEmpty()" [attr.value]="username.value">
                 </li>
                 <li class="nav-item">or</li>
                 <li class="nav-item">
-                  <input #email class="nav-link" type="email" placeholder="email-address" [@fieldRequired]="emailEmpty" (@fieldRequired.done)="resetUsernamePasswordEmtpy()">
+                  <input #email class="nav-link" type="email" placeholder="email-address" [@fieldRequired]="emailEmpty" (@fieldRequired.done)="resetUsernamePasswordEmpty()">
                 </li>
             </ul>
             <div class="password-forgot">
