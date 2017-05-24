@@ -71,10 +71,6 @@ export class HomeComponent implements OnInit {
     if (this.auth.isAuthenticated()) {
       this.auth.checkUserHasRole();
       this.checkPayments();
-      this.headerIsToggled = this.localStorage.retrieve('headerIsToggled');
-      this._eventsService.on('headerToggled', (toggle) => {
-        this.headerIsToggled = toggle;
-      });
     }
   }
 }

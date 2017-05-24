@@ -1,10 +1,6 @@
 /*styles for contact content only*/
 
-main {
-    width: 100%;
-    position: relative;
-    height: auto;
-
+.contact {
     .contact-row {
 	    margin: 0 -20px 15px;
 	    background-color: black;
@@ -15,4 +11,7 @@ main {
 		    margin-bottom: 14px;
     	}
     }
+}
+a {
+    color: white;
 }

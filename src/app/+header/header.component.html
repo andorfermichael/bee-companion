@@ -4,14 +4,14 @@
 	</button>
     {{message}}
 </div>
-<div class="header-wrapper" [ngClass]="{'toggled': isToggled}">
+<div class="header-wrapper" [ngClass]="{'toggled': isToggled, 'loggedIn': auth.isAuthenticated()}">
 	<div class="bc-header-logo"><a [routerLink]="['/']"><img src="../assets/img/mainlogo_hd.png"></a></div>
-	<ng-content></ng-content>
+	<nav-bar *ngIf="auth.isAuthenticated()"></nav-bar>
 	<div class="header-icons-left main-icon">
 		<a (click)="enableNavigatorLocation()"><i class="icon my_location"></i></a>
 	</div>
 	<div class="header-icons-right main-icon">
-		<a href="#" (click)="toggleHeader()" class="toggle-header" *ngIf="auth.isAuthenticated()"><i _ngcontent-c2="" class="hidden-xs-down" [ngClass]="{'arrow_carrot-down': !isToggled, 'arrow_carrot-up': isToggled}"></i></a>
+		<a (click)="toggleHeader()" class="toggle-header" *ngIf="auth.isAuthenticated()"><i _ngcontent-c2="" class="hidden-xs-down" [ngClass]="{'arrow_carrot-down': !isToggled, 'arrow_carrot-up': isToggled}"></i></a>
 		<a href="#"><i class="social_facebook_circle hidden-xs-down"></i></a>
 		<a href="#"><i class="icon paypal hidden-xs-down"></i></a>
 		<a href="#"><i class="icon flag_gb"></i></a>

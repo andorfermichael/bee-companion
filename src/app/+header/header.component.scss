@@ -2,16 +2,8 @@
     width: 100%;
     position: relative;
     text-align: center;
-    &.loggedIn .header-wrapper {
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 20;
-        background-color: white;
-        .bc-header-logo {
-            height: 60px;
-            opacity: 0;
-        }
+    a {
+        cursor: pointer;
     }
 }
 
@@ -63,24 +55,29 @@
     top: 10px;
 }
 
-:host {
+.header-wrapper {
+    position: relative;
+    transition: height 1s ease;
     &.loggedIn {
-        /deep/ {
-            .header-wrapper {
-                position: relative;
-                transition: height 1s ease;
-                &.toggled {
-                    .bc-header-logo {
-                        height: 0px!important;
-                    }
-                    .main-icon {
-                        display: none;
-                    }
-                    nav-bar .main-nav .nav-brand-icon-wrapper .nav-brand-icon {
-                        width: 50px!important;
-                        transform: translate(-50%, 2.5px)!important;
-                    }
-                }
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 20;
+        background-color: white;
+        .bc-header-logo {
+            height: 60px;
+            opacity: 0;
+        }
+        &.toggled {
+            .bc-header-logo {
+                height: 0px!important;
+            }
+            .main-icon {
+                display: none;
+            }
+            /deep/ .nav-brand-icon-wrapper .nav-brand-icon {
+                width: 50px!important;
+                transform: translate(-50%, 2.5px)!important;
             }
         }
     }

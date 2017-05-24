@@ -1,10 +1,6 @@
 /*styles for login content only*/
 
-main {
-  width: 100%;
-  position: relative;
-  height: auto;
-
+.login {
   /deep/ {
     maincard {
       @media (max-width: 767px) { 

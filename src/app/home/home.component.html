@@ -1,50 +1,45 @@
-<header [ngClass]="{'loggedIn': auth.isAuthenticated()}">
-	<nav-bar *ngIf="auth.isAuthenticated()"></nav-bar>
-</header>
+<header></header>
 
-<main [ngClass]="{'home': true, 'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled}">
-	<nav-bar *ngIf="!auth.isAuthenticated()"></nav-bar>
-	<mainContent>
-		<side-nav *ngIf="auth.isAuthenticated()"></side-nav>
-		<mainContentRow>
-			<mainCard>
-					<h1 class="card-title" *ngIf="!auth.isAuthenticated() || !auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span></h1><br>
-					<h1 class="card-title" *ngIf="auth.isAuthenticated() && auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span><br><span class="txt-bee">{{auth.userProfile.name || auth.userProfile.nickname}}</span></h1><br>
-					<div *ngIf="auth.isAuthenticated() && auth.userProfile && !auth.signUpIncomplete" class="user-logged-in">
-					    <div class="row">
-					      <div class="col-md-6">
-					        <h3>Your Profile:</h3>
-					        <img [src]="auth.userProfile.picture" alt="" class="profile-img">
-					        <p><strong>Name: </strong> {{auth.userProfile.name}}</p>
-					        <p><strong>Email: </strong> {{auth.userProfile.email}}</p>
-					        <p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>
-					        <p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
-					        <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>
-                  <paypalForm></paypalForm>
-					      </div>
-					    </div>
-				  	</div>
-				  	<div *ngIf="auth.signUpIncomplete">
-					  	<h3>Please complete your SignUp Process <a [routerLink]="['/signup/complete']"><span class="txt-bee">now</span></a>.</h3>
-					  	<p>It will only take a few clicks, we promise :)</p>
-				  	</div>
-				  	<div *ngIf="!auth.isAuthenticated() || !auth.userProfile">
-						<h5 class="card-text">Do you love bees as much as we do?</h5>
-						<p>BeeCompanion is a social platform for Beekeepers and interested Beefriends.</p>
-						<p>Our target is to bring beefriends and beekeepers together and to raise public attention to the non-stopping bee death. Support your local Beekeepers and bee a hero!</p>
-						<div class="container buttons-area">
-							<div class="row signup-row justify-content-center justify-content-sm-around">
-								<a [routerLink]="['/signup']" class="button rounded">SignUp <i class="icon_heart icon icon_hover"></i><i class="icon_heart_alt icon"></i></a>
-								<a [routerLink]="['/login']" class="button rounded">LogIn <i class="icon_star icon icon_hover"></i><i class="icon_star_alt icon"></i></a>
-							</div>
-							<div class="row beeradar-row justify-content-center">
-								<a href="#" class="button rounded" routerLink="/bee-radar">Explore BeeCompanion <i class="icon_globe icon"></i><i class="icon_globe_alt icon icon_hover"></i></a>
-							</div>
+<mainContent [ngClass]="'home'">
+	<side-nav *ngIf="auth.isAuthenticated()"></side-nav>
+	<mainContentRow>
+		<mainCard>
+				<h1 class="card-title" *ngIf="!auth.isAuthenticated() || !auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span></h1><br>
+				<h1 class="card-title" *ngIf="auth.isAuthenticated() && auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span><br><span class="txt-bee">{{auth.userProfile.name || auth.userProfile.nickname}}</span></h1><br>
+				<div *ngIf="auth.isAuthenticated() && auth.userProfile && !auth.signUpIncomplete" class="user-logged-in">
+				    <div class="row">
+				      <div class="col-md-6">
+				        <h3>Your Profile:</h3>
+				        <img [src]="auth.userProfile.picture" alt="" class="profile-img">
+				        <p><strong>Name: </strong> {{auth.userProfile.name}}</p>
+				        <p><strong>Email: </strong> {{auth.userProfile.email}}</p>
+				        <p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>
+				        <p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
+				        <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>
+              <paypalForm></paypalForm>
+				      </div>
+				    </div>
+			  	</div>
+			  	<div *ngIf="auth.signUpIncomplete">
+				  	<h3>Please complete your SignUp Process <a [routerLink]="['/signup/complete']"><span class="txt-bee">now</span></a>.</h3>
+				  	<p>It will only take a few clicks, we promise :)</p>
+			  	</div>
+			  	<div *ngIf="!auth.isAuthenticated() || !auth.userProfile">
+					<h5 class="card-text">Do you love bees as much as we do?</h5>
+					<p>BeeCompanion is a social platform for Beekeepers and interested Beefriends.</p>
+					<p>Our target is to bring beefriends and beekeepers together and to raise public attention to the non-stopping bee death. Support your local Beekeepers and bee a hero!</p>
+					<div class="container buttons-area">
+						<div class="row signup-row justify-content-center justify-content-sm-around">
+							<a [routerLink]="['/signup']" class="button rounded">SignUp <i class="icon_heart icon icon_hover"></i><i class="icon_heart_alt icon"></i></a>
+							<a [routerLink]="['/login']" class="button rounded">LogIn <i class="icon_star icon icon_hover"></i><i class="icon_star_alt icon"></i></a>
+						</div>
+						<div class="row beeradar-row justify-content-center">
+							<a href="#" class="button rounded" routerLink="/bee-radar">Explore BeeCompanion <i class="icon_globe icon"></i><i class="icon_globe_alt icon icon_hover"></i></a>
 						</div>
 					</div>
-			</mainCard>
-		</mainContentRow>
-	</mainContent>
-</main>
+				</div>
+		</mainCard>
+	</mainContentRow>
+</mainContent>
 
 <footer>Loading...</footer>

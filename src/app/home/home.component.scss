@@ -1,66 +1,47 @@
 /*styles for home content only*/
 
-/deep/ main.loggedIn {
-  padding-top: 120px;
-  &.headerIsToggled {
-    padding-top: 60px; 
+.txt-bee {
+  color: #F6DD3B;
+  font-weight: 600;
+}
+
+.container.buttons-area {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.signup-row {
+  margin-bottom: 1rem;
+
+  .button:first-child {
+      @media (max-width: 575px) { 
+          margin-bottom: .25rem;
+      }
   }
-  .main-content:after {
-    opacity: 0;
+  .tilde {
+      font-size: 2em;
+      line-height: 1.25;
   }
 }
 
-main {
-  width: 100%;
-  position: relative;
-  height: auto;
-  transition: padding .75s ease;
-
-  .txt-bee {
-    color: #F6DD3B;
-    font-weight: 600;
+.button {
+  .icon {
+      font-size: 2em;
+      display: inline;
   }
-
-  .container.buttons-area {
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
+  .icon_hover {
+      display: none;
   }
-
-  .signup-row {
-    margin-bottom: 1rem;
-
-    .button:first-child {
-        @media (max-width: 575px) { 
-            margin-bottom: .25rem;
-        }
-    }
-    .tilde {
-        font-size: 2em;
-        line-height: 1.25;
-    }
-  }
-
-  .button {
-    .icon {
-        font-size: 2em;
-        display: inline;
-    }
-    .icon_hover {
-        display: none;
-    }
-    &:hover {
-        .icon {
-            display: none;
-        } 
-        .icon_hover {
-            display: inline;
-        }
-    }
+  &:hover {
+      .icon {
+          display: none;
+      } 
+      .icon_hover {
+          display: inline;
+      }
   }
 }
-
-
-
+  
 .button {
   display: inline-block;
   vertical-align: top;

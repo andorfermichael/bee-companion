@@ -1,27 +1,24 @@
 <header>Loading...</header>
 
-<main class="bee-radar">
-	<nav-bar>Loading...</nav-bar>
-	<mainContent>
-		<mainContentRow>
-			<mainCard>
-				<h3 class="card-title"><span class="txt-bee">Bee</span><span class="txt-companion">Radar</span></h3>
-			</mainCard>
-		</mainContentRow>
-		<mainContentRow>
-			<radarCard
-        [styles]=styles
-        [lat]=lat
-        [lng]=lng
-        [zoom]=zoom
-        [zoomControl]=zoomControl
-        [disableDefaultUI]=disableDefaultUI
-        [disableDoubleClickZoom]=disableDoubleClickZoom
-        [scrollwheel]=scrollwheel
-        [streetViewControl]=streetViewControl
-      ></radarCard>
-		</mainContentRow>
-	</mainContent>
-</main>
+<mainContent [ngClass]="'bee-radar bg-white'">
+	<mainContentRow>
+		<mainCard>
+			<h3 class="card-title"><span class="txt-bee">Bee</span><span class="txt-companion">Radar</span></h3>
+		</mainCard>
+	</mainContentRow>
+	<mainContentRow>
+		<radarCard
+	        [styles]=styles
+	        [lat]=lat
+	        [lng]=lng
+	        [zoom]=zoom
+	        [zoomControl]=zoomControl
+	        [disableDefaultUI]=disableDefaultUI
+	        [disableDoubleClickZoom]=disableDoubleClickZoom
+	        [scrollwheel]=scrollwheel
+	        [streetViewControl]=streetViewControl
+      	></radarCard>
+	</mainContentRow>
+</mainContent>
 
 <footer>Loading...</footer>

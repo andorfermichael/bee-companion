@@ -1,6 +1,32 @@
+:host {
+  &.bg-white {
+    main .main-content:after {
+      opacity: 0;
+    }
+  }
+}
+
+main {
+  width: 100%;
+  position: relative;
+  height: auto;
+  transition: padding .75s ease;
+  min-height: calc(100% - 150px - 82px);
+
+  &.loggedIn {
+    padding-top: 120px;
+    min-height: calc(100% - 82px);
+    &.headerIsToggled {
+      padding-top: 60px; 
+    }
+    .main-content:after {
+      //opacity: 0;
+    }
+  }
+}
+
 .main-content {
     width: 100%;
-    position: relative;
     @media (min-width: 768px) { 
         //height: 600px;
     }
