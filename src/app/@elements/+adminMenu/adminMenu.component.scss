@@ -9,5 +9,8 @@
 
 .admin-menu {
   box-shadow: 0px -1px 20px 4px #F6DD3B;
-  margin-top: 2em;
+  margin-top: .2em;
+  @media (min-width: 768px) {
+    margin-top: 2em;
+  }
 }
