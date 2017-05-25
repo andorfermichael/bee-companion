@@ -131,6 +131,14 @@ Once you have those, you should install these globals with `npm install --global
 * `npm-check` (`npm install --global npm-check`)
 * `nsp` (`npm install --global nsp`)
 
+A local postgres database:
+[Postgres](https://www.postgresql.org/)
+
+For testing:
+
+As we use headless chrome for testing purpose you need [Chrome 59 Beta](https://www.google.de/chrome/browser/beta.html)
+
+
 ## Installing
 * `npm install` to install all local dependencies
 
