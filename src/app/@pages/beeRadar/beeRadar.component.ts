@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { LocalStorageService } from 'ngx-webstorage';
+import { EventsService } from '../../@services/events.service';
 
 @Component({
   selector: 'beeRadar',
@@ -77,4 +79,13 @@ export class BeeRadarComponent {
   public disableDoubleClickZoom = true;
   public scrollwheel = false;
   public streetViewControl = false;
+  public mapIsActive: boolean = false;
+
+  constructor(private localStorage: LocalStorageService, public _eventsService: EventsService) {}
+
+  public toggleMap() {
+    this.mapIsActive= !this.mapIsActive;
+    this.localStorage.store('mapIsActive', this.mapIsActive);
+    this._eventsService.broadcast('mapToggled');
+  }
 }

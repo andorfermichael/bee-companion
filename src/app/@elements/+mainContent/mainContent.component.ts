@@ -9,16 +9,21 @@ import { LocalStorageService } from 'ngx-webstorage';
   templateUrl: './mainContent.component.html'
 })
 export class MainContentComponent implements OnInit {
+  public headerIsToggled: boolean = false;
+  public mapIsActive: boolean = false;
 
-    public headerIsToggled: boolean = false;
+  constructor(public auth: Auth, public _eventsService: EventsService,
+              private localStorage: LocalStorageService) {}
 
-    constructor(public auth: Auth, public _eventsService: EventsService,
-                private localStorage: LocalStorageService) {}
+  public ngOnInit() {
+    this.headerIsToggled = this.localStorage.retrieve('headerIsToggled');
+    this._eventsService.on('headerToggled', (toggle) => {
+        this.headerIsToggled = toggle;
+    });
 
-    public ngOnInit() {
-        this.headerIsToggled = this.localStorage.retrieve('headerIsToggled');
-        this._eventsService.on('headerToggled', (toggle) => {
-            this.headerIsToggled = toggle;
-        });
-    }
+    this._eventsService.on('mapToggled', () => {
+      console.log(this.mapIsActive);
+      this.mapIsActive = this.localStorage.retrieve('mapIsActive');
+    });
+  }
 }

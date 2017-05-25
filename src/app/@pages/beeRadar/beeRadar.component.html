@@ -1,13 +1,8 @@
 <header>Loading...</header>
 
-<mainContent [ngClass]="'bee-radar bg-white'">
-	<mainContentRow>
-		<mainCard>
-			<h3 class="card-title"><span class="txt-bee">Bee</span><span class="txt-companion">Radar</span></h3>
-		</mainCard>
-	</mainContentRow>
-	<mainContentRow>
-		<radarCard
+<mainContent style="height: 100%; width: 100%" [ngClass]="'bee-radar bg-white'">
+	<mainContentRow style="height: 100%; width: 100%">
+		<radarCard *ngIf="!mapIsActive"
 	        [styles]=styles
 	        [lat]=lat
 	        [lng]=lng
@@ -16,8 +11,21 @@
 	        [disableDefaultUI]=disableDefaultUI
 	        [disableDoubleClickZoom]=disableDoubleClickZoom
 	        [scrollwheel]=scrollwheel
-	        [streetViewControl]=streetViewControl
-      	></radarCard>
+	        [streetViewControl]=streetViewControl>
+    </radarCard>
+
+    <beeMap *ngIf="mapIsActive"
+            [styles]=styles
+            [lat]=lat
+            [lng]=lng
+            [zoom]=zoom
+            [zoomControl]=zoomControl
+            [disableDefaultUI]=disableDefaultUI
+            [disableDoubleClickZoom]=disableDoubleClickZoom
+            [scrollwheel]=scrollwheel
+            [streetViewControl]=streetViewControl>
+    </beeMap>
+    <button class="toogle-map" (click)="toggleMap()">+/-</button>
 	</mainContentRow>
 </mainContent>
 

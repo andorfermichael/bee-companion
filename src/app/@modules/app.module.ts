@@ -43,6 +43,7 @@ import { TermsAndConditionsComponent } from '../@pages/terms';
 import { PrivacyPolicyComponent } from '../@pages/privacy';
 import { NoContentComponent } from '../@pages/no-content';
 // @elements
+import { BeeMapComponent } from '../@elements/+beeMap';
 import { FooterComponent } from '../@elements/+footer';
 import { HeaderComponent } from '../@elements/+header';
 import { LoginCardComponent } from '../@elements/+loginCard';
@@ -72,6 +73,7 @@ const APP_PROVIDERS = [
   declarations: [
     AboutUsComponent,
     AppComponent,
+    BeeMapComponent,
     BeeRadarComponent,
     CallbackComponent,
     ContactUsComponent,

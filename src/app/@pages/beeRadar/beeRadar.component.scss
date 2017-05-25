@@ -1,8 +1,23 @@
 /*styles for bee-radar content only*/
 
 .bee-radar {
-    /deep/ .main-content-row {
-      height: auto;
-      background-color: white;
-    }
+  height: 100%;
+  width: 100%;
+  position: relative;
+
+  /deep/ .main-content-row {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+  }
+
+  button.toogle-map {
+    width: 50px;
+    height: 50px;
+    z-index: 1000;
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+  }
 }

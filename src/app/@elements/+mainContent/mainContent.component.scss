@@ -11,6 +11,11 @@ main {
   position: relative;
   height: auto;
   transition: padding .75s ease;
+
+  &.mapActive {
+    height: 100%;
+  }
+
   // iphone 5: 320x568
   // 100% - header - footer
   min-height: calc(100% - 150px - 239px);
@@ -23,7 +28,7 @@ main {
   @media (min-width: 992px) {
     //same as 768px
   }
-  @media (min-width: 1044px) { 
+  @media (min-width: 1044px) {
     min-height: calc(100% - 150px - 82px);
   }
 
@@ -40,11 +45,11 @@ main {
     @media (min-width: 992px) {
       //same as 768px
     }
-    @media (min-width: 1044px) { 
+    @media (min-width: 1044px) {
       min-height: calc(100% - 82px);
     }
     &.headerIsToggled {
-      padding-top: 60px; 
+      padding-top: 60px;
     }
     .main-content:after {
       //opacity: 0;
@@ -54,7 +59,8 @@ main {
 
 .main-content {
     width: 100%;
-    @media (min-width: 768px) { 
+    height: 100%;
+    @media (min-width: 768px) {
         //height: 600px;
     }
     &:after {
