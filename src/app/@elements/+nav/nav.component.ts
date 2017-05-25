@@ -115,6 +115,13 @@ export class NavComponent implements OnInit {
     this.gradientBarBackground = '';
   }
 
+  public splitName(name?: string): string {
+    if (!name) {
+      return 'Profile';
+    }
+    return name.substring(0, name.indexOf(' '));
+  }
+
   public createGradientTransition(to) {
     if (this.lastPosition < to) {
       if (to - this.lastPosition < 10) {

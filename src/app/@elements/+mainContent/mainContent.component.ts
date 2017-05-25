@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Auth } from '../../@services/auth.service';
 import { EventsService } from '../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
@@ -13,6 +13,8 @@ export class MainContentComponent implements OnInit {
     public headerIsToggled: boolean = false;
     public userRole: string;
     public userIsAdmin: boolean = false;
+
+    @Input() public hideSideNav: boolean;
 
     constructor(public auth: Auth, public _eventsService: EventsService,
                 private localStorage: LocalStorageService) {}

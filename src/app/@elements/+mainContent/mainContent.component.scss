@@ -36,8 +36,10 @@ main {
       min-height: calc(100% - 119px);
     }
     @media (min-width: 768px) {
-      //pad left for sidenav
-      padding-left: 200px;
+      &.userHasRole:not(.hideSideNav) {
+        //pad left for sidenav
+        padding-left: 200px;
+      }
       padding-top: 120px;
       min-height: calc(100% - 106px);
     }

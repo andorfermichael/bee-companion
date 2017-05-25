@@ -44,6 +44,9 @@
                 <a class="nav-link" [routerLink]="['/signup']">SignUp</a>
               </li>
               <li class="nav-item" (mouseover)="onMouseOver($event)">
+                <a class="nav-link" routerLink="/user/me" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" *ngIf="auth.isAuthenticated()">{{splitName(auth.userProfile.name)}}</a>
+              </li>
+              <li class="nav-item" (mouseover)="onMouseOver($event)">
                 <a class="nav-link" (click)="clickedLogin()" *ngIf="!auth.isAuthenticated()">LogIn</a>
                 <a class="nav-link" (click)="auth.logout()" *ngIf="auth.isAuthenticated()">LogOut</a>
               </li>
