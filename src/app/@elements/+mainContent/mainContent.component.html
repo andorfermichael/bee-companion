@@ -1,7 +1,11 @@
 <main [ngClass]="{'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled}">
 	<nav-bar *ngIf="!auth.isAuthenticated()"></nav-bar>
 	<div class="main-content">
-		<side-nav *ngIf="auth.isAuthenticated()"></side-nav>
+		<side-nav *ngIf="auth.isAuthenticated() && userRole">
+			<sp-menu *ngIf="userRole == 'Supporter'" [userIsAdmin]="userIsAdmin"></sp-menu>
+			<bk-menu *ngIf="userRole == 'Beekeeper' || userRole == 'Admin'" [userIsAdmin]="userIsAdmin"></bk-menu>
+			<admin-menu *ngIf="userRole == 'Admin'"></admin-menu>
+		</side-nav>
 		<ng-content></ng-content>
 	</div>
 </main>
