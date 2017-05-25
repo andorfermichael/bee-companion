@@ -5,8 +5,8 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MockBackend } from '@angular/http/testing';
 
 // Load the implementations that should be tested
-import { AppComponent } from './app.component';
-import { Auth } from './@services/auth.service';
+import { AppComponent } from '../../../app.component';
+import { Auth } from '../../../@services/auth.service';
 
 // Mock our Auth service
 export class MockAuth0 {
