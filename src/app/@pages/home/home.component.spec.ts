@@ -7,11 +7,13 @@ import { SpyLocation, MockLocationStrategy } from '@angular/common/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Location, LocationStrategy } from '@angular/common';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
 
 // Load the implementations that should be tested
 import { Auth } from '../../@services/auth.service';
 import { PayPalService } from '../../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
+import { EventsService } from '../../@services/events.service';
 import { HomeComponent } from './home.component';
 
 describe(`HomeComponent`, () => {
@@ -21,7 +23,7 @@ describe(`HomeComponent`, () => {
   let localStorageService: LocalStorageService;
   let activatedRoute: ActivatedRouteStub;
   let location: SpyLocation;
-  let paypalService: PayPalService;
+  let paypalService: MockPayPalService;
 
   @Injectable()
   class ActivatedRouteStub {
@@ -56,6 +58,25 @@ describe(`HomeComponent`, () => {
     }
   }
 
+  class MockPayPalService {
+    public getPaymentDetails(payKey): Observable<any> {
+      console.log(payKey);
+      if (payKey === 'Error') {
+        return Observable.throw({});
+      } else {
+        return Observable.of({});
+      }
+    }
+
+    public storePaymentDetailsInDatabase(payment: any): Observable<any> {
+      if (payment === 'Error') {
+        return Observable.throw({});
+      } else {
+        return Observable.of({});
+      }
+    }
+  }
+
   // async beforeEach
   beforeEach(async(() => {
     activatedRoute = new ActivatedRouteStub();
@@ -64,11 +85,9 @@ describe(`HomeComponent`, () => {
       declarations: [HomeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        PayPalService,
         LocalStorageService,
-        SpyLocation,
-        LocationStrategy,
         BaseRequestOptions,
+        EventsService,
         MockBackend,
         {
           provide: Http,
@@ -80,8 +99,8 @@ describe(`HomeComponent`, () => {
         { provide: ActivatedRoute, useValue: activatedRoute },
         { provide: Auth, useClass: MockAuth },
         { provide: Location, useClass: SpyLocation },
-        { provide: LocationStrategy, useClass: MockLocationStrategy }
-
+        { provide: LocationStrategy, useClass: MockLocationStrategy },
+        { provide: PayPalService, useClass: MockPayPalService }
       ]
     })
     .compileComponents(); // compile template and css
@@ -95,6 +114,7 @@ describe(`HomeComponent`, () => {
       fixture = TestBed.createComponent(HomeComponent);
       comp = fixture.componentInstance;
       authService = TestBed.get(Auth);
+      paypalService = TestBed.get(PayPalService);
     });
 
     it('ngOnInit should check user authentication state', () => {
@@ -110,6 +130,28 @@ describe(`HomeComponent`, () => {
       fixture.detectChanges();
       expect(authService.checkUserHasRole).toHaveBeenCalled();
     });
+  });
+
+  xdescribe(`extended initialization when coming back from PayPal after payment approval`, () => {
+    // synchronous beforeEach
+    beforeEach(() => {
+      location = TestBed.get(Location);
+      activatedRoute.testParams = { status: 'approved' };
+      fixture = TestBed.createComponent(HomeComponent);
+      comp = fixture.componentInstance;
+      authService = TestBed.get(Auth);
+      paypalService = TestBed.get(PayPalService);
+      localStorageService = TestBed.get(LocalStorageService);
+    });
+
+    it('ngOnInit should remove /payment/approved from url', fakeAsync(() => {
+      spyOn(console, 'error');
+      authService.authenticated = true;
+      localStorage.setItem('lastPayKey', 'Error');
+      comp.ngOnInit();
+      tick(5000);
+      expect(console.error).toHaveBeenCalled();
+    }));
   });
 
   describe(`extended initialization when coming back from PayPal after payment cancel`, () => {
