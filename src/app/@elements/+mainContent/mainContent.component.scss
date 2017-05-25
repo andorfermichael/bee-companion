@@ -28,7 +28,7 @@ main {
   }
 
   &.loggedIn {
-    padding-top: 120px;
+    padding-top: 160px;
     transition: padding .75s ease;
     //as header is fixed now, header does not need to be substracted anymore
     min-height: calc(100% - 239px);
@@ -36,6 +36,9 @@ main {
       min-height: calc(100% - 119px);
     }
     @media (min-width: 768px) {
+      //pad left for sidenav
+      padding-left: 200px;
+      padding-top: 120px;
       min-height: calc(100% - 106px);
     }
     @media (min-width: 992px) {
@@ -46,9 +49,28 @@ main {
     }
     &.headerIsToggled {
       padding-top: 60px; 
+      @media (max-width: 767px) {
+        padding-top: 100px;
+      }
+      /deep/ side-nav {
+        @media (max-width: 767px) {
+          width: 100%;
+          padding: 0;
+          height: auto;
+          top: 60px;
+        }
+      }
     }
     .main-content:after {
       //opacity: 0;
+    }
+    /deep/ side-nav {
+      @media (max-width: 767px) {
+        width: 100%;
+        padding: 0;
+        height: auto;
+        top: 120px;
+      }
     }
   }
 }

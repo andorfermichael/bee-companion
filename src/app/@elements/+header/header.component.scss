@@ -84,9 +84,18 @@
             .main-icon {
                 display: none;
             }
-            /deep/ .nav-brand-icon-wrapper .nav-brand-icon {
-                width: 50px!important;
-                transform: translate(-50%, 2.5px)!important;
+            /deep/ .nav-brand-icon-wrapper {
+                @media (min-width: 768px) {
+                    padding-left: 50px;
+                }
+                .nav-brand-icon {
+                    width: 50px!important;
+                    transform: translate(-50%, 2.5px)!important;
+                    @media (min-width: 768px) {
+                        left: 0!important;
+                        transform: translate(25%, 2.5px)!important;
+                    }
+                }
             }
         }
     }

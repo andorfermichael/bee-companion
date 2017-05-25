@@ -1,6 +1,7 @@
 <main [ngClass]="{'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled}">
 	<nav-bar *ngIf="!auth.isAuthenticated()"></nav-bar>
 	<div class="main-content">
+		<side-nav *ngIf="auth.isAuthenticated()"></side-nav>
 		<ng-content></ng-content>
 	</div>
 </main>
