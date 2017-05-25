@@ -1,6 +1,6 @@
 <header></header>
 
-<mainContent [ngClass]="'home bg-white'">
+<mainContent [ngClass]="{'home': true, 'bg-white': auth.isAuthenticated()}">
 	<mainContentRow>
 		<mainCard>
 				<h1 class="card-title" *ngIf="!auth.isAuthenticated() || !auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span></h1><br>
