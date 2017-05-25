@@ -1,15 +1,16 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA} from '@angular/core';
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockBackend } from '@angular/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AuthHttp} from 'angular2-jwt';
+import { Router } from '@angular/router';
 
 // Load the implementations that should be tested
 import { Auth } from '../../@services/auth.service';
 import { EventsService } from '../../@services/events.service';
 import { LoginCardComponent } from './loginCard.component';
+import { AuthRoleGuard } from '../../@services/auth-role-guard.service';
 
 describe(`LoginCardComponent`, () => {
   let comp: LoginCardComponent;
@@ -18,6 +19,14 @@ describe(`LoginCardComponent`, () => {
   let authService: Auth;
 
   class MockAuth {
+    public isAuthenticated() {
+      return true;
+    }
+
+    public checkUserHasRole() {
+      return true;
+    }
+
     public _updateProfile() {
       return true;
     }
@@ -49,10 +58,11 @@ describe(`LoginCardComponent`, () => {
   // async beforeEach
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NoopAnimationsModule],
+      imports: [NoopAnimationsModule],
       declarations: [LoginCardComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
+        AuthRoleGuard,
         AuthHttp,
         EventsService,
         BaseRequestOptions,
@@ -64,7 +74,11 @@ describe(`LoginCardComponent`, () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth }
+        { provide: Auth, useClass: MockAuth },
+        {
+          provide: Router,
+          useValue: { navigate: jasmine.createSpy('navigate') }
+        }
       ]
     })
     .compileComponents() // compile template and css

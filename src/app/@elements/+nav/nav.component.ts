@@ -226,7 +226,6 @@ export class NavComponent implements OnInit {
 
   private onLoginSuccess() {
     this.toggleIsLoading();
-    console.log("Router, go to '/RESTRICTED' !");
     this.router.navigate(['/restricted']);
     this._eventsService.broadcast('loginSuccess');
   }

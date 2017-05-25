@@ -1,15 +1,16 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Directive, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MockBackend } from '@angular/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { AuthHttp} from 'angular2-jwt';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 // Load the implementations that should be tested
 import { Auth } from '../../@services/auth.service';
 import { EventsService } from '../../@services/events.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { NavComponent } from './nav.component';
 
 describe(`NavComponent`, () => {
@@ -36,17 +37,27 @@ describe(`NavComponent`, () => {
     }
   }
 
+  @Directive({
+    selector: '[routerLink], [routerLinkActive], [routerLinkActiveOptions]'
+  })
+  class DummyRouterLinkDirective {}
+
+  let router = {
+    navigate: jasmine.createSpy('navigate')
+  };
+
   // async beforeEach
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NoopAnimationsModule],
-      declarations: [NavComponent],
+      imports: [NoopAnimationsModule],
+      declarations: [NavComponent, DummyRouterLinkDirective],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         DomSanitizer,
         AuthHttp,
         EventsService,
         BaseRequestOptions,
+        LocalStorageService,
         MockBackend,
         {
           provide: Http,
@@ -55,7 +66,8 @@ describe(`NavComponent`, () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth }
+        { provide: Auth, useClass: MockAuth },
+        { provide: Router, useValue: router }
       ]
     })
     .compileComponents() // compile template and css
