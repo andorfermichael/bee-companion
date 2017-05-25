@@ -7,8 +7,8 @@ import { Observable } from "rxjs/Observable";
 
 // Load the implementations that should be tested
 import { LocalStorageService } from 'ngx-webstorage';
-import { PayPalService } from '../../@services/paypal.service';
-import { PayPalFormComponent } from './paypalForm.component';
+import { PayPalService } from '../../../@services/paypal.service';
+import { PayPalFormComponent } from '../../../@elements/+paypalForm/paypalForm.component';
 
 describe(`PayPalFormComponent`, () => {
   let comp: PayPalFormComponent;

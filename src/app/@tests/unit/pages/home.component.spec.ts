@@ -10,11 +10,11 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 
 // Load the implementations that should be tested
-import { Auth } from '../../@services/auth.service';
-import { PayPalService } from '../../@services/paypal.service';
+import { Auth } from '../../../@services/auth.service';
+import { PayPalService } from '../../../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { EventsService } from '../../@services/events.service';
-import { HomeComponent } from './home.component';
+import { EventsService } from '../../../@services/events.service';
+import { HomeComponent } from '../../../@pages/home/home.component';
 
 describe(`HomeComponent`, () => {
   let comp: HomeComponent;

@@ -7,9 +7,9 @@ import { AuthHttp} from 'angular2-jwt';
 import { Observable } from "rxjs/Observable";
 
 // Load the implementations that should be tested
-import { Auth } from '../../@services/auth.service';
-import { EventsService } from '../../@services/events.service';
-import { SignupPageComponent } from './signup.component';
+import { Auth } from '../../../@services/auth.service';
+import { EventsService } from '../../../@services/events.service';
+import { SignupPageComponent } from '../../../@pages/signup/signup.component';
 
 describe(`SignupPageComponent`, () => {
   let comp: SignupPageComponent;

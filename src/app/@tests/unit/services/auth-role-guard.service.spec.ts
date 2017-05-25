@@ -1,8 +1,8 @@
 import { TestBed, async } from '@angular/core/testing';
 import { Router } from "@angular/router";
 
-import { AuthRoleGuard } from './auth-role-guard.service';
-import { Auth } from '../@services/auth.service';
+import { AuthRoleGuard } from '../../../@services/auth-role-guard.service';
+import { Auth } from '../../../@services/auth.service';
 
 
 describe('AuthRoleGuardService', () => {

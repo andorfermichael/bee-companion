@@ -8,10 +8,10 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 // Load the implementations that should be tested
-import { Auth } from '../../@services/auth.service';
-import { EventsService } from '../../@services/events.service';
+import { Auth } from '../../../@services/auth.service';
+import { EventsService } from '../../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { NavComponent } from './nav.component';
+import { NavComponent } from '../../../@elements/+nav/nav.component';
 
 describe(`NavComponent`, () => {
   let comp: NavComponent;

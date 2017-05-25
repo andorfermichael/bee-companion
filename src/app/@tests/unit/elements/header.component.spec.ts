@@ -3,10 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 
-import { HeaderComponent } from './header.component';
-import { NavComponent } from '../+nav/nav.component';
-import { Auth } from '../../@services/auth.service';
-import { EventsService } from '../../@services/events.service';
+import { HeaderComponent } from '../../../@elements/+header/header.component';
+import { NavComponent } from '../../../@elements/+nav/nav.component';
+import { Auth } from '../../../@services/auth.service';
+import { EventsService } from '../../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 describe('HeaderComponent', () => {

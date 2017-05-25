@@ -1,6 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { EventsService } from './events.service';
+import { EventsService } from '../../../@services/events.service';
 
 describe('EventsService', () => {
   let service: EventsService;

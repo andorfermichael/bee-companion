@@ -1,12 +1,12 @@
 import { TestBed, async } from '@angular/core/testing';
 import { Router } from "@angular/router";
 
-import { NonAuthGuard } from './non-auth-guard.service';
-import { Auth } from '../@services/auth.service';
+import { AuthGuard } from '../../../@services/auth-guard.service';
+import { Auth } from '../../../@services/auth.service';
 
 
-describe('NonAuthGuardService', () => {
-  let nonAuthGuardService: NonAuthGuard;
+describe('AuthGuardService', () => {
+  let authGuardService: AuthGuard;
   let authService: MockAuth;
 
   let router = {
@@ -24,7 +24,7 @@ describe('NonAuthGuardService', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
-        NonAuthGuard,
+        AuthGuard,
         { provide: Auth, useClass: MockAuth },
         { provide: Router, useValue: router }
       ]
@@ -34,19 +34,19 @@ describe('NonAuthGuardService', () => {
   }));
 
   beforeEach(() => {
-    nonAuthGuardService = TestBed.get(NonAuthGuard);
+    authGuardService = TestBed.get(AuthGuard);
     authService = TestBed.get(Auth);
   });
 
-  it('canActivate should navigate to homepage if authenticated', () => {
-    authService.authenticated = true;
-    expect(nonAuthGuardService.canActivate()).toBe(false);
-    expect(router.navigate).toHaveBeenCalledWith(['/home']);
+  it('canActivate should navigate to homepage if not authenticated', () => {
+    authService.authenticated = false;
+    expect(authGuardService.canActivate()).toBe(false);
+    expect(router.navigate).toHaveBeenCalledWith(['/']);
   });
 
-  it('canActivate should let user visit page (should not navigate) if not authenticated', () => {
-    authService.authenticated = false;
-    expect(nonAuthGuardService.canActivate()).toBe(true);
+  it('canActivate should let user visit page (should not navigate) if authenticated', () => {
+    authService.authenticated = true;
+    expect(authGuardService.canActivate()).toBe(true);
     expect(router.navigate).not.toHaveBeenCalled();
   });
 });

@@ -7,10 +7,10 @@ import { AuthHttp} from 'angular2-jwt';
 import { Router } from '@angular/router';
 
 // Load the implementations that should be tested
-import { Auth } from '../../@services/auth.service';
-import { EventsService } from '../../@services/events.service';
-import { LoginCardComponent } from './loginCard.component';
-import { AuthRoleGuard } from '../../@services/auth-role-guard.service';
+import { Auth } from '../../../@services/auth.service';
+import { EventsService } from '../../../@services/events.service';
+import { LoginCardComponent } from '../../../@elements/+loginCard/loginCard.component';
+import { AuthRoleGuard } from '../../../@services/auth-role-guard.service';
 
 describe(`LoginCardComponent`, () => {
   let comp: LoginCardComponent;

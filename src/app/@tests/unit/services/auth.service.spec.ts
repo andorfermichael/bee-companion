@@ -5,10 +5,10 @@ import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Load the implementations that should be tested
-import { Auth } from '../@services/auth.service';
+import { Auth } from '../../../@services/auth.service';
 import Auth0 from 'auth0-js';
 
-import { myConfig } from '../@config/auth.config';
+import { myConfig } from '../../../@config/auth.config';
 
 describe(`LoginCardComponent`, () => {
   let authService: Auth;
