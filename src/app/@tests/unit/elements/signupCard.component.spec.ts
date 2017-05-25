@@ -9,40 +9,13 @@ import { Auth } from '../../../@services/auth.service';
 import { EventsService } from '../../../@services/events.service';
 import { SignupCardComponent } from '../../../@elements/+signupCard/signupCard.component';
 
+import { MockAuthService } from '../_doubles/auth.doubles'
+
 describe(`SignupCardComponent`, () => {
   let comp: SignupCardComponent;
   let fixture: ComponentFixture<SignupCardComponent>;
   let eventsService: EventsService;
   let authService: Auth;
-
-  class MockAuth {
-    public _updateProfile() {
-      return true;
-    }
-
-    public loginWithGoogle(): void {
-      return;
-    }
-
-    public loginWithFacebook(): void {
-      return;
-    }
-
-    public login(username?: string, password?: string): Promise<any> {
-      if (!username && !password) {
-        return;
-      }
-      return this.processLogin(username, password);
-    }
-
-    private processLogin(username?: string, password?: string): Promise<any> {
-      if (username == 'reject') {
-        return Promise.reject('error');
-      } else {
-        return Promise.resolve();
-      }
-    }
-  }
 
   // async beforeEach
   beforeEach(async(() => {
@@ -60,7 +33,7 @@ describe(`SignupCardComponent`, () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth }
+        { provide: Auth, useClass: MockAuthService }
       ]
     })
     .compileComponents() // compile template and css

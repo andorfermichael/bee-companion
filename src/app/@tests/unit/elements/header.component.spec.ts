@@ -9,38 +9,11 @@ import { Auth } from '../../../@services/auth.service';
 import { EventsService } from '../../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
+import { MockAuthService } from '../_doubles/auth.doubles'
+
 describe('HeaderComponent', () => {
   let comp: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
-
-  class MockAuth {
-    public _updateProfile() {
-      return true;
-    }
-
-    public loginWithGoogle(): void {
-      return;
-    }
-
-    public loginWithFacebook(): void {
-      return;
-    }
-
-    public login(username?: string, password?: string): Promise<any> {
-      if (!username && !password) {
-        return;
-      }
-      return this.processLogin(username, password);
-    }
-
-    private processLogin(username?: string, password?: string): Promise<any> {
-      if (username == 'reject') {
-        return Promise.reject('error');
-      } else {
-        return Promise.resolve();
-      }
-    }
-  }
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -58,7 +31,7 @@ describe('HeaderComponent', () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth }
+        { provide: Auth, useClass: MockAuthService }
       ]
     })
     .compileComponents() // compile template and css

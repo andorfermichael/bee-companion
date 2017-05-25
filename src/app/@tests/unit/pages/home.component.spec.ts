@@ -1,4 +1,4 @@
-import { Injectable, NO_ERRORS_SCHEMA} from '@angular/core';
+import { NO_ERRORS_SCHEMA} from '@angular/core';
 import { async, TestBed, ComponentFixture, fakeAsync, tick } from '@angular/core/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
@@ -6,8 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SpyLocation, MockLocationStrategy } from '@angular/common/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Location, LocationStrategy } from '@angular/common';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
 
 // Load the implementations that should be tested
 import { Auth } from '../../../@services/auth.service';
@@ -16,66 +14,18 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../../@services/events.service';
 import { HomeComponent } from '../../../@pages/home/home.component';
 
+import { MockAuthService } from '../_doubles/auth.doubles'
+import { ActivatedRouteStub } from '../_doubles/router.doubles'
+import { MockPayPalService } from '../_doubles/paypal.service.doubles'
+
 describe(`HomeComponent`, () => {
   let comp: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
-  let authService: MockAuth;
+  let authService: MockAuthService;
   let localStorageService: LocalStorageService;
   let activatedRoute: ActivatedRouteStub;
   let location: SpyLocation;
   let paypalService: MockPayPalService;
-
-  @Injectable()
-  class ActivatedRouteStub {
-
-    // ActivatedRoute.params is Observable
-    private subject = new BehaviorSubject(this.testParams);
-    params = this.subject.asObservable();
-
-    // Test parameters
-    private _testParams: {};
-    get testParams() { return this._testParams; }
-    set testParams(params: {}) {
-      this._testParams = params;
-      this.subject.next(params);
-    }
-
-    // ActivatedRoute.snapshot.params
-    get snapshot() {
-      return { params: this.testParams };
-    }
-  }
-
-  class MockAuth {
-    public authenticated: boolean;
-
-    public isAuthenticated(): boolean {
-      return this.authenticated;
-    }
-
-    public checkUserHasRole(): any {
-      return true;
-    }
-  }
-
-  class MockPayPalService {
-    public getPaymentDetails(payKey): Observable<any> {
-      console.log(payKey);
-      if (payKey === 'Error') {
-        return Observable.throw({});
-      } else {
-        return Observable.of({});
-      }
-    }
-
-    public storePaymentDetailsInDatabase(payment: any): Observable<any> {
-      if (payment === 'Error') {
-        return Observable.throw({});
-      } else {
-        return Observable.of({});
-      }
-    }
-  }
 
   // async beforeEach
   beforeEach(async(() => {
@@ -97,7 +47,7 @@ describe(`HomeComponent`, () => {
           deps: [MockBackend, BaseRequestOptions]
         },
         { provide: ActivatedRoute, useValue: activatedRoute },
-        { provide: Auth, useClass: MockAuth },
+        { provide: Auth, useClass: MockAuthService },
         { provide: Location, useClass: SpyLocation },
         { provide: LocationStrategy, useClass: MockLocationStrategy },
         { provide: PayPalService, useClass: MockPayPalService }

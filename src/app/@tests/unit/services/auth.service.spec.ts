@@ -10,15 +10,11 @@ import Auth0 from 'auth0-js';
 
 import { myConfig } from '../../../@config/auth.config';
 
+import { MockAuth0WebAuth } from '../_doubles/auth.doubles'
+
 describe(`LoginCardComponent`, () => {
   let authService: Auth;
   let auth0WebAuth: MockAuth0WebAuth;
-
-  class MockAuth0WebAuth {
-    public authorize({connection, redirect_uri}: any) {
-      return;
-    }
-  }
 
   // async beforeEach
   beforeEach(async(() => {

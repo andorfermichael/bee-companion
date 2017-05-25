@@ -13,38 +13,15 @@ import { EventsService } from '../../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { NavComponent } from '../../../@elements/+nav/nav.component';
 
+import { MockAuthService } from '../_doubles/auth.doubles'
+import { MockRouter, DummyRouterLinkDirective } from '../_doubles/router.doubles'
+
 describe(`NavComponent`, () => {
   let comp: NavComponent;
   let fixture: ComponentFixture<NavComponent>;
   let eventsService: EventsService;
   let authService: Auth;
   let sanitizer: DomSanitizer;
-
-  class MockAuth {
-    public login(username?: string, password?: string): Promise<any> {
-      if (!username && !password) {
-        return;
-      }
-      return this.processLogin(username, password);
-    }
-
-    private processLogin(username?: string, password?: string): Promise<any> {
-      if (username == 'reject') {
-        return Promise.reject('error');
-      } else {
-        return Promise.resolve();
-      }
-    }
-  }
-
-  @Directive({
-    selector: '[routerLink], [routerLinkActive], [routerLinkActiveOptions]'
-  })
-  class DummyRouterLinkDirective {}
-
-  let router = {
-    navigate: jasmine.createSpy('navigate')
-  };
 
   // async beforeEach
   beforeEach(async(() => {
@@ -66,8 +43,8 @@ describe(`NavComponent`, () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth },
-        { provide: Router, useValue: router }
+        { provide: Auth, useClass: MockAuthService },
+        { provide: Router, useValue: MockRouter }
       ]
     })
     .compileComponents() // compile template and css

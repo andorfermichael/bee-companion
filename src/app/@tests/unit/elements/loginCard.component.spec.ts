@@ -12,48 +12,13 @@ import { EventsService } from '../../../@services/events.service';
 import { LoginCardComponent } from '../../../@elements/+loginCard/loginCard.component';
 import { AuthRoleGuard } from '../../../@services/auth-role-guard.service';
 
+import { MockAuthService } from '../_doubles/auth.doubles'
+
 describe(`LoginCardComponent`, () => {
   let comp: LoginCardComponent;
   let fixture: ComponentFixture<LoginCardComponent>;
   let eventsService: EventsService;
   let authService: Auth;
-
-  class MockAuth {
-    public isAuthenticated() {
-      return true;
-    }
-
-    public checkUserHasRole() {
-      return true;
-    }
-
-    public _updateProfile() {
-      return true;
-    }
-
-    public loginWithGoogle(): void {
-      return;
-    }
-
-    public loginWithFacebook(): void {
-      return;
-    }
-
-    public login(username?: string, password?: string): Promise<any> {
-      if (!username && !password) {
-        return;
-      }
-      return this.processLogin(username, password);
-    }
-
-    private processLogin(username?: string, password?: string): Promise<any> {
-      if (username == 'reject') {
-        return Promise.reject('error');
-      } else {
-        return Promise.resolve();
-      }
-    }
-  }
 
   // async beforeEach
   beforeEach(async(() => {
@@ -74,7 +39,7 @@ describe(`LoginCardComponent`, () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth },
+        { provide: Auth, useClass: MockAuthService },
         {
           provide: Router,
           useValue: { navigate: jasmine.createSpy('navigate') }

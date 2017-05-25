@@ -4,34 +4,19 @@ import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthHttp} from 'angular2-jwt';
-import { Observable } from "rxjs/Observable";
 
 // Load the implementations that should be tested
 import { Auth } from '../../../@services/auth.service';
 import { EventsService } from '../../../@services/events.service';
 import { SignupPageComponent } from '../../../@pages/signup/signup.component';
 
+import { MockAuthService, MockAuthHttp } from '../_doubles/auth.doubles'
+
 describe(`SignupPageComponent`, () => {
   let comp: SignupPageComponent;
   let fixture: ComponentFixture<SignupPageComponent>;
   let eventsService: EventsService;
   let authService: Auth;
-
-  class MockAuth {
-    public _updateProfile() {
-      return true;
-    }
-  }
-
-  class MockAuthHttp {
-    public get(url: string): Observable<any> {
-      if (url === 'http://localhost:3000/api/auth/user/set/role/Error') {
-        return Observable.throw({});
-      } else {
-        return Observable.of({});
-      }
-    }
-  }
 
   // async beforeEach
   beforeEach(async(() => {
@@ -51,7 +36,7 @@ describe(`SignupPageComponent`, () => {
           },
           deps: [MockBackend, BaseRequestOptions]
         },
-        { provide: Auth, useClass: MockAuth },
+        { provide: Auth, useClass: MockAuthService },
         { provide: AuthHttp, useClass: MockAuthHttp },
       ]
     })

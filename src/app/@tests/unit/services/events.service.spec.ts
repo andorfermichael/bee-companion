@@ -2,36 +2,12 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { EventsService } from '../../../@services/events.service';
 
+import { MockBroadcastComponent, MockListenerComponent } from '../_doubles/events.service.doubles'
+
 describe('EventsService', () => {
   let service: EventsService;
   let broadcastComponent: MockBroadcastComponent;
   let listenerComponent: MockListenerComponent;
-
-  class MockBroadcastComponent {
-    constructor(public _eventsService: EventsService) {}
-
-    public sendBroadcast(success: boolean) {
-      if (success) {
-        this._eventsService.broadcast('mockBroadcastSuccess');
-      } else {
-        this._eventsService.broadcast('mockBroadcastFail', 'failed', {error: success});
-      }
-    }
-  }
-
-  class MockListenerComponent {
-    constructor(public _eventsService: EventsService) {
-    }
-
-    public ngOnInit() {
-      this._eventsService.on('mockBroadcastFail', (err) => {
-        console.error(err)
-      });
-      this._eventsService.on('mockBroadcastSuccess', () => {
-        console.log('Success')
-      });
-    }
-  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({

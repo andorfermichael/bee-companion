@@ -4,38 +4,23 @@ import { Router } from "@angular/router";
 import { AuthRoleGuard } from '../../../@services/auth-role-guard.service';
 import { Auth } from '../../../@services/auth.service';
 
+import { MockAuthService } from '../_doubles/auth.doubles'
+import { MockRouter } from '../_doubles/router.doubles'
 
 describe('AuthRoleGuardService', () => {
   let authRoleGuardService: AuthRoleGuard;
-  let authService: MockAuth;
-
-  let router = {
-    navigate: jasmine.createSpy('navigate')
-  };
-
-  class MockAuth {
-    public authenticated: boolean;
-    public userRole: boolean;
-
-    public isAuthenticated(): boolean {
-      return this.authenticated;
-    }
-
-    public checkUserHasRole(): boolean {
-      return this.userRole;
-    }
-  }
+  let authService: MockAuthService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
         AuthRoleGuard,
-        { provide: Auth, useClass: MockAuth },
-        { provide: Router, useValue: router }
+        { provide: Auth, useClass: MockAuthService },
+        { provide: Router, useValue: MockRouter }
       ]
     });
 
-    router.navigate = jasmine.createSpy('navigate');
+    MockRouter.navigate = jasmine.createSpy('navigate');
   }));
 
   beforeEach(() => {
@@ -47,20 +32,20 @@ describe('AuthRoleGuardService', () => {
     authService.authenticated = false;
     authService.userRole = false;
     expect(authRoleGuardService.canActivate()).toBe(false);
-    expect(router.navigate).toHaveBeenCalledWith(['/']);
+    expect(MockRouter.navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('canActivate should navigate to "signup/complete if authenticated but no user role was defined', () => {
     authService.authenticated = true;
     authService.userRole = false;
     expect(authRoleGuardService.canActivate()).toBe(false);
-    expect(router.navigate).toHaveBeenCalledWith(['/signup/complete']);
+    expect(MockRouter.navigate).toHaveBeenCalledWith(['/signup/complete']);
   });
 
   it('canActivate should let user visit page (should not navigate) if authenticated and user role defined', () => {
     authService.authenticated = true;
     authService.userRole = true;
     expect(authRoleGuardService.canActivate()).toBe(true);
-    expect(router.navigate).not.toHaveBeenCalled();
+    expect(MockRouter.navigate).not.toHaveBeenCalled();
   });
 });
