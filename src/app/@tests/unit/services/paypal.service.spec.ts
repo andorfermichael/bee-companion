@@ -1,4 +1,4 @@
-import { TestBed, inject } from '@angular/core/testing';
+import { TestBed } from '@angular/core/testing';
 import { Http, BaseRequestOptions, Response, ResponseOptions, RequestMethod } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
 
@@ -11,7 +11,7 @@ import {
 } from '../_doubles/paypal.service.doubles'
 
 describe('PayPalService', () => {
-  let service: PayPalService;
+  let paypalService: PayPalService;
   let backend: MockBackend;
 
   beforeEach(() => {
@@ -31,11 +31,10 @@ describe('PayPalService', () => {
     });
   });
 
-  beforeEach(inject([PayPalService, MockBackend], (payPalService: PayPalService,
-                                                   mockBackend: MockBackend) => {
-    service = payPalService;
-    backend = mockBackend;
-  }));
+  beforeEach(() => {
+    paypalService = TestBed.get(PayPalService);
+    backend = TestBed.get(MockBackend);
+  });
 
   it('executeAdaptivePayment should be called with proper arguments', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
@@ -56,7 +55,7 @@ describe('PayPalService', () => {
       connection.mockRespond(new Response(options));
     });
 
-    service.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe(() => {
+    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe(() => {
       done();
     });
   });
@@ -71,7 +70,7 @@ describe('PayPalService', () => {
         connection.mockRespond(new Response(options));
       });
 
-      service.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
+      paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
         expect(response.responseEnvelope.timestamp).toBeDefined();
         expect(response.responseEnvelope.ack).toEqual('Success');
         expect(response.responseEnvelope.correlationId).toBeDefined();
@@ -96,7 +95,7 @@ describe('PayPalService', () => {
 
     spyOn(console, 'error');
 
-    service.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
+    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');
@@ -122,7 +121,7 @@ describe('PayPalService', () => {
       connection.mockRespond(new Response(options));
     });
 
-    service.getPaymentDetails('AP-45A19953MH4156941').subscribe(() => {
+    paypalService.getPaymentDetails('AP-45A19953MH4156941').subscribe(() => {
       done();
     });
   });
@@ -136,7 +135,7 @@ describe('PayPalService', () => {
       connection.mockRespond(new Response(options));
     });
 
-    service.getPaymentDetails('AP-45A19953MH4156941').subscribe((response) => {
+    paypalService.getPaymentDetails('AP-45A19953MH4156941').subscribe((response) => {
       expect(response.responseEnvelope.timestamp).toBeDefined();
       expect(response.responseEnvelope.ack).toEqual('Success');
       expect(response.responseEnvelope.correlationId).toBeDefined();
@@ -182,7 +181,7 @@ describe('PayPalService', () => {
 
     spyOn(console, 'error');
 
-    service.getPaymentDetails('AP-45A19953MH4156941').subscribe((response) => {
+    paypalService.getPaymentDetails('AP-45A19953MH4156941').subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');
@@ -203,7 +202,7 @@ describe('PayPalService', () => {
       connection.mockRespond(new Response(options));
     });
 
-    service.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe(() => {
+    paypalService.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe(() => {
         done();
     });
   });
@@ -218,7 +217,7 @@ describe('PayPalService', () => {
         connection.mockRespond(new Response(options));
       });
 
-      service.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe((response) => {
+      paypalService.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe((response) => {
         expect(response).toEqual(fakeStorePaymentDetailsInDatabaseResponse);
         done();
       });
@@ -236,7 +235,7 @@ describe('PayPalService', () => {
 
     spyOn(console, 'error');
 
-    service.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe((response) => {
+    paypalService.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');
