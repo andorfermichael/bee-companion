@@ -1,21 +1,18 @@
 /*styles for login content only*/
 
-.login {
-  /deep/ {
-    maincard {
-      @media (max-width: 767px) { 
-        width: 100%;
-      }
+/deep/ 
+maincontent.login maincard {
+  @media (max-width: 767px) { 
+    width: 100%;
+  }
+  .card-block {
+    padding: 0!important;
+    @media (min-width: 768px) { 
+      width: 425px;
     }
-    .card-block {
-      padding: 0;
-      @media (min-width: 768px) { 
-        width: 425px;
-      }
-    }
-    .main-content-row {
-      //max-height: 600px;
-    }
+  }
+  .main-content-row {
+    //max-height: 600px;
   }
   .card-tabs {
     .nav-tabs {
