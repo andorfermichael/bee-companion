@@ -1,0 +1,1 @@
+export * from './spMenu.component';

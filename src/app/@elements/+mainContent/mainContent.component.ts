@@ -11,6 +11,8 @@ import { LocalStorageService } from 'ngx-webstorage';
 export class MainContentComponent implements OnInit {
 
     public headerIsToggled: boolean = false;
+    public userRole: string;
+    public userIsAdmin: boolean = false;
 
     constructor(public auth: Auth, public _eventsService: EventsService,
                 private localStorage: LocalStorageService) {}
@@ -20,5 +22,9 @@ export class MainContentComponent implements OnInit {
         this._eventsService.on('headerToggled', (toggle) => {
             this.headerIsToggled = toggle;
         });
+        this.userRole = this.auth.checkUserHasRole();
+        if (this.userRole === 'Admin' || this.userRole === 'admin') {
+          this.userIsAdmin = true;
+        }
     }
 }

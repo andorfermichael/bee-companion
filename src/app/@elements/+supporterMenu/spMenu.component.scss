@@ -1,0 +1,8 @@
+:host {
+  a {
+    color: #292b2c;
+    &:hover {
+      transform: scale(1.025)
+    }
+  }
+}
