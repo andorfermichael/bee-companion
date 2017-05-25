@@ -5,9 +5,9 @@ import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 
 // Load the implementations that should be tested
-import { Auth } from '../../@services/auth.service';
-import { EventsService } from '../../@services/events.service';
-import { SignupCardComponent } from '../../@elements/+signupCard/signupCard.component';
+import { Auth } from '../../../@services/auth.service';
+import { EventsService } from '../../../@services/events.service';
+import { SignupCardComponent } from '../../../@elements/+signupCard/signupCard.component';
 
 describe(`SignupCardComponent`, () => {
   let comp: SignupCardComponent;
