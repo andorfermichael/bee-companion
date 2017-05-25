@@ -15,6 +15,7 @@ import { PrivacyPolicyComponent } from './@pages/privacy';
 import { RestrictedComponent } from './@pages/restricted';
 import { SignupPageComponent } from './@pages/signup';
 import { TermsAndConditionsComponent } from './@pages/terms';
+import { UserPageComponent } from './@pages/user';
 
 export const ROUTES: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -33,5 +34,6 @@ export const ROUTES: Routes = [
   { path: 'signup/complete', component: SignupPageComponent, pathMatch: 'full',
     canActivate: [AuthGuard]},
   { path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
+  { path: 'user/me', component: UserPageComponent, pathMatch: 'full'},
   { path: '**',    component: NoContentComponent }
 ];

@@ -42,6 +42,7 @@ import { ContactUsComponent } from '../@pages/contact';
 import { TermsAndConditionsComponent } from '../@pages/terms';
 import { PrivacyPolicyComponent } from '../@pages/privacy';
 import { NoContentComponent } from '../@pages/no-content';
+import { UserPageComponent } from '../@pages/user';
 // @elements
 import { FooterComponent } from '../@elements/+footer';
 import { HeaderComponent } from '../@elements/+header';
@@ -98,7 +99,8 @@ const APP_PROVIDERS = [
     SignupCardComponent,
     SignupPageComponent,
     SupporterMenuComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    UserPageComponent
   ],
   imports: [ // import Angular's modules
     AgmCoreModule.forRoot({ apiKey: process.env.GOOGLE_MAPS_API_KEY }),
