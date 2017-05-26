@@ -170,7 +170,7 @@ module.exports = function (options) {
           loader: 'istanbul-instrumenter-loader',
           include: helpers.root('src'),
           exclude: [
-            /\.(e2e|spec)\.ts$/,
+            /\.(e2e|spec|doubles|config)\.ts$/,
             /node_modules/
           ]
         }
