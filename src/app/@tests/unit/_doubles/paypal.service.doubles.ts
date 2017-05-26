@@ -2,7 +2,6 @@ import { Observable } from 'rxjs/Observable';
 
 export class MockPayPalService {
   public getPaymentDetails(payKey): Observable<any> {
-    console.log(payKey);
     if (payKey === 'Error') {
       return Observable.throw({});
     } else {
