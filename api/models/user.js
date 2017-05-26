@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
     userName: DataTypes.STRING,
-    role: DataTypes.ENUM,
+    role: DataTypes.ENUM('Admin', 'Supporter', 'Beekeeper'),
     picture: DataTypes.STRING,
     email: DataTypes.STRING,
     paypalId: DataTypes.STRING,
