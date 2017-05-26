@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../@services/events.service';
+import { GeolocationService } from '../../@services/geolocation.service';
 
 @Component({
   selector: 'beeRadar',
   styleUrls: ['./beeRadar.component.scss'],
   templateUrl: './beeRadar.component.html'
 })
-export class BeeRadarComponent {
+export class BeeRadarComponent implements OnInit {
   public styles: any = [{
     featureType: 'all',
     elementType: 'all',
@@ -81,7 +82,29 @@ export class BeeRadarComponent {
   public streetViewControl = false;
   public mapIsActive: boolean = false;
 
-  constructor(private localStorage: LocalStorageService, public _eventsService: EventsService) {}
+  constructor(private localStorage: LocalStorageService, public _eventsService: EventsService,
+              private geolocationService: GeolocationService) {}
+
+  public ngOnInit() {
+    this.fetchCurrentLocation();
+  }
+
+  public fetchCurrentLocation() {
+    this.geolocationService.getLocation({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 })
+      .subscribe(
+        (location) => {
+          if (location) {
+            if (location.coords) {
+              this.lat = location.coords.latitude ? location.coords.latitude : this.lat;
+              this.lng = location.coords.longitude ? location.coords.longitude : this.lng;
+            }
+          }
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+  }
 
   public toggleMap() {
     this.mapIsActive = !this.mapIsActive;

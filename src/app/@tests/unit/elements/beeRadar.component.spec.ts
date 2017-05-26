@@ -11,10 +11,11 @@ import { MainContentComponent} from '../../../@elements/+mainContent/mainContent
 import { NavComponent } from '../../../@elements/+nav/nav.component';
 
 import { MockAuthService } from '../_doubles/auth.doubles'
-import {Auth} from '../../../@services/auth.service';
-import {EventsService} from '../../../@services/events.service';
-import {LocalStorageService} from 'ngx-webstorage';
+import { Auth } from '../../../@services/auth.service';
+import { EventsService } from '../../../@services/events.service';
+import { LocalStorageService } from 'ngx-webstorage';
 import { BeeMapComponent } from '../../../@elements/+beeMap/beeMap.component';
+import { GeolocationService } from '../../../@services/geolocation.service';
 
 describe('BeeRadarComponent', () => {
   let comp: BeeRadarComponent;
@@ -35,6 +36,7 @@ describe('BeeRadarComponent', () => {
       providers: [
         EventsService,
         LocalStorageService,
+        GeolocationService,
         { provide: Auth, useClass: MockAuthService },
       ]
     })
@@ -52,5 +54,11 @@ describe('BeeRadarComponent', () => {
     expect(comp.mapIsActive).toEqual(true);
     comp.toggleMap();
     expect(comp.mapIsActive).toEqual(false);
+  });
+
+  it('ngOnInit should call "fetchCurrentLocation" to get current location', () => {
+    spyOn(comp, 'fetchCurrentLocation');
+    comp.ngOnInit();
+    expect(comp.fetchCurrentLocation).toHaveBeenCalled();
   });
 });
