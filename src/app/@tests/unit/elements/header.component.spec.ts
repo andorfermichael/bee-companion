@@ -2,6 +2,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { Observable } from 'rxjs/Observable';
 
 import { HeaderComponent } from '../../../@elements/+header/header.component';
 import { NavComponent } from '../../../@elements/+nav/nav.component';
@@ -15,6 +16,7 @@ import { MockAuthService } from '../_doubles/auth.doubles'
 describe('HeaderComponent', () => {
   let comp: HeaderComponent;
   let fixture: ComponentFixture<HeaderComponent>;
+  let geolocationService: GeolocationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -43,12 +45,23 @@ describe('HeaderComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(HeaderComponent);
     comp = fixture.componentInstance;
+    geolocationService = TestBed.get(GeolocationService);
   });
 
-  xit('enableNavigatorLocation should call navigator.geolocation.getCurrentPosition with success and error methods as arguments', () => {
-    spyOn(navigator.geolocation, 'getCurrentPosition');
+  it('enableNavigatorLocation should call "getLocation" and set lat and lng if successful', () => {
+    spyOn(geolocationService, 'getLocation').and.returnValue(Observable.of({ coords: { latitude: 32, longitude: -96 } }));
     comp.enableNavigatorLocation();
-    expect(navigator.geolocation.getCurrentPosition).toHaveBeenCalledWith(comp.processLocation, comp.locationError);
+    expect(geolocationService.getLocation).toHaveBeenCalledWith({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+    expect(comp.lat).toEqual(32);
+    expect(comp.lng).toEqual(-96);
+  });
+
+  it('enableNavigatorLocation should call "getLocation" and call "locationError" in case of any error', () => {
+    spyOn(geolocationService, 'getLocation').and.returnValue(Observable.throw('location error'));
+    spyOn(comp, 'locationError');
+    comp.enableNavigatorLocation();
+    expect(geolocationService.getLocation).toHaveBeenCalledWith({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+    expect(comp.locationError).toHaveBeenCalled();
   });
 
   it('processLocation should set lat and long to given lat and long', () => {
