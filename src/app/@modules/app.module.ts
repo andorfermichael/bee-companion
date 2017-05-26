@@ -14,7 +14,7 @@ import { EventsService } from '../@services/events.service';
 import { AuthModule } from './auth.module';
 
 // External Services
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { Ng2Webstorage } from 'ngx-webstorage';
 
 // Internal Services
@@ -115,7 +115,9 @@ const APP_PROVIDERS = [
     AuthRoleGuard,
     NonAuthGuard,
     EventsService,
-    GeolocationService
+    GeolocationService,
+    MarkerManager,
+    GoogleMapsAPIWrapper
   ],
   schemas: [
     NO_ERRORS_SCHEMA

@@ -1,8 +1,9 @@
 import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { Observable } from 'rxjs/Observable';
 
-import { AgmCoreModule } from '@agm/core';
+import { AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper } from '@agm/core';
 import { BeeRadarComponent } from '../../../@pages/beeRadar/beeRadar.component';
 import { MainCardComponent } from '../../../@elements/+mainCard/mainCard.component';
 import { MainContentRowComponent } from '../../../@elements/+mainContentRow/mainContentRow.component';
@@ -20,6 +21,7 @@ import { GeolocationService } from '../../../@services/geolocation.service';
 describe('BeeRadarComponent', () => {
   let comp: BeeRadarComponent;
   let fixture: ComponentFixture<BeeRadarComponent>;
+  let geolocationService: GeolocationService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -37,6 +39,9 @@ describe('BeeRadarComponent', () => {
         EventsService,
         LocalStorageService,
         GeolocationService,
+        MarkerManager,
+        GoogleMapsAPIWrapper,
+        GeolocationService,
         { provide: Auth, useClass: MockAuthService },
       ]
     })
@@ -47,6 +52,7 @@ describe('BeeRadarComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(BeeRadarComponent);
     comp = fixture.componentInstance;
+    geolocationService = TestBed.get(GeolocationService);
   });
 
   it('toggleMap should toggle value of mapIsActive variable', () => {
@@ -60,5 +66,29 @@ describe('BeeRadarComponent', () => {
     spyOn(comp, 'fetchCurrentLocation');
     comp.ngOnInit();
     expect(comp.fetchCurrentLocation).toHaveBeenCalled();
+  });
+
+  it('fetchCurrentLocation should call "getLocation" from geolocation service and set lat and lng if successful', () => {
+    spyOn(geolocationService, 'getLocation').and.returnValue(Observable.of({ coords: { latitude: 32, longitude: -96 } }));
+    comp.fetchCurrentLocation();
+    expect(geolocationService.getLocation).toHaveBeenCalledWith({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+    expect(comp.lat).toEqual(32);
+    expect(comp.lng).toEqual(-96);
+  });
+
+  it('fetchCurrentLocation should call "getLocation" from geolocation service and set lat and lng if successful', () => {
+    spyOn(geolocationService, 'getLocation').and.returnValue(Observable.of({ coords: { latitude: 32, longitude: -96 } }));
+    comp.fetchCurrentLocation();
+    expect(geolocationService.getLocation).toHaveBeenCalledWith({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+    expect(comp.lat).toEqual(32);
+    expect(comp.lng).toEqual(-96);
+  });
+
+  it('fetchCurrentLocation should call "getLocation" from geolocation service and console error in case of any error', () => {
+    spyOn(geolocationService, 'getLocation').and.returnValue(Observable.throw('location error'));
+    spyOn(console, 'error');
+    comp.fetchCurrentLocation();
+    expect(geolocationService.getLocation).toHaveBeenCalledWith({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 });
+    expect(console.error).toHaveBeenCalledWith('location error');
   });
 });

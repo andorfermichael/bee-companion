@@ -2,6 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../@services/events.service';
 import { GeolocationService } from '../../@services/geolocation.service';
+import { AgmMarker, MarkerManager } from '@agm/core';
+
+import { fakeBeekeeperPositions } from '../../@tests/unit/_doubles/geolocation.doubles';
+
+// Interface for type safety
+interface Marker {
+  lat: number;
+  lng: number;
+  label?: string;
+}
 
 @Component({
   selector: 'beeRadar',
@@ -71,25 +81,29 @@ export class BeeRadarComponent implements OnInit {
       {saturation: '31'}
     ]
   }];
-  public lat = 47.718757;
-  public lng = 13.093238;
-  public zoom = 11;
-  public zoomControl = false;
-  public disableDefaultUI = true;
-  public mapDraggable = false;
-  public disableDoubleClickZoom = true;
-  public scrollwheel = false;
-  public streetViewControl = false;
+  public lat: number = 47.718757;
+  public lng: number = 13.093238;
+  public zoom: number = 11;
+  public zoomControl: boolean = false;
+  public disableDefaultUI: boolean = true;
+  public mapDraggable: boolean = false;
+  public disableDoubleClickZoom: boolean = true;
+  public scrollwheel: boolean = false;
+  public streetViewControl: boolean = false;
   public mapIsActive: boolean = false;
+  public markers: Marker[] = fakeBeekeeperPositions;
+  public agmMarkers: AgmMarker[] = [];
 
   constructor(private localStorage: LocalStorageService, public _eventsService: EventsService,
-              private geolocationService: GeolocationService) {}
+              private geolocationService: GeolocationService,
+              private _markerManager: MarkerManager) {}
 
   public ngOnInit() {
     this.fetchCurrentLocation();
+    this.convertMarkers();
   }
 
-  public fetchCurrentLocation() {
+  public fetchCurrentLocation(): void {
     this.geolocationService.getLocation({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 })
       .subscribe(
         (location) => {
@@ -106,9 +120,19 @@ export class BeeRadarComponent implements OnInit {
       );
   }
 
-  public toggleMap() {
+  public toggleMap(): void {
     this.mapIsActive = !this.mapIsActive;
     this.localStorage.store('mapIsActive', this.mapIsActive);
     this._eventsService.broadcast('mapToggled');
+  }
+
+  private convertMarkers(): void {
+    for (const marker of this.markers) {
+      const agmMarker = new AgmMarker(this._markerManager);
+      agmMarker.latitude = marker.lat;
+      agmMarker.longitude = marker.lng;
+      agmMarker.label = marker.label;
+      this.agmMarkers.push(agmMarker);
+    }
   }
 }
