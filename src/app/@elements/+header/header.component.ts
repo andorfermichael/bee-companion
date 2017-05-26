@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Auth } from '../../@services/auth.service';
 import { EventsService } from '../../@services/events.service';
+import { GeolocationService } from '../../@services/geolocation.service';
 import { LocalStorageService } from 'ngx-webstorage';
 
 @Component({
@@ -16,9 +17,8 @@ export class HeaderComponent implements OnInit {
   public isToggled: boolean = false;
 
   constructor(public auth: Auth, public _eventsService: EventsService,
-              private localStorage: LocalStorageService) {
-    this.processLocation = this.processLocation.bind(this);
-    this.locationError = this.locationError.bind(this);
+              private localStorage: LocalStorageService,
+              private geolocationService: GeolocationService) {
   }
 
   public processLocation(data: any) {
@@ -40,12 +40,16 @@ export class HeaderComponent implements OnInit {
   }
 
   public enableNavigatorLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        this.processLocation,
-        this.locationError
+    this.geolocationService.getLocation({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 })
+      .subscribe(
+        (location) => {
+          this.processLocation(location);
+        },
+        (err) => {
+          console.error(err);
+          this.locationError();
+        }
       );
-    }
   }
 
   public toggleHeader(toggle = !this.isToggled): void {
