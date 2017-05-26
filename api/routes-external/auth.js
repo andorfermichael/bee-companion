@@ -193,6 +193,30 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
   }
 });
 
+// Create a new user
+router.use('/user/create', cors(corsConfig));
+router.post('/user/create', cors(), function(req, res) {
+  models.User.create({
+    firstName: req.body,
+    lastName: req.body,
+    userName:req.body,
+    role:req.body,
+    picture:req.body,
+    email:req.body,
+    paypalId:req.body,
+    phone:req.body,
+    authenticated:req.body,
+    verified:req.body,
+    street:req.body,
+    streetNumber:req.body,
+    postalCode:req.body,
+    city:req.body,
+    country:req.body
+  }).then(function(user) {
+    res.json(user);
+  });
+});
+
 // Enabling CORS Pre-Flight 
 router.options('/signup', cors(corsConfig));
 router.use('/signup', cors(corsConfig));
