@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
+import { Http } from '@angular/http';
+
 import * as _ from 'lodash';
 
 @Component({
@@ -19,7 +21,7 @@ export class UserPageComponent implements OnInit, OnDestroy {
     private sub: any;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
-                  public authHttp: AuthHttp, private router: Router ) {}
+                  public authHttp: AuthHttp, private router: Router, private http: Http ) {}
 
     public ngOnInit() {
         this.sub = this.activatedRoute.params.subscribe((params) => {
@@ -34,6 +36,20 @@ export class UserPageComponent implements OnInit, OnDestroy {
         this.sub.unsubscribe();
     }
 
+    private processUserData(data: any): void {
+      let userData;
+      try {
+        const parseData = data.json();
+        userData = _.isArray(parseData) && parseData.length ? parseData[0] : null;
+      } catch (e) {
+        console.log(e);
+      }
+      if (userData) {
+        this.localUser = userData;
+        console.log(userData);
+      }
+    }
+
     private fetchUserFromAPI(username?: string) {
       if (!username) {
         return;
@@ -46,24 +62,21 @@ export class UserPageComponent implements OnInit, OnDestroy {
         this.localUser = this.auth.userProfile;
         return;
       }
-      this.authHttp.get('http://localhost:3000/api/user/' + username)
+      if (this.auth.isAuthenticated()) {
+        // get authenticated information:
+        this.authHttp.get('http://localhost:3000/api/auth/user/' + username)
           .subscribe(
-              (data) => {
-                  let userData;
-                  try {
-                    const parseData = data.json();
-                    userData = _.isArray(parseData) && parseData.length ? parseData[0] : null;
-                  } catch (e) {
-                    console.log(e);
-                  }
-                  if (userData) {
-                    this.localUser = userData;
-                    console.log(userData);
-                  }
-              },
+              (data) => { this.processUserData(data); },
               (err) => {
                   console.error(err);
               });
+      } else {
+        // get public information
+        this.http.get('http://localhost:3000/api/user/' + username)
+               .toPromise()
+               .then((data) => { this.processUserData(data); })
+               .catch((err) => { console.error(err); });
+      }
     }
 
 }

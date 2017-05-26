@@ -98,7 +98,7 @@ function getJWTToken(req){
 
 
 const defaultUserQueryParamters = {
-  fields: 'email,username,picture,nickname,last_login,app_metadata,user_metadata,user_id',
+  fields: 'username,picture,nickname,last_login,app_metadata,user_metadata',
   include_fields: true
 };
 

@@ -145,6 +145,31 @@ function getJWTToken(req){
   return false;
 }
 
+const defaultUserQueryParamters = {
+  fields: 'email,username,picture,nickname,last_login,app_metadata,user_metadata,user_id',
+  include_fields: true
+};
+
+function buildQueryString(queryParams) {
+  const options = _.assign({}, defaultUserQueryParamters, queryParams);
+  let query = [];
+  const paramLength = Object.keys(options).length;
+  _.forOwn(options, (value, key) => {
+    query.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
+  })
+  return `?${query.join('&')}`;
+}
+
+// Get specific user (only public data -> currently achieved by setting include_fields)
+router.use('/user/:id', cors(corsConfig));
+router.get('/user/:id', function(req, res) {
+  const queryParams = { q: `nickname:"${req.params.id}"`};
+  const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
+  const method = 'GET';
+  console.log({url, method});
+  makeApiCall({ method, url }, (data) => { res.json(data); });
+});
+
 // Get all users
 // moved to user.js
 
