@@ -84,7 +84,7 @@ export class BeeRadarComponent {
   constructor(private localStorage: LocalStorageService, public _eventsService: EventsService) {}
 
   public toggleMap() {
-    this.mapIsActive= !this.mapIsActive;
+    this.mapIsActive = !this.mapIsActive;
     this.localStorage.store('mapIsActive', this.mapIsActive);
     this._eventsService.broadcast('mapToggled');
   }

@@ -13,11 +13,12 @@ import { EventsService } from '../@services/events.service';
 
 import { AuthModule } from './auth.module';
 
-// Import Google Maps
+// External Services
 import { AgmCoreModule } from '@agm/core';
-
-// Import Web Storage
 import { Ng2Webstorage } from 'ngx-webstorage';
+
+// Internal Services
+import { GeolocationService } from '../@services/geolocation.service';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -113,7 +114,8 @@ const APP_PROVIDERS = [
     AuthGuard,
     AuthRoleGuard,
     NonAuthGuard,
-    EventsService
+    EventsService,
+    GeolocationService
   ],
   schemas: [
     NO_ERRORS_SCHEMA

@@ -48,9 +48,9 @@ describe('BeeRadarComponent', () => {
   });
 
   it('toggleMap should toggle value of mapIsActive variable', () => {
-    comp.toggleMap(event);
+    comp.toggleMap();
     expect(comp.mapIsActive).toEqual(true);
-    comp.toggleMap(event);
+    comp.toggleMap();
     expect(comp.mapIsActive).toEqual(false);
   });
 });

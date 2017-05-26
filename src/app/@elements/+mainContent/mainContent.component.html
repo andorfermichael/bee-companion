@@ -1,4 +1,4 @@
-<main [ngClass]="{'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled, 'mapActive': mapIsActive}">
+<main [ngClass]="{'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled, 'fullDimension': location == '/bee-radar'}">
 	<nav-bar *ngIf="!auth.isAuthenticated()"></nav-bar>
 	<div class="main-content">
 		<ng-content></ng-content>
