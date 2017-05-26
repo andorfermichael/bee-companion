@@ -3,7 +3,8 @@
 <mainContent [ngClass]="'user-page'">
 	<mainContentRow>
 		<mainCard>
-			<h4>{{auth.userProfile.name}}</h4>
+			<userProfile [user]="localUser"></userProfile>
+			<h4 *ngIf="!localUser">Loading User {{id}} ...</h4>
 		</mainCard>
 	</mainContentRow>
 </mainContent>

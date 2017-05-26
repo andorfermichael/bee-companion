@@ -1,0 +1,11 @@
+<div *ngIf="localUser" class="user-profile">
+    <div class="row">
+      <div class="col-12">
+        <h3>{{localUser.nickname}}'s Profile:</h3>
+        <img [src]="localUser.picture" alt="" class="profile-img">
+        <p><strong>Name: </strong> {{localUser.name}}</p>
+        <p><strong>Email: </strong> {{localUser.email}}</p>
+        <p><strong>Nickname: </strong> {{localUser.nickname}}</p>
+      </div>
+    </div>
+</div>

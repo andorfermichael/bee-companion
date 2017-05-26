@@ -1,33 +1,36 @@
 import { ActivatedRoute } from '@angular/router';
-import { OnInit, OnDestroy, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { OnInit, OnDestroy, Component, Input } from '@angular/core';
 
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'user-page',
-  styleUrls: [ './userPage.component.scss' ],
-  templateUrl: './userPage.component.html'
+  selector: 'userProfile',
+  styleUrls: [ './userProfile.component.scss' ],
+  templateUrl: './userProfile.component.html'
 })
 
-export class UserPageComponent implements OnInit, OnDestroy {
+export class UserProfileComponent implements OnInit, OnDestroy {
 
+    @Input() public user: any;
     public id: string;
     public localUser: any;
     private sub: any;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
-                  public authHttp: AuthHttp, private router: Router ) {}
+                  public authHttp: AuthHttp ) {}
 
     public ngOnInit() {
+      if (!this.user) {
         this.sub = this.activatedRoute.params.subscribe((params) => {
            this.id = params['id']; // (+) converts string 'id' to a number
-           console.log(this.id);
            this.fetchUserFromAPI(this.id);
            // In a real app: dispatch action to load the details here.
         });
+        return;
+      }
+      this.localUser = this.user;
     }
 
     public ngOnDestroy() {
@@ -36,14 +39,6 @@ export class UserPageComponent implements OnInit, OnDestroy {
 
     private fetchUserFromAPI(username?: string) {
       if (!username) {
-        return;
-      }
-      if (username === 'me') {
-        if (!this.auth.isAuthenticated() || !this.auth.userProfile) {
-          this.router.navigate(['/login']);
-          return;
-        }
-        this.localUser = this.auth.userProfile;
         return;
       }
       this.authHttp.get('http://localhost:3000/api/user/' + username)
