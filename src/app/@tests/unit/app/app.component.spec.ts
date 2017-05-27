@@ -62,7 +62,7 @@ describe(`App`, () => {
 
   it(`should be BeeCompanion`, () => {
     expect(comp.url).toEqual('https://www.bee-companion.com/');
-    expect(comp.angularclassLogo).toEqual('assets/img/BeeCompanion_smallLogo.png');
+    expect(comp.logo).toEqual('assets/img/BeeCompanion_smallLogo.png');
     expect(comp.name).toEqual('BeeCompanion');
   });
 });

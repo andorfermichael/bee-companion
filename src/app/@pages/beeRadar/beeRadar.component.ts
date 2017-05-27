@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../@services/events.service';
 import { GeolocationService } from '../../@services/geolocation.service';
+import { Title } from '@angular/platform-browser';
 
+import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { MapStyles } from '../../@config/google-maps.config';
 
 import { fakeBeekeeperPositions } from '../../@tests/unit/_doubles/geolocation.doubles';
@@ -36,10 +38,12 @@ export class BeeRadarComponent implements OnInit {
 
   public displayFlag = 'map';
 
-  constructor(private localStorage: LocalStorageService, public _eventsService: EventsService,
+  constructor(private titleService: Title, private localStorage: LocalStorageService,
+              public _eventsService: EventsService,
               private geolocationService: GeolocationService) {}
 
   public ngOnInit() {
+    this.titleService.setTitle(PageTitlePrefix + PageTitles.BeeRadarComponent);
     this.fetchCurrentLocation();
   }
 

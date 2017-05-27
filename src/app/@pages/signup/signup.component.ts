@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { trigger, state, style, transition, keyframes, animate } from '@angular/animations';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
+import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { AuthHttp } from 'angular2-jwt';
 
 import { Auth } from '../../@services/auth.service';
@@ -38,11 +40,14 @@ import { EventsService } from '../../@services/events.service';
   ]
 })
 
-export class SignupPageComponent {
+export class SignupPageComponent implements OnInit {
   public extErrorMessage: string;
 
-  constructor(public auth: Auth, public router: Router,
-              public authHttp: AuthHttp, public _eventsService: EventsService) {
+  constructor(private titleService: Title, public auth: Auth, public router: Router,
+              public authHttp: AuthHttp, public _eventsService: EventsService) {}
+
+  public ngOnInit() {
+    this.titleService.setTitle(PageTitlePrefix + PageTitles.SignUpComponent);
   }
 
   public addUserRole(role) {

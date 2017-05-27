@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
+import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { Auth } from '../../@services/auth.service';
 
 @Component({
@@ -7,6 +9,10 @@ import { Auth } from '../../@services/auth.service';
   styleUrls: [ './restricted.component.scss' ],
   templateUrl: './restricted.component.html'
 })
-export class RestrictedComponent {
-  constructor( public auth: Auth ) {}
+export class RestrictedComponent implements OnInit {
+  constructor(private titleService: Title, public auth: Auth) {}
+
+  public ngOnInit() {
+    this.titleService.setTitle(PageTitlePrefix + PageTitles.RestrictedComponent);
+  }
 }

@@ -1,7 +1,9 @@
 import { ActivatedRoute } from '@angular/router';
 import { OnInit, OnDestroy, Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
+import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
 import { Http } from '@angular/http';
@@ -15,21 +17,21 @@ import * as _ from 'lodash';
 })
 
 export class UserPageComponent implements OnInit, OnDestroy {
-
     public id: string;
     public localUser: any;
     private sub: any;
 
-    constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
-                  public authHttp: AuthHttp, private router: Router, private http: Http ) {}
+    constructor(private titleService: Title, public auth: Auth,
+                private activatedRoute: ActivatedRoute,
+                public authHttp: AuthHttp, private router: Router, private http: Http ) {}
 
     public ngOnInit() {
-        this.sub = this.activatedRoute.params.subscribe((params) => {
-           this.id = params['id']; // (+) converts string 'id' to a number
-           console.log(this.id);
-           this.fetchUserFromAPI(this.id);
-           // In a real app: dispatch action to load the details here.
-        });
+      this.titleService.setTitle(PageTitlePrefix + PageTitles.UserComponent);
+      this.sub = this.activatedRoute.params.subscribe((params) => {
+         this.id = params['id'];
+         console.log(this.id);
+         this.fetchUserFromAPI(this.id);
+      });
     }
 
     public ngOnDestroy() {

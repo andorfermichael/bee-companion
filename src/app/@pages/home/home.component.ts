@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 import 'rxjs/add/operator/switchMap';
 
@@ -9,7 +10,7 @@ import { PayPalService } from '../../@services/paypal.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../@services/events.service';
 
-import { Title } from '../title';
+import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 
 @Component({
   selector: 'home',
@@ -22,9 +23,18 @@ import { Title } from '../title';
 export class HomeComponent implements OnInit {
   public headerIsToggled: boolean = false;
 
-  constructor(private paypalService: PayPalService, public auth: Auth,
+  constructor(private titleService: Title, private paypalService: PayPalService, public auth: Auth,
               private route: ActivatedRoute, private location: Location,
               private localStorage: LocalStorageService, public _eventsService: EventsService) {}
+
+  public ngOnInit() {
+    this.titleService.setTitle(PageTitlePrefix + PageTitles.HomeComponent);
+
+    if (this.auth.isAuthenticated()) {
+      this.auth.checkUserHasRole();
+      this.checkPayments();
+    }
+  }
 
   public checkPayments(): void {
       // Get payment status, approved or cancelled
@@ -65,12 +75,5 @@ export class HomeComponent implements OnInit {
         // If payment is cancelled, nothing has to be done, since pay keys are only valid for
         // three hours
       }
-  }
-
-  public ngOnInit() {
-    if (this.auth.isAuthenticated()) {
-      this.auth.checkUserHasRole();
-      this.checkPayments();
-    }
   }
 }
