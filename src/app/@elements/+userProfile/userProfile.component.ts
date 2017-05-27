@@ -32,7 +32,7 @@ export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
       this.localUser = this.user;
-      if (_.get(this.user, 'username') === _.get(this.auth.userProfile, 'username')) {
+      if (_.get(this.user, 'user_id') === _.get(this.auth.userProfile, 'user_id')) {
         this.isCurrentUser = true;
         console.log('USER IS USER!');
       }

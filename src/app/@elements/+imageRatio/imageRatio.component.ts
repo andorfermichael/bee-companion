@@ -13,11 +13,12 @@ import * as _ from 'lodash';
   templateUrl: './imageRatio.component.html'
 })
 
-export class ImageRatioComponent implements OnInit, OnChanges {
+export class ImageRatioComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() public url: string;
     @Input() public width: string;
     @Input() public height: string;
+    public imgSrc: string;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
                   public authHttp: AuthHttp ) {}
@@ -27,10 +28,18 @@ export class ImageRatioComponent implements OnInit, OnChanges {
         console.error('Image Url needs to be passed to imageRatio Component!');
         return;
       }
-      this.url = `url('${this.url}')`;
+      this.imgSrc = `url('${this.url}')`;
     }
 
     public ngOnChanges() {
-      this.ngOnInit();
+      if (!this.url) {
+        console.error('Image Url needs to be passed to imageRatio Component!');
+        return;
+      }
+      this.imgSrc = `url('${this.url}')`;
+    }
+
+    public ngOnDestroy() {
+      this.imgSrc = null;
     }
 }

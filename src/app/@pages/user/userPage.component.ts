@@ -22,7 +22,8 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
     private sub: any;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
-                  public authHttp: AuthHttp, private router: Router, private http: Http ) {}
+                  public authHttp: AuthHttp, private router: Router, private http: Http,
+                  private location: Location ) {}
 
     public ngOnInit() {
         this.sub = this.activatedRoute.params.subscribe((params) => {
@@ -56,7 +57,10 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
       }
       if (userData) {
         this.localUser = userData;
-        console.log(userData);
+      } else {
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 250);
       }
     }
 
