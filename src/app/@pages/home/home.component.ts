@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -19,8 +19,10 @@ import { Title } from '../title';
     PayPalService
   ]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   public headerIsToggled: boolean = false;
+  public sub: any;
+  public timeout: any;
 
   constructor(private paypalService: PayPalService, public auth: Auth,
               private route: ActivatedRoute, private location: Location,
@@ -34,7 +36,7 @@ export class HomeComponent implements OnInit {
         const lastPayKey = this.localStorage.retrieve('lastPayKey');
 
         // Get payment details from last payment
-        this.paypalService.getPaymentDetails(lastPayKey).subscribe(
+        this.sub = this.paypalService.getPaymentDetails(lastPayKey).subscribe(
           (paymentDetails) => {
             this.paypalService.storePaymentDetailsInDatabase(paymentDetails).subscribe(
               () => {
@@ -42,7 +44,7 @@ export class HomeComponent implements OnInit {
                 this.localStorage.clear('lastPayKey');
 
                 // Remove state query param from url after a few seconds
-                setTimeout(() => {
+                this.timeout = setTimeout(() => {
                   this.location.replaceState('/home');
                 }, 4000);
               },
@@ -58,7 +60,7 @@ export class HomeComponent implements OnInit {
         this.localStorage.clear('lastPayKey');
 
         // Remove state query param from url after a few seconds
-        setTimeout(() => {
+        this.timeout = setTimeout(() => {
           this.location.replaceState('/home');
         }, 4000);
 
@@ -71,6 +73,15 @@ export class HomeComponent implements OnInit {
     if (this.auth.isAuthenticated()) {
       this.auth.checkUserHasRole();
       this.checkPayments();
+    }
+  }
+
+  public ngOnDestroy() {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
+    if (this.timeout) {
+      clearTimeout(this.timeout);
     }
   }
 }
