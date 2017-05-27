@@ -1,8 +1,8 @@
 <header>Loading...</header>
 
-<mainContent [ngClass]="'user-page'">
+<mainContent [ngClass]="'user-page bg-white'">
 	<mainContentRow>
-		<mainCard>
+		
 			<userProfile *ngIf="localUser" [user]="localUser"></userProfile>
 			<div *ngIf="!localUser" class="user-profile user-profile-placeholder loading">
 			    <div class="row">
@@ -15,7 +15,7 @@
 			      </div>
 				</div>
 			</div>
-		</mainCard>
+		
 	</mainContentRow>
 </mainContent>
 

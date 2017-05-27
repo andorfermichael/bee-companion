@@ -1,11 +1,134 @@
-<div *ngIf="localUser" class="user-profile">
-    <div class="row">
-      <div class="col-12">
-        <h3>{{localUser.nickname}}'s Profile:</h3>
-        <img [src]="localUser.picture" alt="" class="profile-img">
-        <p><strong>Name: </strong> {{localUser.name}}</p>
-        <p><strong>Email: </strong> {{localUser.email}}</p>
-        <p><strong>Nickname: </strong> {{localUser.nickname}}</p>
-      </div>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<div class="user-profile mainbody container-fluid">
+    <div class="row profile-align-row">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 user-profile-left">
+            <div class="card">
+                <div align="card-img-top">
+                    <img class="thumbnail img-responsive profile-img" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" width="300px" height="300px">
+                </div>
+                <div id="user-profile-accordion" class="user-profile-accordion" role="tablist" aria-multiselectable="true">
+			  		<div class="card">
+					    <div class="card-header hidden-md-up" role="tab" id="headingOne">
+					      <h5 class="mb-0">
+					        <a data-toggle="collapse" data-parent="#user-profile-accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+					          User Information
+					        </a>
+					      </h5>
+					    </div>
+					    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
+      						<div class="card-block">
+	      						<hr>
+			                    <h3><strong>Bio</strong></h3>
+			                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel gravida metus, non ultrices sapien. Morbi odio metus, dapibus non nibh id amet.</p>
+			                    <hr>
+			                    <h3><strong>Lives in</strong></h3>
+			                    <p>Salzburg, Austria</p>
+			                    <hr>
+			                    <h3><strong>Gender</strong></h3>
+			                    <p>Male</p>
+			                    <hr>
+			                    <h3><strong>Age</strong></h3>
+			                    <p>25</p>
+      						</div>
+  						</div>
+					</div>
+            	</div>
+            </div>
+        </div>
+        <div class="col-lg-12 user-profile-header">
+            <div class="card profile-header">
+                <div class="card-block">
+                    <span>
+                        <h1 class="panel-title pull-left" style="font-size:30px;">John Doe <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="User is verified"></i></h1>
+                        <div class="dropdown dropdown-subscribe pull-right" *ngIf="!isCurrentUser && isAuthenticated">
+                            <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                Subscribed
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="#"><i class="fa fa-fw fa-times" aria-hidden="true"></i> Unsubscribe</a></li>
+                            </ul>
+                        </div>
+                        <div class="user-profile-edit pull-right" *ngIf="isCurrentUser">
+                            <button class="btn btn-warning" type="button">
+                                Edit Profile
+                                <i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </span>
+                    <br><br>
+                    <i class="fa fa-tags" aria-hidden="true"></i> <a href="/tags/diaspora" class="tag">#diaspora</a> <a href="/tags/hashtag" class="tag">#hashtag</a> <a href="/tags/caturday" class="tag">#caturday</a>
+                    <br><br><hr>
+                    <span class="pull-left">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Beehives <span class="badge">1</span></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Colonies <span class="badge">3</span></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Followers <span class="badge">0</span></a>
+                    </span>
+                    <span class="pull-right">
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Contact by Email"></i></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Report User"></i></a>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="col-12 user-profile-buzzes">
+        	<!-- Simple Buzz -->
+            <div class="card buzz buzz-default">
+                <div class="card-block">
+                    <div class="pull-left">
+                        <a href="#">
+                            <img class="media-object img-circle" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" width="50px" height="50px" style="margin-right:8px; margin-top:-5px;">
+                        </a>
+                    </div>
+                    <h4>
+                    	<a href="#" style="text-decoration:none;">
+                    		<strong>John Doe</strong>
+                		</a> – 
+                		<small><small>
+                			<a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-clock-o" aria-hidden="true"></i> 42 minutes ago</i></a>
+            			</small></small>
+	                    <div class="dropdown pull-right buzz-control">
+	                        <button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dd1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	                            <i class="fa fa-cog" aria-hidden="true"></i>
+	                            <span class="caret"></span>
+	                        </button>
+	                        <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
+	                            <li><a href="#"><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> Report</a></li>
+	                            <li><a href="#"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit</a></li>
+	                            <li><a href="#"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
+	                        </ul>
+	                    </div>
+                    </h4>
+                    <hr>
+                    <div class="post-content">
+                        <p>Simple buzz example.</p>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel gravida metus, non ultrices sapien. Morbi odio metus, dapibus non nibh id amet.</p>
+                    </div>
+                    <hr>
+                    <div>
+                        <div class="pull-right btn-group-xs">
+                        	<a class="btn btn-default btn-xs"><i class="fa fa-heart" aria-hidden="true"></i> Like</a>
+                        </div>
+                        <div class="pull-left">
+                        </div>
+                        <div class="dropdown pull-left buzz-privacy-control">
+	                        <button class="btn btn-link btn-xs dropdown-toggle text-muted" type="button" id="dd1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+	                            <i class="fa fa-globe" aria-hidden="true"></i> Public
+	                            <span class="caret"></span>
+	                        </button>
+	                        <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
+	                            <li><a href="#">Public</a></li>
+	                            <li><a href="#">Registered</a></li>
+	                            <li><a href="#">Supporter only</a></li>
+	                            <li><a href="#">Beekeeper only</a></li>
+	                        </ul>
+	                    </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
     </div>
 </div>

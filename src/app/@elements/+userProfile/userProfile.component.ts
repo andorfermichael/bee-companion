@@ -13,12 +13,13 @@ import * as _ from 'lodash';
   templateUrl: './userProfile.component.html'
 })
 
-export class UserProfileComponent implements OnInit, OnDestroy {
+export class UserProfileComponent implements OnInit {
 
     @Input() public user: any;
-    public id: string;
+
     public localUser: any;
-    private sub: any;
+    public isCurrentUser: boolean;
+    public isAuthenticated: boolean;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
                   public authHttp: AuthHttp ) {}
@@ -26,13 +27,12 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     public ngOnInit() {
       if (!this.user) {
         console.error('User needs to be passed to userProfile Component!');
+        return;
       }
       this.localUser = this.user;
-    }
-
-    public ngOnDestroy() {
-      if (this.sub) {
-        this.sub.unsubscribe();
+      if (this.user.username === this.auth.userProfile.username) {
+        this.isCurrentUser = true;
       }
+      this.isAuthenticated = this.auth.isAuthenticated();
     }
 }
