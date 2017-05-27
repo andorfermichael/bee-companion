@@ -16,6 +16,10 @@ import { Auth } from '../../../@services/auth.service';
 import { EventsService } from '../../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BeeMapComponent } from '../../../@elements/+beeMap/beeMap.component';
+import { SideNavComponent } from '../../../@elements/+sidenav';
+import { SupporterMenuComponent } from '../../../@elements/+supporterMenu/spMenu.component';
+import { BeekeeperMenuComponent } from '../../../@elements/+beekeeperMenu/bkMenu.component';
+import { AdminMenuComponent } from '../../../@elements/+adminMenu/adminMenu.component';
 import { GeolocationService } from '../../../@services/geolocation.service';
 import { MarkerClusterDirective } from '../../../@directives/marker-cluster.directive';
 
@@ -35,7 +39,11 @@ describe('BeeRadarComponent', () => {
         MainContentComponent,
         NavComponent,
         BeeMapComponent,
-        MarkerClusterDirective
+        SideNavComponent,
+        MarkerClusterDirective,
+        SupporterMenuComponent,
+        BeekeeperMenuComponent,
+        AdminMenuComponent
       ],
       providers: [
         EventsService,
