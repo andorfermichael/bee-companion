@@ -31,9 +31,17 @@
 			}
 		}
 		.user-profile-left {
+		    margin-top: .5em;
 			float: none;
+			.card-img-top {
+			    margin: .5em;
+			}
 			@media (min-width: 768px) {
+			    margin-top: 0;
 				float: left;
+				.card-img-top {
+				    margin: 0;
+				}
 			}
 		}
 		.user-profile-header {
@@ -47,7 +55,7 @@
 			}
 		}
 		#headingOne {
-			border-bottom: 0;
+			text-align: center;
 		}
 	}
 	.profile-header {

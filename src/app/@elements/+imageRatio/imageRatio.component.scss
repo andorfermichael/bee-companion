@@ -1,0 +1,21 @@
+/*styles for imageRatio content only*/
+
+.image-ratio {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  max-width: 100%;
+  .image {
+    background-image: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: center;
+  }
+}

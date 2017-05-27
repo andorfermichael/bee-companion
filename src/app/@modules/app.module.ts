@@ -46,6 +46,7 @@ import { UserPageComponent } from '../@pages/user';
 // @elements
 import { FooterComponent } from '../@elements/+footer';
 import { HeaderComponent } from '../@elements/+header';
+import { ImageRatioComponent } from '../@elements/+imageRatio';
 import { LoginCardComponent } from '../@elements/+loginCard';
 import { MainCardComponent } from '../@elements/+mainCard';
 import { MainContentComponent } from '../@elements/+mainContent';
@@ -85,6 +86,7 @@ const APP_PROVIDERS = [
     FooterComponent,
     HeaderComponent,
     HomeComponent,
+    ImageRatioComponent,
     LoginCardComponent,
     LoginPageComponent,
     MainCardComponent,

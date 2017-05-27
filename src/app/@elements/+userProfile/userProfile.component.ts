@@ -20,6 +20,7 @@ export class UserProfileComponent implements OnInit {
     public localUser: any;
     public isCurrentUser: boolean;
     public isAuthenticated: boolean;
+    public picture: string;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
                   public authHttp: AuthHttp ) {}
@@ -34,5 +35,6 @@ export class UserProfileComponent implements OnInit {
         this.isCurrentUser = true;
       }
       this.isAuthenticated = this.auth.isAuthenticated();
+      this.picture = this.localUser.picture;
     }
 }
