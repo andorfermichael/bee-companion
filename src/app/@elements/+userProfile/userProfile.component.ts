@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { OnInit, OnDestroy, Component, Input } from '@angular/core';
+import { OnInit, OnDestroy, OnChanges , Component, Input } from '@angular/core';
 
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
@@ -13,17 +13,18 @@ import * as _ from 'lodash';
   templateUrl: './userProfile.component.html'
 })
 
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() public user: any;
 
     public localUser: any;
     public isCurrentUser: boolean;
     public isAuthenticated: boolean;
-    public picture: string;
+    public sub: any;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
-                  public authHttp: AuthHttp ) {}
+                  public authHttp: AuthHttp) {
+    }
 
     public ngOnInit() {
       if (!this.user) {
@@ -31,10 +32,24 @@ export class UserProfileComponent implements OnInit {
         return;
       }
       this.localUser = this.user;
-      if (this.user.username === this.auth.userProfile.username) {
+      if (_.get(this.user, 'username') === _.get(this.auth.userProfile, 'username')) {
         this.isCurrentUser = true;
+        console.log('USER IS USER!');
       }
       this.isAuthenticated = this.auth.isAuthenticated();
-      this.picture = this.localUser.picture;
+    }
+
+    public ngOnChanges() {
+      this.ngOnDestroy();
+      this.ngOnInit();
+    }
+
+    public ngOnDestroy() {
+      if (this.sub) {
+        this.sub.unsubscribe();
+      }
+      this.isCurrentUser = false;
+      this.localUser = null;
+      this.isAuthenticated = false;
     }
 }

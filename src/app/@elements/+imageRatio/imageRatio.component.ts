@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { OnInit, OnDestroy, Component, Input } from '@angular/core';
+import { OnInit, OnDestroy, OnChanges, Component, Input } from '@angular/core';
 
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
@@ -13,7 +13,7 @@ import * as _ from 'lodash';
   templateUrl: './imageRatio.component.html'
 })
 
-export class ImageRatioComponent implements OnInit {
+export class ImageRatioComponent implements OnInit, OnChanges {
 
     @Input() public url: string;
     @Input() public width: string;
@@ -28,5 +28,9 @@ export class ImageRatioComponent implements OnInit {
         return;
       }
       this.url = `url('${this.url}')`;
+    }
+
+    public ngOnChanges() {
+      this.ngOnInit();
     }
 }

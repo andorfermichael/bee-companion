@@ -1,6 +1,7 @@
 import { ActivatedRoute } from '@angular/router';
-import { OnInit, OnDestroy, Component } from '@angular/core';
+import { OnInit, OnChanges, OnDestroy, Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
@@ -14,7 +15,7 @@ import * as _ from 'lodash';
   templateUrl: './userPage.component.html'
 })
 
-export class UserPageComponent implements OnInit, OnDestroy {
+export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
 
     public id: string;
     public localUser: any;
@@ -32,8 +33,17 @@ export class UserPageComponent implements OnInit, OnDestroy {
         });
     }
 
+    public ngOnChanges() {
+      this.ngOnDestroy();
+      this.ngOnInit();
+    }
+
     public ngOnDestroy() {
+      if (this.sub) {
         this.sub.unsubscribe();
+      }
+      this.id = '';
+      this.localUser = null;
     }
 
     private processUserData(data: any): void {

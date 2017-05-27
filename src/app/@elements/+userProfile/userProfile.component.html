@@ -3,7 +3,7 @@
         <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 user-profile-left">
             <div class="card">
                 <div class="card-img-top">
-                    <imageRatio [url]=picture></imageRatio>
+                    <imageRatio [url]=localUser.picture></imageRatio>
                 </div>
                 <div id="user-profile-accordion" class="user-profile-accordion" role="tablist" aria-multiselectable="true">
 			  		<div class="card">
@@ -38,7 +38,7 @@
             <div class="card profile-header">
                 <div class="card-block">
                     <span>
-                        <h1 class="panel-title pull-left" style="font-size:30px;">John Doe <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="User is verified"></i></h1>
+                        <h1 class="panel-title pull-left" style="font-size:30px;">{{user.nickname}} <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="User is verified"></i></h1>
                         <div class="dropdown dropdown-subscribe pull-right" *ngIf="!isCurrentUser && isAuthenticated">
                             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 Subscribed
@@ -65,7 +65,7 @@
                     </span>
                     <span class="pull-right">
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Contact by Email"></i></a>
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Report User"></i></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none;" *ngIf="!isCurrentUser"><i class="fa fa-lg fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Report User"></i></a>
                     </span>
                 </div>
             </div>
@@ -77,12 +77,12 @@
                 <div class="card-block">
                     <div class="pull-left">
                         <a href="#">
-                            <img class="media-object img-circle" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png" width="50px" height="50px" style="margin-right:8px; margin-top:-5px;">
+                            <img class="media-object img-circle" src="{{user.picture}}" width="50px" height="50px" style="margin-right:8px; margin-top:-5px;">
                         </a>
                     </div>
                     <h4>
                     	<a href="#" style="text-decoration:none;">
-                    		<strong>John Doe</strong>
+                    		<strong>{{user.nickname}}</strong>
                 		</a> – 
                 		<small><small>
                 			<a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-clock-o" aria-hidden="true"></i> 42 minutes ago</i></a>
@@ -93,9 +93,9 @@
 	                            <span class="caret"></span>
 	                        </button>
 	                        <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
-	                            <li><a href="#"><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> Report</a></li>
-	                            <li><a href="#"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit</a></li>
-	                            <li><a href="#"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
+	                            <li><a href="#" *ngIf="!isCurrentUser"><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> Report</a></li>
+	                            <li><a href="#" *ngIf="isCurrentUser"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit</a></li>
+	                            <li><a href="#" *ngIf="isCurrentUser"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
 	                        </ul>
 	                    </div>
                     </h4>
@@ -111,7 +111,7 @@
                         </div>
                         <div class="pull-left">
                         </div>
-                        <div class="dropdown pull-left buzz-privacy-control">
+                        <div class="dropdown pull-left buzz-privacy-control" *ngIf="isCurrentUser">
 	                        <button class="btn btn-link btn-xs dropdown-toggle text-muted" type="button" id="dd1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 	                            <i class="fa fa-globe" aria-hidden="true"></i> Public
 	                            <span class="caret"></span>
