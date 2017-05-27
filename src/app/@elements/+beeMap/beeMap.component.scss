@@ -1,0 +1,34 @@
+
+:host:host:host {
+  height: 100%;
+  width: 100%;
+}
+
+:host:host {
+  height: 100%;
+  width: 100%;
+}
+
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.bee-map {
+  height: 100%;
+  width: 100%;
+
+  .gmnoprint {
+    display: none;
+  }
+  #map {
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+    .sebm-google-map-container {
+      position: relative;
+      height: 100%;
+      width: 100%;
+    }
+  }
+}

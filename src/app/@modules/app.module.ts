@@ -13,17 +13,20 @@ import { EventsService } from '../@services/events.service';
 
 import { AuthModule } from './auth.module';
 
-// Import Google Maps
-import { AgmCoreModule } from '@agm/core';
-
-// Import Web Storage
+// External Services
+import { AgmCoreModule, GoogleMapsAPIWrapper, MarkerManager } from '@agm/core';
 import { Ng2Webstorage } from 'ngx-webstorage';
+
+// Internal Services
+import { GeolocationService } from '../@services/geolocation.service';
 
 /*
  * Platform and Environment providers/directives/pipes
  */
 import { ENV_PROVIDERS } from '../environment';
 import { ROUTES } from '../app.routes';
+
+import { MarkerClusterDirective } from '../@directives/marker-cluster.directive';
 
 // App is our top level component
 import { AppComponent } from '../app.component';
@@ -44,6 +47,7 @@ import { PrivacyPolicyComponent } from '../@pages/privacy';
 import { NoContentComponent } from '../@pages/no-content';
 import { UserPageComponent } from '../@pages/user';
 // @elements
+import { BeeMapComponent } from '../@elements/+beeMap';
 import { FooterComponent } from '../@elements/+footer';
 import { HeaderComponent } from '../@elements/+header';
 import { LoginCardComponent } from '../@elements/+loginCard';
@@ -75,9 +79,11 @@ const APP_PROVIDERS = [
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
+    // Components
     AboutUsComponent,
     AdminMenuComponent,
     AppComponent,
+    BeeMapComponent,
     BeekeeperMenuComponent,
     BeeRadarComponent,
     CallbackComponent,
@@ -99,10 +105,13 @@ const APP_PROVIDERS = [
     RestrictedComponent,
     SignupCardComponent,
     SignupPageComponent,
+    TermsAndConditionsComponent,
     SupporterMenuComponent,
     TermsAndConditionsComponent,
     UserPageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    // Directives
+    MarkerClusterDirective
   ],
   imports: [ // import Angular's modules
     AgmCoreModule.forRoot({ apiKey: process.env.GOOGLE_MAPS_API_KEY }),
@@ -121,7 +130,10 @@ const APP_PROVIDERS = [
     AuthGuard,
     AuthRoleGuard,
     NonAuthGuard,
-    EventsService
+    EventsService,
+    GeolocationService,
+    MarkerManager,
+    GoogleMapsAPIWrapper
   ],
   schemas: [
     NO_ERRORS_SCHEMA

@@ -1,23 +1,33 @@
 <header>Loading...</header>
 
-<mainContent [ngClass]="'bee-radar bg-white'">
-	<mainContentRow>
-		<mainCard>
-			<h3 class="card-title"><span class="txt-bee">Bee</span><span class="txt-companion">Radar</span></h3>
-		</mainCard>
-	</mainContentRow>
-	<mainContentRow>
-		<radarCard
-	        [styles]=styles
-	        [lat]=lat
-	        [lng]=lng
-	        [zoom]=zoom
-	        [zoomControl]=zoomControl
-	        [disableDefaultUI]=disableDefaultUI
-	        [disableDoubleClickZoom]=disableDoubleClickZoom
-	        [scrollwheel]=scrollwheel
-	        [streetViewControl]=streetViewControl
-      	></radarCard>
+<mainContent style="height: 100%; width: 100%;" [ngClass]="'bee-radar bg-white'">
+	<mainContentRow style="height: 100%; width: 100%;">
+		<radarCard *ngIf="!mapIsActive && displayFlag != 'map'"
+	        [styles]="styles"
+	        [lat]="lat"
+	        [lng]="lng"
+	        [zoom]="zoom"
+	        [zoomControl]="zoomControl"
+	        [disableDefaultUI]="disableDefaultUI"
+	        [disableDoubleClickZoom]="disableDoubleClickZoom"
+	        [scrollwheel]="scrollwheel"
+	        [streetViewControl]="streetViewControl">
+    </radarCard>
+
+    <beeMap *ngIf="mapIsActive && displayFlag != 'radar'"
+            [styles]="styles"
+            [lat]="lat"
+            [lng]="lng"
+            [zoom]="zoom"
+            [zoomControl]="zoomControl"
+            [disableDefaultUI]="disableDefaultUI"
+            [disableDoubleClickZoom]="disableDoubleClickZoom"
+            [scrollwheel]="scrollwheel"
+            [streetViewControl]="streetViewControl"
+            [points]="points">
+    </beeMap>
+    <button *ngIf="!mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Karte wechseln</button>
+    <button *ngIf="mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Radar wechseln</button>
 	</mainContentRow>
 </mainContent>
 
