@@ -163,7 +163,7 @@ function buildQueryString(queryParams) {
 // Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
-  const queryParams = { q: `nickname:"${req.params.id}"`};
+  const queryParams = { q: `username:"${req.params.id}"`};
   const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
   const method = 'GET';
   console.log({url, method});
