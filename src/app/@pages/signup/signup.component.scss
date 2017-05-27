@@ -1,203 +1,197 @@
 /*styles for signup content only*/
 
-main {
-  width: 100%;
-  position: relative;
-  height: auto;
-
-  /deep/ {
-    maincard {
-      @media (max-width: 767px) { 
-        width: 100%;
-      }
-    }
-    .card-block {
-      padding: 0;
-      @media (min-width: 768px) { 
-        width: 425px;
-      }
-    }
-    .main-content-row {
-      //max-height: 600px;
+/deep/ 
+maincontent.signup maincard {
+  @media (max-width: 767px) { 
+    width: 100%;
+  }
+  .card-block {
+    padding: 0!important;
+    @media (min-width: 768px) { 
+      width: 425px;
     }
   }
-  .card-tabs {
-    .nav-tabs {
-      .nav-item {
-        min-width: 50%;
-        color: white;
-        margin-bottom: 0;
-
-        a {
-          border-radius: 0;
-          border: 0;
-          color: rgba(255, 255, 255, 0.5);
-          &:hover {
-            outline: none;
-            color: rgba(255, 255, 255, 0.75);
-          }
-        }
-        .active {
-          color: #464a4c!important;
-        }
-      }
-      
-      &:first-child {
-        .nav-item {
-          &:first-child a {
-            @media (min-width: 768px) { 
-              border-top-left-radius: 12px; 
-            }
-          }
-          &:last-child a {
-            @media (min-width: 768px) { 
-              border-top-right-radius: 12px; 
-            }
-          }
-        }
-      }
-    }
+  .main-content-row {
+    //max-height: 600px;
   }
+}
 
-  .signup-card {
-    padding: 1.25em;
-    form.signup {
-      padding-bottom: 2em;
-      @media (min-width: 768px) { 
-        padding-bottom: 0;
-      }
-
-      input {
-        background-color: transparent;
-        padding: .125em;
-        width: 8em;
-        padding-left: .25em;
-        padding-right: .25em;
-        cursor: initial !important;
-        background-color: transparent;
-        border-color: white;
-        border-radius: 4px;
-        outline: none;
-        color: rgba(255, 255, 255, 0.75);
-        font-size: small;
-        width: 175px;
-      }
-
-      label {
-          margin-right: 1em;
-      }
-
-      > .flex-row > div {
-          align-items: baseline;
-          margin-bottom: .5em;
-          width: 100%;
-          justify-content: space-between;
-      }
-      .name input{
-        width: 125px;
-      }
-      .forgotPassword {
-        display: none;
-      }
-      .signup {
-        display: initial;
-      }
-    }
-  }
-
-  .signup-content {
-    
-    .social-signup {
-      padding-bottom: 1.25em;
-    }
-
+.card-tabs {
+  .nav-tabs {
     .nav-item {
-      &:not(:first-child) {
-        padding-top: .5em;
+      min-width: 50%;
+      color: white;
+      margin-bottom: 0;
+
+      a {
+        border-radius: 0;
+        border: 0;
+        color: rgba(255, 255, 255, 0.5);
+        &:hover {
+          outline: none;
+          color: rgba(255, 255, 255, 0.75);
+        }
       }
+      .active {
+        color: #464a4c!important;
+      }
+    }
     
-      input {
-        padding: .125em;
-        width: 100%;
-        padding-left: .25em;
-        padding-right: .25em;
-        cursor: initial !important;
-        background-color: transparent;
-        border-color: white;
-        border-radius: 4px;
-        outline: none;
-        &:focus {
-          border-color: #f6dd3b;
+    &:first-child {
+      .nav-item {
+        &:first-child a {
+          @media (min-width: 768px) { 
+            border-top-left-radius: 12px; 
+          }
+        }
+        &:last-child a {
+          @media (min-width: 768px) { 
+            border-top-right-radius: 12px; 
+          }
         }
       }
     }
+  }
+}
 
-    .submit-row {
-      margin-top: .5em;
+.signup-card {
+  padding: 1.25em;
+  form.signup {
+    padding-bottom: 2em;
+    @media (min-width: 768px) { 
+      padding-bottom: 0;
     }
 
-    .log-message {
-      align-self: center;
+    input {
+      background-color: transparent;
+      padding: .125em;
+      width: 8em;
+      padding-left: .25em;
+      padding-right: .25em;
+      cursor: initial !important;
+      background-color: transparent;
+      border-color: white;
+      border-radius: 4px;
+      outline: none;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: small;
+      width: 175px;
+    }
 
-      .error {
-        font-size: .8em;
-        color: darkred;
+    label {
+        margin-right: 1em;
+    }
+
+    > .flex-row > div {
+        align-items: baseline;
+        margin-bottom: .5em;
+        width: 100%;
+        justify-content: space-between;
+    }
+    .name input{
+      width: 125px;
+    }
+    .forgotPassword {
+      display: none;
+    }
+    .signup {
+      display: initial;
+    }
+  }
+}
+
+.signup-content {
+  
+  .social-signup {
+    padding-bottom: 1.25em;
+  }
+
+  .nav-item {
+    &:not(:first-child) {
+      padding-top: .5em;
+    }
+  
+    input {
+      padding: .125em;
+      width: 100%;
+      padding-left: .25em;
+      padding-right: .25em;
+      cursor: initial !important;
+      background-color: transparent;
+      border-color: white;
+      border-radius: 4px;
+      outline: none;
+      &:focus {
+        border-color: #f6dd3b;
       }
+    }
+  }
 
-      .success {
-        font-size: .8em;
+  .submit-row {
+    margin-top: .5em;
+  }
+
+  .log-message {
+    align-self: center;
+
+    .error {
+      font-size: .8em;
+      color: darkred;
+    }
+
+    .success {
+      font-size: .8em;
+      color: #F6DD3B;
+    }
+  }
+
+  .password-forgot {
+    a {
+      font-size: .75em;
+      color: rgba(255,255,255,.5)
+    }
+  }
+
+  .signup-button {
+    text-align: right;
+    overflow: hidden;
+    .btn-link {
+      font-size: 2em;
+      line-height: 1em;
+      padding: 0;
+      color: white;
+      cursor: pointer;
+      &:hover {
+        text-decoration: none;
         color: #F6DD3B;
       }
-    }
-
-    .password-forgot {
-      a {
-        font-size: .75em;
-        color: rgba(255,255,255,.5)
-      }
-    }
-
-    .signup-button {
-      text-align: right;
-      overflow: hidden;
-      .btn-link {
-        font-size: 2em;
-        line-height: 1em;
-        padding: 0;
-        color: white;
-        cursor: pointer;
-        &:hover {
-          text-decoration: none;
-          color: #F6DD3B;
-        }
-        background: initial;
-        border: none;
-        &:focus {
-          color: #F6DD3B;
-          outline: none;
-          text-decoration: none;
-          box-shadow: none;
-        }
+      background: initial;
+      border: none;
+      &:focus {
+        color: #F6DD3B;
+        outline: none;
+        text-decoration: none;
+        box-shadow: none;
       }
     }
   }
-  .role-selection {
-    text-align: center;
-    padding: .5em 0;
-    margin-left: -1.25em;
-    margin-right: -1.25em;
-    margin-bottom: 1em;
-    background-color: black;
+}
+.role-selection {
+  text-align: center;
+  padding: .5em 0;
+  margin-left: -1.25em;
+  margin-right: -1.25em;
+  margin-bottom: 1em;
+  background-color: black;
 
-    .role {
-      &:hover {
-        a {
-          cursor: pointer;
-          text-decoration: none;
-          color: #F6DD3B;
-          img {
-            filter: sepia() saturate(10000%) hue-rotate(-30deg);
-          }
+  .role {
+    &:hover {
+      a {
+        cursor: pointer;
+        text-decoration: none;
+        color: #F6DD3B;
+        img {
+          filter: sepia() saturate(10000%) hue-rotate(-30deg);
         }
       }
     }

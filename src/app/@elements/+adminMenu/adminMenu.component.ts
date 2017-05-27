@@ -8,11 +8,11 @@ import { EventsService } from '../../@services/events.service';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'side-nav',
-  styleUrls: ['./sidenav.component.scss'],
-  templateUrl: './sidenav.component.html'
+  selector: 'admin-menu',
+  styleUrls: ['./adminMenu.component.scss'],
+  templateUrl: './adminMenu.component.html'
 })
-export class SideNavComponent {
+export class AdminMenuComponent {
   public static getOffsetLeft(element) {
     return (element.offsetWidth / 2) + element.offsetLeft +
       (element.offsetParent ? element.offsetParent.offsetLeft : 0);

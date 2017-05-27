@@ -1,6 +1,18 @@
-<main [ngClass]="{'loggedIn': auth.isAuthenticated(), 'headerIsToggled': headerIsToggled, 'fullDimension': location == '/bee-radar'}">
+<main [ngClass]="{
+            'loggedIn': auth.isAuthenticated(),
+            'headerIsToggled': headerIsToggled,
+            'fullDimension': location == '/bee-radar',
+            'userHasRole': auth.checkUserHasRole(),
+            'hideSideNav': hideSideNav
+
+            }">
 	<nav-bar *ngIf="!auth.isAuthenticated()"></nav-bar>
 	<div class="main-content">
+		<side-nav *ngIf="auth.isAuthenticated() && userRole && !hideSideNav">
+			<sp-menu *ngIf="userRole == 'Supporter'" [userIsAdmin]="userIsAdmin"></sp-menu>
+			<bk-menu *ngIf="userRole == 'Beekeeper' || userRole == 'Admin'" [userIsAdmin]="userIsAdmin"></bk-menu>
+			<admin-menu *ngIf="userRole == 'Admin'"></admin-menu>
+		</side-nav>
 		<ng-content></ng-content>
 	</div>
 </main>

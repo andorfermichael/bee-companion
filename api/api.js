@@ -40,6 +40,7 @@ app.use(helmet.contentSecurityPolicy({
 }));
 
 // Routes
+const user = require('./routes-external/user');
 const auth = require('./routes-external/auth');
 const paypal = require('./routes-external/paypal');
 const paypalTransactions = require('./routes/paypaltransactions');
@@ -57,6 +58,7 @@ app.use(bodyParser.text(), function ngHttpFix(req, res, next) {
 app.use('/api/paypal', paypal);
 app.use('/api/auth', auth);
 app.use('/api/paypaltransaction', paypalTransactions);
+app.use('/api', user);
 
 app.listen(PORT, function() {
   console.log('Listen on http://localhost:' + PORT + ' in ' + NODE_ENV);

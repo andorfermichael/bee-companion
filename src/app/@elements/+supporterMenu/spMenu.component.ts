@@ -8,11 +8,11 @@ import { EventsService } from '../../@services/events.service';
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'side-nav',
-  styleUrls: ['./sidenav.component.scss'],
-  templateUrl: './sidenav.component.html'
+  selector: 'sp-menu',
+  styleUrls: ['./spMenu.component.scss'],
+  templateUrl: './spMenu.component.html'
 })
-export class SideNavComponent {
+export class SupporterMenuComponent {
   public static getOffsetLeft(element) {
     return (element.offsetWidth / 2) + element.offsetLeft +
       (element.offsetParent ? element.offsetParent.offsetLeft : 0);
@@ -24,6 +24,8 @@ export class SideNavComponent {
     3: false,
     4: false
   };
+
+  @Input() public userIsAdmin;
 
   constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer,
               public auth: Auth, private router: Router, public _eventsService: EventsService) {

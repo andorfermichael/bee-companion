@@ -22,26 +22,6 @@ const auth0 = new AuthenticationClient({
 // Authentication middleware. When used, the
 // access token must exist and be verified against
 // the Auth0 JSON Web Key Set
-const checkJwt = jwt({
-  // Dynamically provide a signing key
-  // based on the kid in the header and
-  // the singing keys provided by the JWKS endpoint.
-  secret: jwksRsa.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `${auth0BaseDomain}.well-known/jwks.json`
-  }),
-
-  // Validate the audience and the issuer. (BeeCompanion)
-  audience: process.env.AUTH0_CLIENT_ID,
-  issuer: auth0BaseDomain,
-  algorithms: ['RS256']
-});
-
-// Authentication middleware. When used, the
-// access token must exist and be verified against
-// the Auth0 JSON Web Key Set
 const authOptions = { method: 'POST',
   url: `${auth0BaseDomain}oauth/token`,
   headers: { 'content-type': 'application/json' },
@@ -104,35 +84,6 @@ function getApiOpts(data, options) {
   return tmp;
 }
 
-function getRoleChangeOpts(role, user_id) {
-  return {
-    url: `${auth0BaseDomain}api/v2/users/` + encodeURIComponent(user_id),
-    body: {
-      app_metadata: {
-        roles: [
-          role.toString()
-        ]
-      }
-    }
-  };
-}
-
-function getSignupOpts(data) {
-  return _.assign({}, authOptions, {
-    url: `${auth0BaseDomain}dbconnections/signup`,
-    body: {
-      email: _.get(data, 'email'),
-      password: _.get(data, 'password'),
-      username: _.get(data, 'userName') || _.get(data, 'username'),
-      user_metadata: {
-        firstName: _.get(data, 'firstName'),
-        lastName: _.get(data, 'lastName')
-      },
-      connection: 'Username-Password-Authentication'
-    }
-  });
-}
-
 function getJWTToken(req){
   const parts = req.headers.authorization.split(' ');
   if (parts.length === 2) {
@@ -145,8 +96,9 @@ function getJWTToken(req){
   return false;
 }
 
+
 const defaultUserQueryParamters = {
-  fields: 'email,username,picture,nickname,last_login,app_metadata,user_metadata,user_id',
+  fields: 'username,picture,nickname,last_login,app_metadata,user_metadata',
   include_fields: true
 };
 
@@ -160,6 +112,13 @@ function buildQueryString(queryParams) {
   return `?${query.join('&')}`;
 }
 
+// Get all users
+router.use('/users', cors(corsConfig));
+router.get('/users', function(req, res) {
+  const url = `${auth0BaseDomain}api/v2/users`;
+  makeApiCall({ url: url }, (data) => { res.json(data); });
+});
+
 // Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
@@ -168,43 +127,6 @@ router.get('/user/:id', function(req, res) {
   const method = 'GET';
   console.log({url, method});
   makeApiCall({ method, url }, (data) => { res.json(data); });
-});
-
-// Get all users
-// moved to user.js
-
-// Set the role of a user
-router.use('/user/set/role/:role', cors(corsConfig));
-router.get('/user/set/role/:role', checkJwt, function(req, res) {
-  const role = req.params.role;
-  if (!role || (role !== 'Supporter' && role !== 'Beekeeper')) {
-    return res.status(403);
-  }
-  else {
-    jwtToken = getJWTToken(req);
-    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
-      const userRoles = userInfo.roles || userInfo.app_metadata.roles;
-      if (userRoles.indexOf(role) > 1) {
-        return res.status(400).json({'error':'User has already this role!'});
-      }
-      const opts = getRoleChangeOpts(role, userInfo.user_id);
-      makeApiCall(opts, (data) => { res.json(data); });
-    });
-  }
-});
-
-// Enabling CORS Pre-Flight 
-router.options('/signup', cors(corsConfig));
-router.use('/signup', cors(corsConfig));
-
-// Signup Process
-router.post('/signup', function(req, res) {
-  const userdata = _.get(req, 'body.user');
-  const opts = getSignupOpts(userdata);
-  rp(opts)
-    .then((data) => { res.json(data); })
-    .catch((error) => {
-      res.status(400).json({ error }); });
 });
 
 module.exports = router;

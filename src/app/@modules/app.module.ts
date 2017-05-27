@@ -45,6 +45,7 @@ import { ContactUsComponent } from '../@pages/contact';
 import { TermsAndConditionsComponent } from '../@pages/terms';
 import { PrivacyPolicyComponent } from '../@pages/privacy';
 import { NoContentComponent } from '../@pages/no-content';
+import { UserPageComponent } from '../@pages/user';
 // @elements
 import { BeeMapComponent } from '../@elements/+beeMap';
 import { FooterComponent } from '../@elements/+footer';
@@ -55,9 +56,13 @@ import { MainContentComponent } from '../@elements/+mainContent';
 import { MainContentRowComponent } from '../@elements/+mainContentRow';
 import { NavComponent } from '../@elements/+nav';
 import { SideNavComponent } from '../@elements/+sidenav';
+import { AdminMenuComponent } from '../@elements/+adminMenu';
+import { BeekeeperMenuComponent } from '../@elements/+beekeeperMenu';
+import { SupporterMenuComponent } from '../@elements/+supporterMenu';
 import { PayPalFormComponent } from '../@elements/+paypalForm';
 import { RadarCardComponent } from '../@elements/+radarCard';
 import { SignupCardComponent } from '../@elements/+signupCard';
+import { UserProfileComponent } from '../@elements/+userProfile';
 
 // Styles
 import '../../styles/styles.scss';
@@ -76,8 +81,10 @@ const APP_PROVIDERS = [
   declarations: [
     // Components
     AboutUsComponent,
+    AdminMenuComponent,
     AppComponent,
     BeeMapComponent,
+    BeekeeperMenuComponent,
     BeeRadarComponent,
     CallbackComponent,
     ContactUsComponent,
@@ -99,6 +106,10 @@ const APP_PROVIDERS = [
     SignupCardComponent,
     SignupPageComponent,
     TermsAndConditionsComponent,
+    SupporterMenuComponent,
+    TermsAndConditionsComponent,
+    UserPageComponent,
+    UserProfileComponent,
     // Directives
     MarkerClusterDirective
   ],

@@ -1,0 +1,26 @@
+<div id="admin-menu" class="bee-scrollbar-mini admin-menu" role="tablist" aria-multiselectable="true">
+    <div class="list-group list-group-root panel card" id="#list-group">
+        <a href="#menu100" class="list-group-item collapsed" data-toggle="collapse" data-parent="#admin-menu" aria-expanded="false" [ngClass]="{'hidden-sm-down': isMenuActive() && !isMenuActive(1)}" (click)="setMenuActive(1)"><i class="icon_datareport_alt"></i> <span>Stats</span> </a>
+        <div class="collapse" id="menu100">
+            <a href="#" class="list-group-item" data-parent="#menu100">Analytics</a>
+            <a href="#" class="list-group-item" data-parent="#menu100">Performance</a>
+            <a href="#" class="list-group-item" data-parent="#menu100">PayPal History</a>
+        </div>
+        <a href="#" class="list-group-item collapsed" data-parent="#admin-menu" [ngClass]="{'hidden-sm-down': isMenuActive()}"><i class="icon_contacts"></i> <span>User Management</span></a>
+        <a href="#" class="list-group-item collapsed" data-parent="#admin-menu" [ngClass]="{'hidden-sm-down': isMenuActive()}"><i class="icon_tools"></i> <span>Maintenance</span></a>
+        <!-- <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#admin-menu" aria-expanded="false" [ngClass]="{'hidden-sm-down': isMenuActive() && !isMenuActive(3)}" (click)="setMenuActive(3)"><i class="icon_genius"></i> <span class="hidden-sm-down">My Colonies </span></a>
+        <div class="collapse" id="menu3">
+            <a href="#" class="list-group-item" data-parent="#menu3">Alpha</a>
+            <a href="#" class="list-group-item" data-parent="#menu3">Bravo</a>
+            <a href="#" class="list-group-item" data-parent="#menu3">Charlie</a>
+            <a href="#" class="list-group-item" data-parent="#menu3">Delta</a>
+            <a href="#" class="list-group-item" data-parent="#menu3">Epsylon</a>
+            <a href="#" class="list-group-item" data-parent="#menu3">Foxtrot</a>
+        </div> -->
+        <a href="#menu400" class="list-group-item collapsed" data-toggle="collapse" data-parent="#admin-menu" aria-expanded="false" [ngClass]="{'hidden-sm-down': isMenuActive() && !isMenuActive(4)}" (click)="setMenuActive(4)"><i class="icon_cog"></i> <span class="hidden-sm-down">My</span><span>&nbsp;Settings</span></a>
+        <div class="collapse" id="menu400">
+            <a href="#" class="list-group-item" data-parent="#menu400">Accountsettings</a>
+            <a href="#" class="list-group-item" data-parent="#menu400">Authentication</a>
+        </div>
+    </div>
+</div>

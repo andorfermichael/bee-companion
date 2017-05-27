@@ -79,7 +79,8 @@ module.exports = function (options) {
           exclude: [
             // these packages have problems with their sourcemaps
             helpers.root('node_modules/rxjs'),
-            helpers.root('node_modules/@angular')
+            helpers.root('node_modules/@angular'),
+            helpers.root('node_modules/@agm')
           ]
         },
 
@@ -169,7 +170,7 @@ module.exports = function (options) {
           loader: 'istanbul-instrumenter-loader',
           include: helpers.root('src'),
           exclude: [
-            /\.(e2e|spec)\.ts$/,
+            /\.(e2e|spec|doubles|config)\.ts$/,
             /node_modules/
           ]
         }

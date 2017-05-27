@@ -31,9 +31,11 @@
 
 .bc-header-logo {
     transition: all .75s ease;
+    //transition: height .75s ease, opacity 1.5s ease;
     opacity: 1;
     height: 150px;
     img {
+        transition: all .75s ease;
         width: 144px;
         height: 150px;
     }
@@ -57,8 +59,10 @@
 
 .header-wrapper {
     position: relative;
-    transition: height 1s ease;
+    transition: all .75s ease;
+    height: 150px;
     &.loggedIn {
+        height: 120px;
         position: fixed;
         top: 0;
         width: 100%;
@@ -67,17 +71,31 @@
         .bc-header-logo {
             height: 60px;
             opacity: 0;
+            img {
+                display: none;
+            }
         }
         &.toggled {
+            height: 60px;
             .bc-header-logo {
                 height: 0px!important;
+
             }
             .main-icon {
                 display: none;
             }
-            /deep/ .nav-brand-icon-wrapper .nav-brand-icon {
-                width: 50px!important;
-                transform: translate(-50%, 2.5px)!important;
+            /deep/ .nav-brand-icon-wrapper {
+                @media (min-width: 768px) {
+                    padding-left: 50px;
+                }
+                .nav-brand-icon {
+                    width: 50px!important;
+                    transform: translate(-50%, 2.5px)!important;
+                    @media (min-width: 768px) {
+                        left: 0!important;
+                        transform: translate(25%, 2.5px)!important;
+                    }
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Observable } from 'rxjs';
 
 import { MarkerIcon, ClusterOptions } from '../@config/google-maps.config';
-//import '../../assets/js/markerclusterer.js';
 import 'js-marker-clusterer/src/markerclusterer.js';
 
 export declare const google;

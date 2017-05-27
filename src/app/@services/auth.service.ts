@@ -144,7 +144,6 @@ export class Auth {
           if (userRole === necessaryRole) {
             userHasNecessaryRole = true;
             this.signUpIncomplete = null;
-            console.log('USER HAS ROLE! ' + userRole);
             return userRole;
           }
         }

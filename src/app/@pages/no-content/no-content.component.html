@@ -1,19 +1,14 @@
 <header>Loading...</header>
 
-<main>
-	<nav-bar>Loading...</nav-bar>
-	<div class="main-content">
-		<div class="row no-gutters align-items-center">
-			<div class="card main-card ">
-				<div class="card-block">
-					<h1 class="card-title"><span class="txt-bee">404</span><span class="txt-companion"> An Error occured :(</span></h1><br>
-					<h5 class="card-text">Our bees are working hard on searching for a solution for this problem.</h5>
-					<p>If you think this error shouldn't have happened or happens continously do not hesitate do contact us:</p>
-					<p><a href="mailto:support@bee-companion.com">Contact Us</a></p>
-				</div>
-			</div>
-		</div>
-	</div>
-</main>
+<mainContent [hideSideNav]="true">
+	<mainContentRow>
+		<mainCard>
+				<h1 class="card-title"><span class="txt-bee">404</span><span class="txt-companion"> An Error occured :(</span></h1><br>
+				<h5 class="card-text">Our bees are working hard on searching for a solution for this problem.</h5>
+				<p>If you think this error shouldn't have happened or happens continously do not hesitate do contact us:</p>
+				<p><a href="mailto:support@bee-companion.com">Contact Us</a></p>
+			</mainCard>
+		</mainContentRow>
+</mainContent>
 
 <footer>Loading...</footer>

@@ -1,0 +1,22 @@
+<header>Loading...</header>
+
+<mainContent [ngClass]="'user-page'">
+	<mainContentRow>
+		<mainCard>
+			<userProfile *ngIf="localUser" [user]="localUser"></userProfile>
+			<div *ngIf="!localUser" class="user-profile user-profile-placeholder loading">
+			    <div class="row">
+			      <div class="col-12">
+			        <h3>{{id}}'s Profile:</h3>
+			        <img [src]="" alt="" class="profile-img">
+			        <p><strong>Name: </strong> </p>
+			        <p><strong>Email: </strong> </p>
+			        <p><strong>Nickname: </strong> </p>
+			      </div>
+				</div>
+			</div>
+		</mainCard>
+	</mainContentRow>
+</mainContent>
+
+<footer>Loading...</footer>
