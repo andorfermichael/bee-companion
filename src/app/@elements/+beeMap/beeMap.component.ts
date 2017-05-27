@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { AgmMarker } from '@agm/core';
 
 @Component({
   selector: 'beeMap',
@@ -17,5 +16,5 @@ export class BeeMapComponent {
   @Input() public disableDoubleClickZoom: boolean;
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
-  @Input() public agmMarkers: AgmMarker[];
+  @Input() public points: any[];
 }

@@ -1,7 +1,17 @@
 <div class="bee-map">
 		<div id="map">
-			<agm-map [latitude]=lat [longitude]=lng [styles]=styles [zoom]=zoom [disableDefaultUI]=disableDefaultUI [scrollwheel]=scrollwheel [zoomControl]=true [mapDraggable]=mapDraggable [disableDoubleClickZoom]=disableDoubleClickZoom [streetViewControl]=streetViewControl>
-        <agm-marker *ngFor='let marker of agmMarkers' [latitude]=marker.latitude [longitude]=marker.longitude></agm-marker>
-			</agm-map>
+			<agm-map
+        [latitude]="lat"
+        [longitude]="lng"
+        [styles]="styles"
+        [zoom]="zoom"
+        [disableDefaultUI]="disableDefaultUI"
+        [scrollwheel]="scrollwheel"
+        [zoomControl]="true"
+        [mapDraggable]="mapDraggable"
+        [disableDoubleClickZoom]="disableDoubleClickZoom"
+        [streetViewControl]="streetViewControl">
+        <marker-cluster [points]="points"></marker-cluster>
+      </agm-map>
 		</div>
 </div>

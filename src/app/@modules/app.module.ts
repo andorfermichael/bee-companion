@@ -26,6 +26,8 @@ import { GeolocationService } from '../@services/geolocation.service';
 import { ENV_PROVIDERS } from '../environment';
 import { ROUTES } from '../app.routes';
 
+import { MarkerClusterDirective } from '../@directives/marker-cluster.directive';
+
 // App is our top level component
 import { AppComponent } from '../app.component';
 import { APP_RESOLVER_PROVIDERS } from '../app.resolver';
@@ -72,6 +74,7 @@ const APP_PROVIDERS = [
 @NgModule({
   bootstrap: [ AppComponent ],
   declarations: [
+    // Components
     AboutUsComponent,
     AppComponent,
     BeeMapComponent,
@@ -95,7 +98,9 @@ const APP_PROVIDERS = [
     RestrictedComponent,
     SignupCardComponent,
     SignupPageComponent,
-    TermsAndConditionsComponent
+    TermsAndConditionsComponent,
+    // Directives
+    MarkerClusterDirective
   ],
   imports: [ // import Angular's modules
     AgmCoreModule.forRoot({ apiKey: process.env.GOOGLE_MAPS_API_KEY }),

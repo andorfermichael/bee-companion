@@ -17,6 +17,7 @@ import { EventsService } from '../../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
 import { BeeMapComponent } from '../../../@elements/+beeMap/beeMap.component';
 import { GeolocationService } from '../../../@services/geolocation.service';
+import { MarkerClusterDirective } from '../../../@directives/marker-cluster.directive';
 
 describe('BeeRadarComponent', () => {
   let comp: BeeRadarComponent;
@@ -33,7 +34,8 @@ describe('BeeRadarComponent', () => {
         MainContentRowComponent,
         MainContentComponent,
         NavComponent,
-        BeeMapComponent
+        BeeMapComponent,
+        MarkerClusterDirective
       ],
       providers: [
         EventsService,
