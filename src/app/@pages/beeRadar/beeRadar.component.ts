@@ -31,8 +31,10 @@ export class BeeRadarComponent implements OnInit {
   public scrollwheel: boolean = false;
   public streetViewControl: boolean = false;
 
-  public mapIsActive: boolean = false;
+  public mapIsActive: boolean = true;
   public points: Position[] = fakeBeekeeperPositions;
+
+  public displayFlag = 'map';
 
   constructor(private localStorage: LocalStorageService, public _eventsService: EventsService,
               private geolocationService: GeolocationService) {}

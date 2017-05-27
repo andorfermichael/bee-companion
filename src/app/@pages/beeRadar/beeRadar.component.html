@@ -2,7 +2,7 @@
 
 <mainContent style="height: 100%; width: 100%;" [ngClass]="'bee-radar bg-white'">
 	<mainContentRow style="height: 100%; width: 100%;">
-		<radarCard *ngIf="!mapIsActive"
+		<radarCard *ngIf="!mapIsActive && displayFlag != 'map'"
 	        [styles]="styles"
 	        [lat]="lat"
 	        [lng]="lng"
@@ -14,7 +14,7 @@
 	        [streetViewControl]="streetViewControl">
     </radarCard>
 
-    <beeMap *ngIf="mapIsActive"
+    <beeMap *ngIf="mapIsActive && displayFlag != 'radar'"
             [styles]="styles"
             [lat]="lat"
             [lng]="lng"
@@ -26,8 +26,8 @@
             [streetViewControl]="streetViewControl"
             [points]="points">
     </beeMap>
-    <button *ngIf="!mapIsActive" class="button toogle-map rounded" (click)="toggleMap()">Zu Karte wechseln</button>
-    <button *ngIf="mapIsActive" class="button toogle-map rounded" (click)="toggleMap()">Zu Radar wechseln</button>
+    <button *ngIf="!mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Karte wechseln</button>
+    <button *ngIf="mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Radar wechseln</button>
 	</mainContentRow>
 </mainContent>
 
