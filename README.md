@@ -1,7 +1,8 @@
 # BeeCompanion
 
-BeeCompanion is a platform for both beekeepers and their supporters.
+![BeeCompanion Logo](src/assets/img/BeeCompanion_smallLogo.png)
 
+BeeCompanion is a platform for both beekeepers and their supporters.
 
 # Table of Contents
 * [Supported Tools](#supported-tools)
