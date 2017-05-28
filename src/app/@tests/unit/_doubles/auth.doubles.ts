@@ -35,6 +35,14 @@ export class MockAuthService {
     return this.processLogin(username, password);
   }
 
+  public forgotPassword(username?: string, email?: string): any {
+    if (username == 'reject') {
+      return Promise.reject('error');
+    } else {
+      return Promise.resolve();
+    }
+  }
+
   private processLogin(username?: string, password?: string): Promise<any> {
     if (username == 'reject') {
       return Promise.reject('error');
