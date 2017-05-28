@@ -8,7 +8,7 @@ import { BeekeeperMenuComponent } from '../../../@elements/+beekeeperMenu/bkMenu
 
 import { MockAuthService } from '../_doubles/auth.doubles'
 
-describe(`AdminMenuComponent`, () => {
+describe(`BeekeeperMenuComponent`, () => {
   let comp: BeekeeperMenuComponent;
   let fixture: ComponentFixture<BeekeeperMenuComponent>;
 
