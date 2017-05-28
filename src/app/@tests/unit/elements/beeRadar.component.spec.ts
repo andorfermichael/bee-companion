@@ -22,7 +22,6 @@ import { BeekeeperMenuComponent } from '../../../@elements/+beekeeperMenu/bkMenu
 import { AdminMenuComponent } from '../../../@elements/+adminMenu/adminMenu.component';
 import { GeolocationService } from '../../../@services/geolocation.service';
 import { MarkerClusterDirective } from '../../../@directives/marker-cluster.directive';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('BeeRadarComponent', () => {
   let comp: BeeRadarComponent;
@@ -46,7 +45,6 @@ describe('BeeRadarComponent', () => {
         BeekeeperMenuComponent,
         AdminMenuComponent
       ],
-      schemas: [NO_ERRORS_SCHEMA],
       providers: [
         EventsService,
         LocalStorageService,
@@ -69,9 +67,9 @@ describe('BeeRadarComponent', () => {
 
   it('toggleMap should toggle value of mapIsActive variable', () => {
     comp.toggleMap();
-    expect(comp.mapIsActive).toEqual(false);
-    comp.toggleMap();
     expect(comp.mapIsActive).toEqual(true);
+    comp.toggleMap();
+    expect(comp.mapIsActive).toEqual(false);
   });
 
   it('ngOnInit should call "fetchCurrentLocation" to get current location', () => {

@@ -1,11 +1,11 @@
-import { OnInit, OnChanges, OnDestroy, Component } from '@angular/core';
+import { OnInit, OnChanges, OnDestroy, Component, Input } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
+
+import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { Auth } from '../../@services/auth.service';
 import { AuthHttp } from 'angular2-jwt';
 import { Http } from '@angular/http';
-
-import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 
 import * as _ from 'lodash';
 
@@ -22,9 +22,9 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
     public localUser: any;
     private sub: any;
 
-    constructor(public titleService: Title, public auth: Auth,
-                public activatedRoute: ActivatedRoute,
-                public authHttp: AuthHttp, public router: Router, public http: Http ) {}
+    constructor(private titleService: Title, public auth: Auth,
+                private activatedRoute: ActivatedRoute,
+                public authHttp: AuthHttp, private router: Router, private http: Http ) {}
 
     public ngOnInit() {
       this.titleService.setTitle(PageTitlePrefix + PageTitles.UserComponent);

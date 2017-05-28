@@ -6,7 +6,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { SpyLocation, MockLocationStrategy } from '@angular/common/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Location, LocationStrategy } from '@angular/common';
-import { Title } from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import { Auth } from '../../../@services/auth.service';
@@ -15,9 +14,9 @@ import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../../@services/events.service';
 import { HomeComponent } from '../../../@pages/home/home.component';
 
-import { MockAuthService } from '../_doubles/auth.doubles';
-import { ActivatedRouteStub } from '../_doubles/router.doubles';
-import { MockPayPalService } from '../_doubles/paypal.service.doubles';
+import { MockAuthService } from '../_doubles/auth.doubles'
+import { ActivatedRouteStub } from '../_doubles/router.doubles'
+import { MockPayPalService } from '../_doubles/paypal.service.doubles'
 
 describe(`HomeComponent`, () => {
   let comp: HomeComponent;
@@ -27,7 +26,6 @@ describe(`HomeComponent`, () => {
   let activatedRoute: ActivatedRouteStub;
   let location: SpyLocation;
   let paypalService: MockPayPalService;
-  let titleService: Title;
 
   // async beforeEach
   beforeEach(async(() => {
@@ -37,7 +35,6 @@ describe(`HomeComponent`, () => {
       declarations: [HomeComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        Title,
         LocalStorageService,
         BaseRequestOptions,
         EventsService,
@@ -68,13 +65,6 @@ describe(`HomeComponent`, () => {
       comp = fixture.componentInstance;
       authService = TestBed.get(Auth);
       paypalService = TestBed.get(PayPalService);
-      titleService = TestBed.get(Title);
-    });
-
-    it('ngOnInit should set page title', () => {
-      spyOn(titleService, 'setTitle');
-      comp.ngOnInit();
-      expect(titleService.setTitle).toHaveBeenCalled();
     });
 
     it('ngOnInit should check user authentication state', () => {

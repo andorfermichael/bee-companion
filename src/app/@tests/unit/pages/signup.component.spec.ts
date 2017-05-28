@@ -4,7 +4,6 @@ import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AuthHttp} from 'angular2-jwt';
-import { Title } from '@angular/platform-browser';
 
 // Load the implementations that should be tested
 import { Auth } from '../../../@services/auth.service';
@@ -18,7 +17,6 @@ describe(`SignupPageComponent`, () => {
   let fixture: ComponentFixture<SignupPageComponent>;
   let eventsService: EventsService;
   let authService: Auth;
-  let titleService: Title;
 
   // async beforeEach
   beforeEach(async(() => {
@@ -27,7 +25,6 @@ describe(`SignupPageComponent`, () => {
       declarations: [SignupPageComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
-        Title,
         AuthHttp,
         EventsService,
         BaseRequestOptions,
@@ -45,19 +42,6 @@ describe(`SignupPageComponent`, () => {
     })
     .compileComponents() // compile template and css
   }));
-
-  // synchronous beforeEach
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SignupPageComponent);
-    comp = fixture.componentInstance;
-    titleService = TestBed.get(Title);
-  });
-
-  it('ngOnInit should set page title', () => {
-    spyOn(titleService, 'setTitle');
-    comp.ngOnInit();
-    expect(titleService.setTitle).toHaveBeenCalled();
-  });
 
   describe(`successful signup/login`, () => {
     // synchronous beforeEach

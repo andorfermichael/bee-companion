@@ -1,6 +1,9 @@
-import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { Directive, NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
+import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { MockBackend } from '@angular/http/testing';
+import { AuthHttp} from 'angular2-jwt';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
@@ -28,8 +31,18 @@ describe(`NavComponent`, () => {
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         DomSanitizer,
+        AuthHttp,
         EventsService,
+        BaseRequestOptions,
         LocalStorageService,
+        MockBackend,
+        {
+          provide: Http,
+          useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
+            return new Http(backend, defaultOptions);
+          },
+          deps: [MockBackend, BaseRequestOptions]
+        },
         { provide: Auth, useClass: MockAuthService },
         { provide: Router, useValue: MockRouter }
       ]
@@ -47,22 +60,13 @@ describe(`NavComponent`, () => {
   });
 
   describe(`helper methods`, () => {
-/*    it('setFocus should set focus on element', () => {
-      const dummyElement = document.createElement('div');
-      document.getElementById = jasmine.createSpy('HTML Element').and.returnValue(dummyElement);
-      spyOn(dummyElement,'focus');
-      NavComponent.setFocus(dummyElement);
-      expect(dummyElement.focus).toHaveBeenCalled();
-    });*/
-
-    it('resetUsernamePasswordEmpty should set username and password to empty', () => {
+    it('resetUsernamePasswordEmpty should set username and password to empty ', () => {
       comp.resetUsernamePasswordEmpty();
       expect(comp.usernameEmpty).toEqual('inactive');
       expect(comp.passwordEmpty).toEqual('inactive');
     });
 
-    it('checkInputs should set "passwordEmpty" to active, set focus on password element and ' +
-      'set error message to "Password is required!" if no password passed to', () => {
+    it('checkInputs should set "passwordEmpty" to active, set focus on password element and set error message to "Password is required!" if no password passed to', () => {
       comp.passwordEmpty = 'inactive';
       comp.errorMsg = '';
       spyOn(NavComponent, 'setFocus');
@@ -72,8 +76,7 @@ describe(`NavComponent`, () => {
       expect(comp.errorMsg).toEqual('Password is required!');
     });
 
-    it('checkInputs should set "usernameEmpty" to active, set focus on username element and set' +
-      ' error message to "Username is required!" if no username passed to', () => {
+    it('checkInputs should set "usernameEmpty" to active, set focus on username element and set error message to "Username is required!" if no username passed to', () => {
       comp.usernameEmpty = 'inactive';
       comp.errorMsg = '';
       spyOn(NavComponent, 'setFocus');
@@ -83,14 +86,12 @@ describe(`NavComponent`, () => {
       expect(comp.errorMsg).toEqual('Username is required!');
     });
 
-    xit('checkInputs should set error message to "Invalid username or password!" if password ' +
-      'and/or username are less than 4 characters', () => {
+    xit('checkInputs should set error message to "Invalid username or password!" if password and/or username are less than 4 characters', () => {
       comp.checkInputs('Usr', 'Pwd');
       expect(comp.errorMsg).toEqual('Invalid username or password!');
     });
 
-    it('checkInputs should send "loginStart" broadcast via event services if password and username' +
-      ' passed validation', () => {
+    it('checkInputs should send "loginStart" broadcast via event services if password and username passed validation', () => {
       spyOn(eventsService, 'broadcast');
       comp.checkInputs('Michael', 'Password');
       expect(eventsService.broadcast).toHaveBeenCalledWith('loginStart');
