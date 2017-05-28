@@ -55,7 +55,7 @@ export class Auth {
     return this.processLogin(username, password);
   }
 
-  public logout(): void{
+  public logout(): void {
     // Remove tokens and profile and update login status subject
     localStorage.removeItem('token');
     localStorage.removeItem('id_token');
@@ -147,7 +147,7 @@ export class Auth {
     }
   }
 
-  public _updateProfile(): void{
+  public _updateProfile(): void {
     const tokenId = localStorage.getItem('id_token');
     const tokenAc = localStorage.getItem('token');
 

@@ -119,7 +119,7 @@ export class BeeRadarComponent implements OnInit {
 
   private generateLocationsFromData(data: any): void {
     data.forEach((location) => {
-      let generatedLocation = {
+      const generatedLocation = {
         lat: location[0].latitude,
         lng: location[0].longitude,
         role: location[0].role,

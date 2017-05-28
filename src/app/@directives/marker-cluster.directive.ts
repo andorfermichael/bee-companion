@@ -47,7 +47,7 @@ export class MarkerClusterDirective implements OnInit {
 
               const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(location.lat, location.lng),
-                icon: icon,
+                icon,
                 url: location.url
               });
 
