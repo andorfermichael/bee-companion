@@ -23,7 +23,7 @@ export class EventsService {
       });
   }
 
-  public on(name, listener) {
+  public on(name, listener): void {
     if (!this.listeners[name]) {
       this.listeners[name] = [];
     }
@@ -31,13 +31,13 @@ export class EventsService {
     this.listeners[name].push(listener);
   }
 
-  public off(name) {
+  public off(name): void {
     if (this.listeners[name]) {
       this.listeners[name] = [];
     }
   }
 
-  public broadcast(name, ...args) {
+  public broadcast(name, ...args): void {
     this.eventsSubject.next({
       name,
       args

@@ -14,7 +14,6 @@ export class MockAuthService {
   }
 
   public checkUserHasRole(): any {
-    console.log(this.userProfile.role);
     if (this.userProfile !== 'undefined' && this.userProfile.role === 'Admin') {
       return this.userProfile.role;
     }

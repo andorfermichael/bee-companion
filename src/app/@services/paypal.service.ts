@@ -10,7 +10,7 @@ export class PayPalService {
   private paypalApiUrl: string = 'http://localhost:3000/api/paypal';
   private paypalDBApiUrl: string = 'http://localhost:3000/api/paypaltransaction';
 
-  constructor(private http: Http) {}
+  constructor(public http: Http) {}
 
   public executeAdaptivePayment(receiverEmail: string, amount: number): Observable<any> {
     const headers = new Headers({
@@ -89,11 +89,11 @@ export class PayPalService {
       .catch(this.handleError);
   }
 
-  public extractData(res: Response) {
+  private extractData(res: Response) {
     return res.json() || { };
   }
 
-  public handleError(error: Response | any) {
+  private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';

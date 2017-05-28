@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit, OnDestroy {
   public sub: any;
   public timeout: any;
 
-  constructor(private titleService: Title, private paypalService: PayPalService, public auth: Auth,
-              private route: ActivatedRoute, private location: Location,
-              private localStorage: LocalStorageService, public _eventsService: EventsService) {}
+  constructor(public titleService: Title, public paypalService: PayPalService, public auth: Auth,
+              public route: ActivatedRoute, public location: Location,
+              public localStorage: LocalStorageService, public _eventsService: EventsService) {}
 
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.HomeComponent);

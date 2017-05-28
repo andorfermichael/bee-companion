@@ -47,9 +47,9 @@ export class BeeRadarComponent implements OnInit {
   private usersApiUrl: string = 'http://localhost:3000/api/users';
   private domain: string = null;
 
-  constructor(private titleService: Title, private localStorage: LocalStorageService,
+  constructor(public titleService: Title, public localStorage: LocalStorageService,
               public _eventsService: EventsService,
-              private geolocationService: GeolocationService, private http: Http) {}
+              public geolocationService: GeolocationService, public http: Http) {}
 
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.BeeRadarComponent);
@@ -59,7 +59,6 @@ export class BeeRadarComponent implements OnInit {
     } else {
       this.domain = 'https://bee-companion.com';
     }
-
 
     this.fetchCurrentLocation().subscribe(
       (data) => {
