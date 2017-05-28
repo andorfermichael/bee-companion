@@ -14,6 +14,10 @@ main {
 
   &.fullDimension {
     height: 100%;
+    padding-left: 0!important;
+    /deep/ .main-content-row {
+      padding: 0!important;
+    }
   }
 
   //transition: padding .75s ease;
