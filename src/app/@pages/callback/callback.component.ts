@@ -6,7 +6,7 @@ import { Auth } from '../../@services/auth.service';
   template: ``
 })
 export class CallbackComponent {
-  constructor(private authService: Auth) {
+  constructor(public authService: Auth) {
     this.authService.handleAuth();
   }
 }
