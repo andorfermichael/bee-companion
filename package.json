@@ -109,6 +109,7 @@
     "jwks-rsa": "^1.1.1",
     "karma-webdriver-launcher": "^1.0.5",
     "ngx-webstorage": "^1.8.0",
+    "node-geocoder": "^3.16.0",
     "npm-run": "^4.1.2",
     "paypal-adaptive": "^0.4.2",
     "pg": "^6.1.2",

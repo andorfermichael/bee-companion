@@ -20,7 +20,9 @@ module.exports = function(sequelize, DataTypes) {
     street_number: DataTypes.STRING,
     postal_code: DataTypes.STRING,
     city: DataTypes.STRING,
-    country: DataTypes.STRING
+    country: DataTypes.STRING,
+    latitude: DataTypes.DECIMAL,
+    longitude: DataTypes.DECIMAL
   }, {
     classMethods: {
       associate: function(models) {
