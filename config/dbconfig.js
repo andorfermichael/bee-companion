@@ -7,6 +7,8 @@ module.exports = {
   development: {
     database: "beecompanion-development",
     host: "127.0.0.1",
+    username: "admin",
+    password: "root",
     dialect: "postgres"
   },
   test: {

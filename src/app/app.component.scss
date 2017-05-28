@@ -59,3 +59,119 @@ app > .container-fluid {
 		background-color: #F6DD3B;
 	}
 }
+
+.app-loading {
+	width: 100%;
+	height: 100%;
+
+	$animation-duration: 1.8s;
+
+	.loader {
+		position: absolute;
+		background: url('../assets/img/beeCompanion.svg') no-repeat;
+		background-size: contain;
+		width: 250px;
+		height: 250px;
+		top: 50%;
+		left: 50%;
+		animation-delay: 0s;
+		animation-play-state: running;
+		animation-duration: 1.25s;
+	    animation: ld-spin 1s infinite;
+	}
+
+	@-webkit-keyframes ld-spin {
+	    0% {
+	        -webkit-transform: translate(-50%,-50%) rotate(0);
+	        transform: translate(-50%,-50%) rotate(0);
+	        animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19);
+	    }
+
+	    50% {
+	        -webkit-transform: translate(-50%,-50%) rotate(180deg);
+	        transform: translate(-50%,-50%) rotate(180deg);
+	        animation-timing-function: cubic-bezier(0.215,0.61,0.355,1);
+	    }
+
+	    100% {
+	        -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	        transform: translate(-50%,-50%) rotate(360deg);
+	    }
+	}
+
+	@-moz-keyframes ld-spin {
+	    0% {
+	        -webkit-transform: translate(-50%,-50%) rotate(0);
+	        transform: translate(-50%,-50%) rotate(0);
+	        animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19);
+	    }
+
+	    50% {
+	        -webkit-transform: translate(-50%,-50%) rotate(180deg);
+	        transform: translate(-50%,-50%) rotate(180deg);
+	        animation-timing-function: cubic-bezier(0.215,0.61,0.355,1);
+	    }
+
+	    100% {
+	        -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	        transform: translate(-50%,-50%) rotate(360deg);
+	    }
+	}
+
+	@-webkit-keyframes ld-spin {
+	    0% {
+	        -webkit-transform: translate(-50%,-50%) rotate(0);
+	        transform: translate(-50%,-50%) rotate(0);
+	        animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19);
+	    }
+
+	    50% {
+	        -webkit-transform: translate(-50%,-50%) rotate(180deg);
+	        transform: translate(-50%,-50%) rotate(180deg);
+	        animation-timing-function: cubic-bezier(0.215,0.61,0.355,1);	    
+	    }
+
+	    100% {
+	        -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	        transform: translate(-50%,-50%) rotate(360deg);
+	    }
+	}
+
+	@-o-keyframes ld-spin {
+	    0% {
+	        -webkit-transform: translate(-50%,-50%) rotate(0);
+	        transform: translate(-50%,-50%) rotate(0);
+	        animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19);
+	    }
+
+	    50% {
+	        -webkit-transform: translate(-50%,-50%) rotate(180deg);
+	        transform: translate(-50%,-50%) rotate(180deg);
+	        animation-timing-function: cubic-bezier(0.215,0.61,0.355,1);
+	    }
+
+	    100% {
+	        -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	        transform: translate(-50%,-50%) rotate(360deg);
+	    }
+	}
+
+	@keyframes ld-spin {
+	    0% {
+	        -webkit-transform: translate(-50%,-50%) rotate(0);
+	        transform: translate(-50%,-50%) rotate(0);
+	        animation-timing-function: cubic-bezier(0.55,0.055,0.675,0.19);
+	    }
+
+	    50% {
+	        -webkit-transform: translate(-50%,-50%) rotate(180deg);
+	        transform: translate(-50%,-50%) rotate(180deg);
+	        animation-timing-function: cubic-bezier(0.215,0.61,0.355,1);
+	    }
+
+	    100% {
+	        -webkit-transform: translate(-50%,-50%) rotate(360deg);
+	        transform: translate(-50%,-50%) rotate(360deg);
+	    }
+	}
+}

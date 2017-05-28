@@ -1,6 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
-import { OnInit, OnDestroy, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { OnInit, OnChanges, OnDestroy, Component, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
@@ -16,7 +15,9 @@ import * as _ from 'lodash';
   templateUrl: './userPage.component.html'
 })
 
-export class UserPageComponent implements OnInit, OnDestroy {
+export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
+
+    public inEditMode: boolean;
     public id: string;
     public localUser: any;
     private sub: any;
@@ -32,23 +33,35 @@ export class UserPageComponent implements OnInit, OnDestroy {
          console.log(this.id);
          this.fetchUserFromAPI(this.id);
       });
+      this.inEditMode = _.get(this.activatedRoute.snapshot.data, '[0]["inEditMode"]', false);
     }
 
     public ngOnDestroy() {
+      if (this.sub) {
         this.sub.unsubscribe();
+      }
+      this.id = '';
+      this.localUser = null;
+    }
+
+    public ngOnChanges() {
+      this.ngOnDestroy();
+      this.ngOnInit();
     }
 
     private processUserData(data: any): void {
       let userData;
       try {
-        const parseData = data.json();
-        userData = _.isArray(parseData) && parseData.length ? parseData[0] : null;
+        userData = data.json();
       } catch (e) {
         console.log(e);
       }
       if (userData) {
         this.localUser = userData;
-        console.log(userData);
+      } else {
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 250);
       }
     }
 
@@ -57,20 +70,23 @@ export class UserPageComponent implements OnInit, OnDestroy {
         return;
       }
       if (username === 'me') {
-        if (!this.auth.isAuthenticated() || !this.auth.userProfile) {
+        if (!this.auth.isAuthenticated()) {
           this.router.navigate(['/login']);
           return;
         }
-        this.localUser = this.auth.userProfile;
-        return;
       }
       if (this.auth.isAuthenticated()) {
+        // set localUser to null to toggle loading animation
+        this.localUser = null;
         // get authenticated information:
         this.authHttp.get('http://localhost:3000/api/auth/user/' + username)
           .subscribe(
               (data) => { this.processUserData(data); },
               (err) => {
-                  console.error(err);
+                  console.error(err.json());
+                  setTimeout(() => {
+                    this.router.navigate(['/home']);
+                  }, 250);
               });
       } else {
         // get public information

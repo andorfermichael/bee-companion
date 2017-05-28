@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
+const models  = require('../models');
 
 const _ = require('lodash');
 const rp = require('request-promise');
@@ -160,18 +161,133 @@ function buildQueryString(queryParams) {
   return `?${query.join('&')}`;
 }
 
+function buildColumnFilterBasedOnScope(scope, privacyRules) {
+  const scopes = ['public', 'registered', 'donators', 'private'];
+  const filtered = _.pickBy(privacyRules, function(value, key) {
+    if (scopes.indexOf(scope) >= scopes.indexOf(value)) {
+      return true;
+    } 
+    return false;
+  });
+  return Object.keys(filtered);
+}
+
 // Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
-  const queryParams = { q: `nickname:"${req.params.id}"`};
-  const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
-  const method = 'GET';
-  console.log({url, method});
-  makeApiCall({ method, url }, (data) => { res.json(data); });
+  jwtToken = getJWTToken(req);
+  auth0.tokens.getInfo(jwtToken, function(err, userInfo) {
+    if (req.params.id == 'me' || req.params.id == userInfo.username) {
+      //collect data from calling user itself
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          user.getUserPrivacy()
+            .then((userPrivacy) => {
+              const data = _.assign({}, userInfo, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
+              res.json(data);
+            })
+        })
+        .catch((err) => {
+            // user was registered on auth0 but is not present in usermodel
+            models.User.create({
+              auth_user_id: userInfo.user_id || user_id,
+              given_name: userInfo.given_name || _.get(userInfo, 'user_metadata.firstName'),
+              family_name: userInfo.family_name || _.get(userInfo, 'user_metadata.lastName'),
+              username: userInfo.username,
+              description: userInfo.description,
+              interests: userInfo.interests,
+              birthday: userInfo.birthday,
+              role: _.get(userInfo.roles, '[0]') || _.get(userInfo, 'app_metadata.roles[0]') || role,
+              gender: userInfo.gender,
+              picture: userInfo.picture,
+              email: userInfo.email,
+              paypal: userInfo.paypal,
+              phone: userInfo.phone,
+              authenticated: userInfo.authenticated || false,
+              email_verified: userInfo.email_verified,
+              street: userInfo.street,
+              street_number: userInfo.street_number,
+              postal_code: userInfo.postal_code,
+              city: userInfo.city,
+              country: userInfo.country
+            }, {
+              include: [{
+                association: models.UserPrivacy.User,
+                include: [ models.User.Privacy ]
+              }]
+            }).then(function(user) {
+                // create UserPrivacy default Dataset
+                models.UserPrivacy.create({
+                  UserId: user.id
+                 }).then(function(userPrivacy) {
+
+                  const userData = _.pick(user.get({plain: true}), userColumnFilter);
+                  userData.privacy = userPrivacy.get({plain: true});
+                  res.json(userData);
+                 }).catch((error) => {
+                  console.log(error);
+                    res.status(400).json(error);
+                 });
+            });
+        });
+    }
+    else {
+      // fallback because username is not settable on auth0
+      // lookup in our database for username:
+      models.User.findOne({ where: { username: req.params.id }})
+        .then((user) => {
+           user.getUserPrivacy()
+              .then((userPrivacy) => {
+                const data = _.assign({}, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
+                res.json(data);
+              })
+        }).catch((error) => {
+          const queryParams = { q: `username:"${req.params.id}"`};
+          const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
+          const method = 'GET';
+          makeApiCall({ method, url }, (userData) => {
+            const user_id = _.get(userData, '[0].user_id');
+            if (user_id) {
+              userData = userData[0];
+              models.User.findOne({ where: { auth_user_id: user_id }})
+              .then((user) => {
+                user.getUserPrivacy()
+                  .then((userPrivacy) => {
+                    const privacy = userPrivacy.get({plain: true});
+                    const data = _.assign({}, userData, user.get({plain: true}));
+                    res.json(_.pick(data, buildColumnFilterBasedOnScope('registered', privacy)));
+                  })
+              });
+            } else {
+              res.status(404).json({error: 'User not found!'});
+            }           
+          });
+        });  
+    }
+  });
 });
+
 
 // Get all users
 // moved to user.js
+
+// get userPrivacy
+router.use('/user/:id/userPrivacy/', cors(corsConfig));
+router.get('/user/:id/userPrivacy/', checkJwt, function(req, res) {
+    jwtToken = getJWTToken(req);
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          user.getUserPrivacy()
+            .then((userPrivacy) => {
+              res.json(userPrivacy.get({plain: true}));
+            })
+        });
+    });
+});
+
 
 // Set the role of a user
 router.use('/user/set/role/:role', cors(corsConfig));
@@ -184,13 +300,126 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
     jwtToken = getJWTToken(req);
     auth0.tokens.getInfo(jwtToken, function(err, userInfo){
       const userRoles = userInfo.roles || userInfo.app_metadata.roles;
-      if (userRoles.indexOf(role) > 1) {
+      const user_id = userInfo.id;
+      if (userRoles.indexOf(role) >= 0) {
         return res.status(400).json({'error':'User has already this role!'});
       }
       const opts = getRoleChangeOpts(role, userInfo.user_id);
-      makeApiCall(opts, (data) => { res.json(data); });
+      makeApiCall(opts, (data) => {
+        // create User
+        models.User.create({
+          auth_user_id: data.user_id || user_id,
+          given_name: data.given_name,
+          family_name: data.family_name,
+          username: data.username,
+          description: data.description,
+          interests: data.interests,
+          birthday: data.birthday,
+          role: _.get(data.roles, '[0]') || _.get(data, 'app_metadata.roles[0]') || role,
+          gender: data.gender,
+          picture: data.picture,
+          email: data.email,
+          paypal: data.paypal,
+          phone: data.phone,
+          authenticated: data.authenticated || false,
+          email_verified: data.email_verified,
+          street: data.street,
+          street_number: data.street_number,
+          postal_code: data.postal_code,
+          city: data.city,
+          country: data.country
+        }, {
+          include: [{
+            association: models.UserPrivacy.User,
+            include: [ models.User.Privacy ]
+          }]
+        }).then(function(user) {
+            // create UserPrivacy default Dataset
+            models.UserPrivacy.create({
+              UserId: user.id
+             }).then(function(userPrivacy) {
+              res.json(userPrivacy);
+             }).catch((error) => {
+              console.log(error);
+                res.status(400).json(error);
+             });
+        });
+      });
     });
   }
+});
+    
+const userColumnFilter = ['given_name','family_name','username','description',
+  'interests','birthday','role','gender','picture','email','paypal','phone','street',
+  'street_number','postal_code','city','country'];
+
+const auth0ColumnFilter = ['email' ];
+
+// Update a user
+router.use('/user/:id/update', cors(corsConfig));
+router.post('/user/:id/update', cors(), function(req, res) {
+  const newUserData = _.pick(req.body, userColumnFilter);
+  const newPrivacyData = req.body.privacy;
+  jwtToken = getJWTToken(req);
+  // get user_id out of JWT
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      // now we have the userInfo / user_id
+      const user_id = userInfo.user_id;
+      // get user from model
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          // filter fields and update with new data
+          const newUser = _.assign({}, _.pick(user.get({plain: true}), userColumnFilter), newUserData);
+          models.User.update(newUser, {where: { auth_user_id: user_id}})
+            .then((updatedUser) => {
+              // filter fields again for submit to auth0 
+              // NOT SUPPORTET <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!>
+              // const url = `${auth0BaseDomain}api/v2/users/` + encodeURIComponent(user_id);
+              // const opts = { url: url, body: _.pick(newUser, auth0ColumnFilter)};
+              // makeApiCall(opts, (data) => {
+              //   console.log(data);
+              //   //save changes from auth0 back to model
+              //   res.json(data);
+              // });
+              models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
+                .then((updatedPrivacy) => {
+                  res.status(200);
+                })
+                .catch((err) => {
+                  res.status(400).json({error: 'An error ocurred while saving data!'});
+                })
+            })
+        });
+    });
+});
+
+// create a userPrivacy Dataset
+router.use('/userPrivacy/create', cors(corsConfig));
+router.post('/userPrivacy/create', cors(), function(req, res) {
+  jwtToken = getJWTToken(req);
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          models.UserPrivacy.create({id: user.id})
+            .then(function(userPrivacy) {
+              res.json(userPrivacy.get({plain: true}));
+            }).catch((error) => {
+              res.status(400).json(error);
+            })
+        });
+    });
+});
+
+module.exports = router;
+
+
+// Create a new user
+router.use('/user/create', cors(corsConfig));
+router.post('/user/create', cors(), function(req, res) {
+  models.User.create(_.pick(req.body, userColumnFilter)).then(function(user) {
+    res.json(user);
+  });
 });
 
 // Enabling CORS Pre-Flight 

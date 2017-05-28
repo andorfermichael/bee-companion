@@ -50,6 +50,8 @@ import { UserPageComponent } from '../@pages/user';
 import { BeeMapComponent } from '../@elements/+beeMap';
 import { FooterComponent } from '../@elements/+footer';
 import { HeaderComponent } from '../@elements/+header';
+import { ImageRatioComponent } from '../@elements/+imageRatio';
+import { LoadingComponent } from '../@elements/+loading';
 import { LoginCardComponent } from '../@elements/+loginCard';
 import { MainCardComponent } from '../@elements/+mainCard';
 import { MainContentComponent } from '../@elements/+mainContent';
@@ -61,8 +63,10 @@ import { BeekeeperMenuComponent } from '../@elements/+beekeeperMenu';
 import { SupporterMenuComponent } from '../@elements/+supporterMenu';
 import { PayPalFormComponent } from '../@elements/+paypalForm';
 import { RadarCardComponent } from '../@elements/+radarCard';
+import { RibbonComponent } from '../@elements/+ribbon';
 import { SignupCardComponent } from '../@elements/+signupCard';
 import { UserProfileComponent } from '../@elements/+userProfile';
+import { UserProfileFormComponent } from '../@elements/+userProfileForm';
 
 // Styles
 import '../../styles/styles.scss';
@@ -91,6 +95,8 @@ const APP_PROVIDERS = [
     FooterComponent,
     HeaderComponent,
     HomeComponent,
+    ImageRatioComponent,
+    LoadingComponent,
     LoginCardComponent,
     LoginPageComponent,
     MainCardComponent,
@@ -103,6 +109,7 @@ const APP_PROVIDERS = [
     PrivacyPolicyComponent,
     RadarCardComponent,
     RestrictedComponent,
+    RibbonComponent,
     SignupCardComponent,
     SignupPageComponent,
     TermsAndConditionsComponent,
@@ -110,6 +117,7 @@ const APP_PROVIDERS = [
     TermsAndConditionsComponent,
     UserPageComponent,
     UserProfileComponent,
+    UserProfileFormComponent,
     // Directives
     MarkerClusterDirective
   ],

@@ -55,9 +55,11 @@ export class SignupPageComponent implements OnInit {
 
     this.authHttp.get('http://localhost:3000/api/auth/user/set/role/' + role)
       .subscribe(
-        () => {
+        (data) => {
+          console.log(data);
           this._eventsService.broadcast('loginSuccess');
-          this.auth._updateProfile(); },
+          this.auth._updateProfile();
+        },
         (err) => {
           this._eventsService.broadcast('loginFail');
           console.error(err); });

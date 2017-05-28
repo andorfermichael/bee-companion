@@ -1,0 +1,12 @@
+.user-profile-form-buttons {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: 1em;
+	.col-12 {
+		display: flex;
+		justify-content: flex-end;
+	}
+	.btn:first-child {
+		margin: 0 1em;
+	}
+}

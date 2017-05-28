@@ -1,0 +1,320 @@
+<form #userProfileForm="ngForm" (ngSubmit)="updateUser(userProfileForm)">
+    <div class="row user-profile-form-buttons">
+        <div class="col-12">
+            <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="given_name">Your First Name:</label>
+            <input type="text" class="form-control" id="given_name" aria-describedby="firstnameHelp" placeholder="Your firstname" name="given_name" [(ngModel)]="user.given_name" required>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group given_name_privacy">
+            <label for="given_name_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="given_name_privacy" name="given_name_privacy" [(ngModel)]="user.privacy.given_name" required>
+              <option value="public">Public</option>
+              <option value="registered">Registered</option>
+              <option value="donators">Donators</option>
+              <option disabled value="private">only me</option>
+            </select>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="family_name">Your Last Name:</label>
+            <input type="text" class="form-control" id="family_name" aria-describedby="lastnameHelp" placeholder="Your lastname" name="family_name" [(ngModel)]="user.family_name" required>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group lastname_privacy">
+            <label for="lastname_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="family_name_privacy" name="family_name_privacy" [(ngModel)]="user.privacy.family_name" required>
+              <option value="public">Public</option>
+              <option value="registered">Registered</option>
+              <option value="donators">Donators</option>
+              <option disabled value="private">only me</option>
+            </select>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Your username" name="username" [(ngModel)]="user.username" required>
+            <small id="usernameHelp" class="form-text text-muted">You need a username to get found by others.</small>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group username_privacy">
+            <label for="username_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="username_privacy" name="username_privacy" [(ngModel)]="user.privacy.username" required>
+              <option value="public">Public</option>
+              <option disabled value="registered">Registered</option>
+              <option disabled value="donators">Donators</option>
+              <option disabled value="private">only me</option>
+            </select>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="birthday-date-input" class="col-form-label">Your birthday:</label>
+              <input class="form-control" type="date" id="birthday-date-input" name="birthday" aria-describedby="birthdayHelp" name="birthday" [(ngModel)]="user.birthday">
+              <small id="birthdayHelp" class="form-text text-muted">Public users will always be shown only your age. For a birthday banner on your birthday set your privacy settings on the right!</small>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group birthday_privacy">
+                <label for="birthday_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="birthday_privacy" name="birthday_privacy" [(ngModel)]="user.privacy.birthday">
+                    <option value="public">Public</option>
+                    <option value="registered">Registered</option>
+                    <option value="donators">Donators</option>
+                    <option value="private">only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="gender">Your Gender:</label>
+            <select class="form-control" id="gender" name="gender" [(ngModel)]="user.gender">
+              <option>- select -</option>
+              <option>male</option>
+              <option>female</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group gender_privacy">
+                <label for="gender_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="gender_privacy" name="gender_privacy" [(ngModel)]="user.privacy.gender">
+                    <option value="public">Public</option>
+                    <option value="registered">Registered</option>
+                    <option value="donators">Donators</option>
+                    <option value="private">only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="description">Your Biography/Short Introduction:</label>
+            <textarea class="form-control" id="description" rows="3" max-length="255" name="description" [(ngModel)]="user.description"></textarea>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group description_privacy">
+                <label for="description_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="description_privacy" name="description_privacy" [(ngModel)]="user.privacy.description">
+                    <option value="public">Public</option>
+                    <option value="registered">Registered</option>
+                    <option value="donators">Donators</option>
+                    <option value="private">only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="interests">Your Interests (#interests):</label>
+            <textarea class="form-control" id="interests" rows="3" max-length="255" name="interests" [(ngModel)]="user.interests"></textarea>
+            <small id="interestsHelp" class="form-text text-muted">Tell others your interests, what motivates you, what are you really in for?</small>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group interests_privacy">
+                <label for="interests_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="interests_privacy" name="interests_privacy" [(ngModel)]="user.privacy.interests">
+                    <option value="public">Public</option>
+                    <option value="registered">Registered</option>
+                    <option value="donators">Donators</option>
+                    <option value="private">only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h3>Your Contact Information:</h3>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="email">Email Adress:</label>
+            <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Emailaddress is verified" *ngIf="user.email_verified"></i>
+            <i class="fa fa-times text-error" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Emailaddress has not been verified yet!" *ngIf="!user.email_verified"></i>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="your@emailaddress.com" name="email" [(ngModel)]="user.email">
+            <small id="emailHelp" class="form-text text-muted">Needs to be verified!</small>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group email_privacy">
+                <label for="email_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="email_privacy" name="email_privacy" [(ngModel)]="user.privacy.email">
+                    <option value="public">Public</option>
+                    <option value="registered">Registered</option>
+                    <option value="donators">Donators</option>
+                    <option value="private">only me</option>
+                </select>
+            </div>
+        </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="paypal">PayPal Email Adress:</label>
+        <input type="paypal" class="form-control" id="paypal" aria-describedby="paypalHelp" placeholder="your@emailaddress.com" name="paypal" [(ngModel)]="user.paypal">
+        <small id="paypalHelp" class="form-text text-muted">You need to specify a registered paypal email-address to be able to receive donations!</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group paypal_privacy">
+            <label for="paypal_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="paypal_privacy" name="paypal_privacy" [(ngModel)]="user.privacy.paypal">
+                <option disabled>Public</option>
+                <option value="registered">Registered</option>
+                <option disabled value="donators">Donators</option>
+                <option disabled value="private">only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="phone">Phone number:</label>
+        <input type="text" class="form-control" id="phone" aria-describedby="phoneHelp" placeholder="+43 660 1234 1234" name="phone" [(ngModel)]="user.phone">
+        <small id="phoneHelp" class="form-text text-muted">This will never be shared with others!</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group phone_privacy">
+            <label for="phone_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="phone_privacy" name="phone_privacy" [(ngModel)]="user.privacy.phone">
+                <option disabled>Public</option>
+                <option disabled value="registered">Registered</option>
+                <option disabled value="donators">Donators</option>
+                <option value="private">only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <hr>
+  <h3>Your Residence:</h3>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="street">Street:</label>
+        <input type="text" class="form-control" id="street" aria-describedby="streetHelp" placeholder="Your street" name="street" [(ngModel)]="user.street">
+        <small id="streetHelp" class="form-text text-muted">Your Street is not visible to others, but necessary to be shown on BeeRadar & BeeMap</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group street_privacy">
+            <label for="street_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="street_privacy" name="street_privacy" [(ngModel)]="user.privacy.street">
+                <option disabled>Public</option>
+                <option disabled value="registered">Registered</option>
+                <option value="donators">Donators</option>
+                <option value="private">only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="street_number">Street number:</label>
+        <input type="text" class="form-control" id="street_number" aria-describedby="streetnumberHelp" placeholder="Your house number" name="street_number" [(ngModel)]="user.street_number">
+        <small id="streetnumberHelp" class="form-text text-muted">Your Streetnumber is not visible to others, but necessary to be shown on BeeRadar & BeeMap</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group streetnumber_privacy">
+            <label for="street_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="street_number_privacy" name="streetnumber_privacy" [(ngModel)]="user.privacy.street_number">
+                <option disabled>Public</option>
+                <option disabled value="registered">Registered</option>
+                <option value="donators">Donators</option>
+                <option value="private">only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="postal_code">Postal code:</label>
+        <input type="text" class="form-control" id="postal_code" aria-describedby="postalcodeHelp" placeholder="Your postalcode" name="postal_code" [(ngModel)]="user.postal_code">
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group postalcode_privacy">
+            <label for="postalcode_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="postalcode_privacy" name="postalcode_privacy" [(ngModel)]="user.privacy.postal_code">
+                <option disabled>Public</option>
+                <option disabled value="registered">Registered</option>
+                <option value="donators">Donators</option>
+                <option value="private">only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" class="form-control" id="city" aria-describedby="cityHelp" placeholder="Your city" name="city" [(ngModel)]="user.city">
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="city_privacy">
+        <div class="form-group city_privacy">
+            <label for="city_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="city_privacy" name="city_privacy" [(ngModel)]="user.privacy.city">
+                <option value="public">Public</option>
+                <option value="registered">Registered</option>
+                <option disabled value="donators">Donators</option>
+                <option disabled value="private">only me</option>
+            </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" class="form-control" id="country" aria-describedby="countryHelp" placeholder="Your country" name="country" [(ngModel)]="user.country">
+        <small id="countryHelp" class="form-text text-muted">It is necessary to show your homecountry within your profile for the experience of our service.</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group country_privacy">
+            <label for="country_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="country_privacy" name="country_privacy" [ngSelect]="user.privacy.country">
+                <option value="public">Public</option>
+                <option disabled value="registered">Registered</option>
+                <option disabled value="donators">Donators</option>
+                <option disabled value="private">only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+    <div class="row user-profile-form-buttons">
+        <div class="col-12">
+            <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>

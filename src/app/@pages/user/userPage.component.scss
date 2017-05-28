@@ -1,1 +1,83 @@
 /*styles for user-page content only*/
+/deep/ maincontent.user-page {
+	maincard {
+		width: 100%;
+	}
+	hr {
+	    margin-top: 21px;
+	    margin-bottom: 21px;
+	    border: 0;
+	    border-top: 1px solid #e6e6e6;
+	}
+	h1, h2, h3, h4, h5, h6,
+	.h1, .h2, .h3, .h4, .h5, .h6 {
+	    margin-bottom: 0.5rem;
+		font-family: inherit;
+		font-weight: 500;
+		line-height: 1.1;
+		color: inherit;
+	}
+	h4 {
+		font-size: 19px;
+	    margin-top: 10.5px;
+    	margin-bottom: 10.5px;
+	}
+	.user-profile {
+		.profile-align-row {
+			display: flex;
+    		flex-direction: column;
+			@media (min-width: 768px) {
+				display: block;
+			}
+		}
+		.user-profile-left {
+		    margin-top: .5em;
+			float: none;
+			.card-img-top {
+			    margin: .5em;
+			}
+			@media (min-width: 768px) {
+			    margin-top: 0;
+				float: left;
+				.card-img-top {
+				    margin: 0;
+				}
+			}
+		}
+		.user-profile-header {
+			order: -1;
+		}
+	}
+	.user-profile-accordion {
+		.collapse {
+			@media (min-width: 768px) {
+				display: block;
+			}
+		}
+		#headingOne {
+			text-align: center;
+		}
+	}
+	.profile-header {
+		margin-top: 1rem;
+		@media (min-width: 768px) {
+			margin-top: 0;
+		}
+	}
+	.buzz {
+		margin-bottom: 1em;
+		.buzz-control {
+			ul li {
+			    margin-left: .5em;
+			}
+			button {
+				@media (min-width: 768px) {
+					padding: 0;
+				}
+			}
+		}
+		.buzz-privacy-control {
+
+		}
+	}
+}
