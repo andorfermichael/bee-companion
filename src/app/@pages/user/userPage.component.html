@@ -3,7 +3,7 @@
 <mainContent [ngClass]="'user-page bg-white'">
 	<mainContentRow>
 		
-			<userProfile *ngIf="localUser" [user]="localUser"></userProfile>
+			<userProfile *ngIf="localUser" [user]="localUser" [inEditMode]="inEditMode"></userProfile>
 			<loading *ngIf="!localUser"></loading>
 
 	</mainContentRow>

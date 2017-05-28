@@ -35,5 +35,7 @@ export const ROUTES: Routes = [
     canActivate: [AuthGuard]},
   { path: 'terms', component: TermsAndConditionsComponent, pathMatch: 'full'},
   { path: 'user/:id', component: UserPageComponent, pathMatch: 'full'},
+  { path: 'user/edit/:id', component: UserPageComponent, pathMatch: 'full',
+    canActivate: [AuthGuard], data: [{inEditMode: true}]},
   { path: '**',    component: NoContentComponent }
 ];

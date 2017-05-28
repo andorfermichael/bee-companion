@@ -1,9 +1,11 @@
 <div class="user-profile mainbody container-fluid">
     <div class="row profile-align-row">
-        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 user-profile-left">
+        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 user-profile-left" [ngClass]="{'hidden-md-down': inEditMode}">
             <div class="card">
                 <div class="card-img-top">
-                    <imageRatio [url]="localUser.picture"></imageRatio>
+                    <imageRatio [url]="localUser.picture">
+                        <ribbon [type]="userRole">{{userRole}}</ribbon>
+                    </imageRatio>
                 </div>
                 <div id="user-profile-accordion" class="user-profile-accordion" role="tablist" aria-multiselectable="true">
 			  		<div class="card">
@@ -16,6 +18,7 @@
 					    </div>
 					    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
       						<div class="card-block">
+                                <h4 style="text-align: center;">{{localUser.given_name}} {{localUser.family_name}}</h4>
 	      						<hr>
 			                    <h3><strong>Bio</strong></h3>
 			                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel gravida metus, non ultrices sapien. Morbi odio metus, dapibus non nibh id amet.</p>
@@ -36,9 +39,10 @@
         </div>
         <div class="col-lg-12 user-profile-header">
             <div class="card profile-header">
-                <div class="card-block">
+                <div class="card-block" *ngIf="!inEditMode">
                     <span>
                         <h1 class="panel-title pull-left" style="font-size:30px;">{{user.username || 'You'}} <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="User is verified"></i></h1>
+                        <small *ngIf="!user.username"><small>(No username set yet)</small></small>
                         <div class="dropdown dropdown-subscribe pull-right" *ngIf="!isCurrentUser && isAuthenticated">
                             <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                 Subscribed
@@ -49,7 +53,7 @@
                             </ul>
                         </div>
                         <div class="user-profile-edit pull-right" *ngIf="isCurrentUser">
-                            <button class="btn btn-warning" type="button">
+                            <button class="btn btn-warning" type="button" [routerLink]="['/user/edit/', localUser.username || 'me']">
                                 Edit Profile
                                 <i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i>
                             </button>
@@ -64,14 +68,17 @@
                         <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-fw fa-users" aria-hidden="true"></i> Followers <span class="badge">0</span></a>
                     </span>
                     <span class="pull-right">
-                        <a href="#" class="btn btn-link" style="text-decoration:none;"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Contact by Email"></i></a>
-                        <a href="#" class="btn btn-link" style="text-decoration:none;" *ngIf="!isCurrentUser"><i class="fa fa-lg fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Report User"></i></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none;" *ngIf="isAuthenticated"><i class="fa fa-lg fa-envelope-o" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Contact by Email"></i></a>
+                        <a href="#" class="btn btn-link" style="text-decoration:none;" *ngIf="!isCurrentUser && isAuthenticated"><i class="fa fa-lg fa-exclamation-triangle" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Report User"></i></a>
                     </span>
+                </div>
+                <div class="card-block" *ngIf="inEditMode">
+                    <userProfileForm [user]="localUser"></userProfileForm>
                 </div>
             </div>
         </div>
         <hr>
-        <div class="col-12 user-profile-buzzes">
+        <div class="col-12 user-profile-buzzes" *ngIf="!inEditMode">
         	<!-- Simple Buzz -->
             <div class="card buzz buzz-default">
                 <div class="card-block">
@@ -87,7 +94,7 @@
                 		<small><small>
                 			<a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-clock-o" aria-hidden="true"></i> 42 minutes ago</i></a>
             			</small></small>
-	                    <div class="dropdown pull-right buzz-control">
+	                    <div class="dropdown pull-right buzz-control" *ngIf="isAuthenticated">
 	                        <button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dd1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
 	                            <i class="fa fa-cog" aria-hidden="true"></i>
 	                            <span class="caret"></span>
@@ -106,7 +113,7 @@
                     </div>
                     <hr>
                     <div>
-                        <div class="pull-right btn-group-xs">
+                        <div class="pull-right btn-group-xs"  *ngIf="isAuthenticated">
                         	<a class="btn btn-default btn-xs"><i class="fa fa-heart" aria-hidden="true"></i> Like</a>
                         </div>
                         <div class="pull-left">
@@ -119,8 +126,8 @@
 	                        <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
 	                            <li><a href="#">Public</a></li>
 	                            <li><a href="#">Registered</a></li>
-	                            <li><a href="#">Supporter only</a></li>
-	                            <li><a href="#">Beekeeper only</a></li>
+	                            <li><a href="#">Donators</a></li>
+	                            <li><a href="#">only me</a></li>
 	                        </ul>
 	                    </div>
                         <br>

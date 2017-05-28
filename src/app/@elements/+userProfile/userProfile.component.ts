@@ -16,8 +16,10 @@ import * as _ from 'lodash';
 export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() public user: any;
+    @Input() public inEditMode: boolean;
 
     public localUser: any;
+    public userRole: string;
     public isCurrentUser: boolean;
     public isAuthenticated: boolean;
     public sub: any;
@@ -27,16 +29,18 @@ export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public ngOnInit() {
+      this.isAuthenticated = this.auth.isAuthenticated();
       if (!this.user) {
         console.error('User needs to be passed to userProfile Component!');
         return;
       }
       this.localUser = this.user;
-      if (_.get(this.user, 'user_id') === _.get(this.auth.userProfile, 'user_id')) {
+      if (_.get(this.user, 'user_id', 'unknown') === _.get(this.auth.userProfile, 'user_id')
+        && this.isAuthenticated) {
         this.isCurrentUser = true;
         console.log('USER IS USER!');
       }
-      this.isAuthenticated = this.auth.isAuthenticated();
+      this.userRole = _.get(this.localUser, 'roles[0]') || _.get(this.localUser, 'app_metadata.roles[0]');
     }
 
     public ngOnChanges() {
@@ -51,5 +55,6 @@ export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
       this.isCurrentUser = false;
       this.localUser = null;
       this.isAuthenticated = false;
+      this.userRole = null;
     }
 }

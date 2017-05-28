@@ -1,6 +1,5 @@
-import { ActivatedRoute } from '@angular/router';
-import { OnInit, OnChanges, OnDestroy, Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { OnInit, OnChanges, OnDestroy, Component, Input } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
 import { Auth } from '../../@services/auth.service';
@@ -17,6 +16,7 @@ import * as _ from 'lodash';
 
 export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
 
+    public inEditMode: boolean;
     public id: string;
     public localUser: any;
     private sub: any;
@@ -32,6 +32,7 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
            this.fetchUserFromAPI(this.id);
            // In a real app: dispatch action to load the details here.
         });
+        this.inEditMode = _.get(this.activatedRoute.snapshot.data, '[0]["inEditMode"]', false);
     }
 
     public ngOnChanges() {
@@ -74,6 +75,7 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
           return;
         }
         this.localUser = this.auth.userProfile;
+        console.log(this.localUser);
         return;
       }
       if (this.auth.isAuthenticated()) {
