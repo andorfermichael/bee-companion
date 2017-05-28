@@ -64,20 +64,4 @@
 			margin-top: 0;
 		}
 	}
-	.buzz {
-		margin-bottom: 1em;
-		.buzz-control {
-			ul li {
-			    margin-left: .5em;
-			}
-			button {
-				@media (min-width: 768px) {
-					padding: 0;
-				}
-			}
-		}
-		.buzz-privacy-control {
-
-		}
-	}
 }

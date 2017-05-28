@@ -79,9 +79,9 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
           this.sub.unsubscribe();
           this.sub = null;
           // this.updateUserDelayed();
-        } 
+        }
         // else {
-          this.updateUser();
+        this.updateUser();
         // }
       }
     }

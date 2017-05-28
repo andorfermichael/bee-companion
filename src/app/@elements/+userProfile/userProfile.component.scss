@@ -1,7 +1,11 @@
 /*styles for userProfile content only*/
 
-.user-profile {
-	.img-circle {
-		border-radius: 50%;
+:host {
+	width: 100%;
+	.user-profile {
+		.img-circle {
+			border-radius: 50%;
+		}
 	}
 }
+

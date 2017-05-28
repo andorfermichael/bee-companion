@@ -65,6 +65,7 @@ import { PayPalFormComponent } from '../@elements/+paypalForm';
 import { RadarCardComponent } from '../@elements/+radarCard';
 import { RibbonComponent } from '../@elements/+ribbon';
 import { SignupCardComponent } from '../@elements/+signupCard';
+import { SingleBuzzComponent } from '../@elements/+buzz';
 import { UserProfileComponent } from '../@elements/+userProfile';
 import { UserProfileFormComponent } from '../@elements/+userProfileForm';
 
@@ -112,6 +113,7 @@ const APP_PROVIDERS = [
     RibbonComponent,
     SignupCardComponent,
     SignupPageComponent,
+    SingleBuzzComponent,
     TermsAndConditionsComponent,
     SupporterMenuComponent,
     TermsAndConditionsComponent,

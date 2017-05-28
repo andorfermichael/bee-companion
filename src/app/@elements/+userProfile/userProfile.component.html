@@ -80,62 +80,10 @@
             </div>
         </div>
         <hr>
-        <div class="col-12 user-profile-buzzes" *ngIf="!inEditMode">
-        	<!-- Simple Buzz -->
-            <div class="card buzz buzz-default">
-                <div class="card-block">
-                    <div class="pull-left">
-                        <a href="#">
-                            <img class="media-object img-circle" src="{{localUser.picture}}" width="50px" height="50px" style="margin-right:8px; margin-top:-5px;">
-                        </a>
-                    </div>
-                    <h4>
-                    	<a href="" style="text-decoration:none;" [routerLink]="['/user/', localUser.username]">
-                    		<strong>{{localUser.username || 'You'}}</strong>
-                		</a> – 
-                		<small><small>
-                			<a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-clock-o" aria-hidden="true"></i> 42 minutes ago</i></a>
-            			</small></small>
-	                    <div class="dropdown pull-right buzz-control" *ngIf="isAuthenticated">
-	                        <button class="btn btn-link btn-xs dropdown-toggle" type="button" id="dd1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-	                            <i class="fa fa-cog" aria-hidden="true"></i>
-	                            <span class="caret"></span>
-	                        </button>
-	                        <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
-	                            <li><a href="#" *ngIf="!isCurrentUser"><i class="fa fa-fw fa-exclamation-triangle" aria-hidden="true"></i> Report</a></li>
-	                            <li><a href="#" *ngIf="isCurrentUser"><i class="fa fa-fw fa-pencil-square-o" aria-hidden="true"></i> Edit</a></li>
-	                            <li><a href="#" *ngIf="isCurrentUser"><i class="fa fa-fw fa-trash" aria-hidden="true"></i> Delete</a></li>
-	                        </ul>
-	                    </div>
-                    </h4>
-                    <hr>
-                    <div class="post-content">
-                        <p>Simple buzz example.</p>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur vel gravida metus, non ultrices sapien. Morbi odio metus, dapibus non nibh id amet.</p>
-                    </div>
-                    <hr>
-                    <div>
-                        <div class="pull-right btn-group-xs"  *ngIf="isAuthenticated">
-                        	<a class="btn btn-default btn-xs"><i class="fa fa-heart" aria-hidden="true"></i> Like</a>
-                        </div>
-                        <div class="pull-left">
-                        </div>
-                        <div class="dropdown pull-left buzz-privacy-control" *ngIf="isCurrentUser">
-	                        <button class="btn btn-link btn-xs dropdown-toggle text-muted" type="button" id="dd1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-	                            <i class="fa fa-globe" aria-hidden="true"></i> Public
-	                            <span class="caret"></span>
-	                        </button>
-	                        <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
-	                            <li><a href="#">Public</a></li>
-	                            <li><a href="#">Registered</a></li>
-	                            <li><a href="#">Donators</a></li>
-	                            <li><a href="#">only me</a></li>
-	                        </ul>
-	                    </div>
-                        <br>
-                    </div>
-                </div>
-            </div>
+        <div class="col-12 user-profile-buzzes" *ngIf="!inEditMode && localUser">
+            <template ngFor [ngForOf]="localUser.buzzes" let-item>
+                <buzz [user]="localUser" [role]="userRole" [buzz]=item></buzz>
+            </template>
         </div>
         <div style="clear: both;"></div>
     </div>

@@ -161,6 +161,16 @@ function buildQueryString(queryParams) {
   return `?${query.join('&')}`;
 }
 
+function filterBuzzesBasedOnScope(scope, buzzes) {
+  const scopes = ['public', 'registered', 'donators', 'private'];
+  _.reject(buzzes, (b) => {
+    if (scopes.indexOf(scope) < scopes.indexOf(b.value)) {
+      return true;
+    } 
+    return false;
+  });
+}
+
 function buildColumnFilterBasedOnScope(scope, privacyRules) {
   const scopes = ['public', 'registered', 'donators', 'private'];
   const filtered = _.pickBy(privacyRules, function(value, key) {
@@ -177,102 +187,140 @@ router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
   jwtToken = getJWTToken(req);
   auth0.tokens.getInfo(jwtToken, function(err, userInfo) {
-    if (req.params.id == 'me' || req.params.id == userInfo.username) {
-      //collect data from calling user itself
-      const user_id = userInfo.user_id;
+    // get info from caller through jwt
+    const user_id = userInfo.user_id;
+      // lookup user in local db
+      /* ............................. Userdata */
       models.User.findOne({ where: { auth_user_id: user_id }})
         .then((user) => {
-          user.getUserPrivacy()
-            .then((userPrivacy) => {
-              const data = _.assign({}, userInfo, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
-              res.json(data);
-            })
-        })
-        .catch((err) => {
-            // user was registered on auth0 but is not present in usermodel
-            models.User.create({
-              auth_user_id: userInfo.user_id || user_id,
-              given_name: userInfo.given_name || _.get(userInfo, 'user_metadata.firstName'),
-              family_name: userInfo.family_name || _.get(userInfo, 'user_metadata.lastName'),
-              username: userInfo.username,
-              description: userInfo.description,
-              interests: userInfo.interests,
-              birthday: userInfo.birthday,
-              role: _.get(userInfo.roles, '[0]') || _.get(userInfo, 'app_metadata.roles[0]') || role,
-              gender: userInfo.gender,
-              picture: userInfo.picture,
-              email: userInfo.email,
-              paypal: userInfo.paypal,
-              phone: userInfo.phone,
-              authenticated: userInfo.authenticated || false,
-              email_verified: userInfo.email_verified,
-              street: userInfo.street,
-              street_number: userInfo.street_number,
-              postal_code: userInfo.postal_code,
-              city: userInfo.city,
-              country: userInfo.country
-            }, {
-              include: [{
-                association: models.UserPrivacy.User,
-                include: [ models.User.Privacy ]
-              }]
-            }).then(function(user) {
-                // create UserPrivacy default Dataset
-                models.UserPrivacy.create({
-                  UserId: user.id
-                 }).then(function(userPrivacy) {
-
-                  const userData = _.pick(user.get({plain: true}), userColumnFilter);
-                  userData.privacy = userPrivacy.get({plain: true});
-                  res.json(userData);
-                 }).catch((error) => {
-                  console.log(error);
-                    res.status(400).json(error);
-                 });
-            });
-        });
-    }
-    else {
-      // fallback because username is not settable on auth0
-      // lookup in our database for username:
-      models.User.findOne({ where: { username: req.params.id }})
-        .then((user) => {
-          user.getUserPrivacy()
-            .then((userPrivacy) => {
-              const data = _.assign({}, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
-              res.json(data);
-            })
-            .catch((error) => {
-              const queryParams = { q: `username:"${req.params.id}"`};
-              const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
-              const method = 'GET';
-              makeApiCall({ method, url }, (userData) => {
-                const user_id = _.get(userData, '[0].user_id');
-                if (user_id) {
-                  userData = userData[0];
-                  models.User.findOne({ where: { auth_user_id: user_id }})
-                  .then((user) => {
-                    user.getUserPrivacy()
-                      .then((userPrivacy) => {
-                        const privacy = userPrivacy.get({plain: true});
-                        const data = _.assign({}, userData, user.get({plain: true}));
-                        res.json(_.pick(data, buildColumnFilterBasedOnScope('registered', privacy)));
-                      })
-                      .catch((error) => {
-                        res.status(400).json(error);
-                      })
-                  });
+          userData = user.get({plain: true});
+          // compare retrieved username with called one, if matches, caller access his own profile
+          if (req.params.id == 'me' || req.params.id == userData.username) {
+            /* ............................. Privacy */
+            user.getUserPrivacy()
+              .then((userPrivacy) => {
+                const attachedData = _.assign({}, userInfo, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
+                /* ............................. Buzzes */
+                user.getBuzzs({raw: true})
+                  .then((data) => {
+                    res.status(200).json(appendBuzzsToUser(attachedData,data));
+                  })
+              })
+          } else {
+            // fallback because username is not settable on auth0
+            // lookup in our database for username:
+            /* ............................. get Userdata from local DB */
+            models.User.findOne({ where: { username: req.params.id }})
+              .then((user) => {
+                if (user) {
+                  const usrData = user.get({plain: true});
+                  /* ............................. Privacy */
+                  user.getUserPrivacy()
+                    .then((userPrivacy) => {
+                      const privacy = userPrivacy.get({plain: true});
+                      /* ............................. Buzzes */
+                      user.getBuzzs({raw: true})
+                        .then((buzzes) => {
+                          const filteredUser = _.pick(usrData, buildColumnFilterBasedOnScope('registered', privacy));
+                          const filteredBuzzes = filterBuzzesBasedOnScope('registered', buzzes);
+                          /* ............................. Filter Information and return to caller */
+                          res.status(200).json(appendBuzzsToUser(filteredUser,filteredBuzzes));
+                        })
+                    })
                 } else {
-                  res.status(404).json({error: 'User not found!'});
-                }           
-              });
-            });  
-        });  
-    }
+                    /* << we reach this point when the username included in the route called is not saved in our db / could be still valid in auth0 */
+                  /* ............................. Search for users in auth0 with this username */
+                  const queryParams = { q: `username:"${req.params.id}"`};
+                  const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
+                  const method = 'GET';
+                  makeApiCall({ method, url }, (userData) => {
+                    /* ............................. auth0 Userdata of matched user */
+                    const user_id = _.get(userData, '[0].user_id');
+                    if (user_id) {
+                      userData = userData[0];
+                      // now we lookup up the same user in our database
+                      models.User.findOne({ where: { auth_user_id: user_id }})
+                      .then((user) => {
+                        if (user) {
+                        const data = _.assign({}, userData, user.get({plain: true}));
+                        /* ............................. Userdata from our database to user with same id */
+                        user.getUserPrivacy()
+                          .then((userPrivacy) => {
+                            const privacy = userPrivacy.get({plain: true});
+                            /* ............................. Privacy */
+                            user.getBuzzs({raw: true})
+                              .then((buzzes) => {
+                                /* ............................. Buzzes */
+                                const filteredBuzzes = filterBuzzesBasedOnScope('registered', buzzes);
+                                const filteredUser = _.pick(data, buildColumnFilterBasedOnScope('registered', privacy));
+                                res.status(200).json(_.set(filteredUser, 'buzzes', filteredBuzzes));
+                              });
+                          })
+                          .catch((error) => {
+                            res.status(400).json(error);
+                          })
+                        } else {
+                          console.log(userData);
+                          // user was registered on auth0 but is not present in usermodel
+                          models.User.create({
+                            auth_user_id: userData.user_id || user_id,
+                            given_name: userData.given_name || _.get(userData, 'user_metadata.firstName'),
+                            family_name: userData.family_name || _.get(userData, 'user_metadata.lastName'),
+                            username: userData.username,
+                            description: userData.description,
+                            interests: userData.interests,
+                            birthday: userData.birthday,
+                            role: _.get(userData.roles, '[0]') || _.get(userData, 'app_metadata.roles[0]') || role,
+                            gender: userData.gender,
+                            picture: userData.picture,
+                            email: userData.email,
+                            paypal: userData.paypal,
+                            phone: userData.phone,
+                            authenticated: userData.authenticated || false,
+                            email_verified: userData.email_verified || false,
+                            street: userData.street,
+                            street_number: userData.street_number,
+                            postal_code: userData.postal_code,
+                            city: userData.city,
+                            country: userData.country
+                          }, {
+                            include: [{
+                              association: models.UserPrivacy.User,
+                              include: [ models.User.Privacy ]
+                            }]
+                          }).then(function(user) {
+                              // create UserPrivacy default Dataset
+                              models.UserPrivacy.create({
+                                UserId: user.id
+                               }).then(function(userPrivacy) {
+                                user.getBuzzs()
+                                  .then((data) => {
+                                    const userData = _.pick(user.get({plain: true}), userColumnFilter);
+                                    userData.privacy = userPrivacy.get({plain: true});
+                                    res.status(200).json(appendBuzzsToUser(userData,data));
+                                  })
+                               }).catch((error) => {
+                                console.log(error);
+                                  res.status(400).json(error);
+                               });
+                          });
+                        }
+                      });
+                    } else {
+                      // this username does even not exist on auth0!
+                      res.status(404).json({error: 'User not found!'});
+                    }
+                  });
+                }
+              })
+              .catch((error) => {
+                console.error(error);
+              })
+          }
+        })
   });
 });
-
-
+          
 // Get all users
 // moved to user.js
 
@@ -367,8 +415,8 @@ function createProfileUpdateBuzzFeed(trigger, user, diff) {
   var message = _.get(user, 'first_name') || _.get(user, 'username');
   message = message.charAt(0).toUpperCase() + message.slice(1);
   message += ' has just now updated ';
-  message += _.get(user, 'gender') === 'female' ? 'her' : (_.get(user, 'gender') === 'male' ? 'his' : 'his/her');
-  message += ' Profile. ' + diff.length ? (diff.join(', ') + (diff.length > 1 ? ' are' : ' is ') + ' now uptodate.') : '';
+  message += _.get(user, 'gender') === 'female' ? 'her ' : (_.get(user, 'gender') === 'male' ? 'his ' : 'his/her ');
+  message += diff.length ? diff.join(', ') : ' Profile.';
   return {
     UserId: user.id,
     trigger: 'Profile Update',
@@ -387,8 +435,8 @@ function saveBuzz(buzz) {
   )
 }
 
-function appendBuzzToUser(user, buzz) {
-  _.set(user, 'buzzes', _.get(user, 'buzzes', []).push(buzz));
+function appendBuzzsToUser(user, buzzs) {
+  _.set(user, 'buzzes', buzzs);
   return user;
 }
     
@@ -435,7 +483,10 @@ router.post('/user/:id/update', cors(), function(req, res) {
                   const diff = getUserDiff(newUserData, user.get({plain: true}));
                   saveBuzz(createProfileUpdateBuzzFeed('Profile Update', user.get({plain: true}), diff))
                     .then((data) => {
-                      res.status(200).json(appendBuzzToUser(newUser,data));
+                      user.getBuzzs()
+                        .then((data) => {
+                          res.status(200).json(appendBuzzsToUser(newUser,data));
+                        })
                     })                  
                 });
             })

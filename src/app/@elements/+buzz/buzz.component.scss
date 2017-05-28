@@ -1,0 +1,44 @@
+/*styles for buzz content only*/
+
+.user-profile {
+	.img-circle {
+		border-radius: 50%;
+	}
+}
+
+.buzz {
+	margin-bottom: 1em;
+	.buzz-control {
+		ul li {
+		    margin-left: .5em;
+		}
+		button {
+			@media (min-width: 768px) {
+				padding: 0;
+			}
+		}
+	}
+	.buzz-privacy-control {
+
+	}
+}
+
+hr {
+    margin-top: 21px;
+    margin-bottom: 21px;
+    border: 0;
+    border-top: 1px solid #e6e6e6;
+}
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    margin-bottom: 0.5rem;
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+}
+h4 {
+	font-size: 19px;
+    margin-top: 10.5px;
+	margin-bottom: 10.5px;
+}
