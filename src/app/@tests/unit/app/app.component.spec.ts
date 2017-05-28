@@ -1,8 +1,5 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async,  TestBed,  ComponentFixture } from '@angular/core/testing';
-import { BaseRequestOptions, HttpModule, Http, XHRBackend } from '@angular/http';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MockBackend } from '@angular/http/testing';
 
 // Load the implementations that should be tested
 import { AppComponent } from '../../../app.component';
@@ -17,20 +14,8 @@ describe(`App`, () => {
   beforeEach(async(() => {
     TestBed
       .configureTestingModule({
-        declarations: [ AppComponent ],
-        imports: [RouterTestingModule, HttpModule],
-        schemas: [NO_ERRORS_SCHEMA],
-        providers: [
-          MockBackend,
-          BaseRequestOptions,
-          {
-            provide: Http,
-            deps: [MockBackend, BaseRequestOptions],
-            useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-              return new Http(backend, defaultOptions);
-            }
-          }
-        ]
+        declarations: [AppComponent],
+        schemas: [NO_ERRORS_SCHEMA]
       })
       .overrideComponent(AppComponent, {
         set: {
