@@ -9,7 +9,7 @@ import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
   templateUrl: './login.component.html'
 })
 export class LoginPageComponent implements OnInit {
-  constructor(private titleService: Title) {}
+  constructor(public titleService: Title) {}
 
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.LoginComponent);
