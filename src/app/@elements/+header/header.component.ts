@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Auth } from '../../@services/auth.service';
 import { EventsService } from '../../@services/events.service';
 import { GeolocationService } from '../../@services/geolocation.service';
 import { LocalStorageService } from 'ngx-webstorage';
+
+import { GeolocationOptions } from '../../@config/google-maps.config';
 
 @Component({
   selector: 'header',
@@ -17,9 +20,8 @@ export class HeaderComponent implements OnInit {
   public isToggled: boolean = false;
 
   constructor(public auth: Auth, public _eventsService: EventsService,
-              private localStorage: LocalStorageService,
-              private geolocationService: GeolocationService) {
-  }
+              public localStorage: LocalStorageService,
+              public geolocationService: GeolocationService) {}
 
   public ngOnInit() {
     this.isToggled = this.localStorage.retrieve('headerIsToggled');
@@ -30,7 +32,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public enableNavigatorLocation() {
-    this.geolocationService.getLocation({ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 })
+    this.geolocationService.getLocation(GeolocationOptions)
       .subscribe(
         (location) => {
           this.processLocation(location);
