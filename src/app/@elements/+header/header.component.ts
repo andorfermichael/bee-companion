@@ -21,22 +21,12 @@ export class HeaderComponent implements OnInit {
               private geolocationService: GeolocationService) {
   }
 
-  public processLocation(data: any) {
-    if (data) {
-      if (data.coords) {
-        this.lat = data.coords.latitude ? data.coords.latitude : this.lat;
-        this.lng = data.coords.longitude ? data.coords.longitude : this.lng;
-        this.messageType = 'success';
-        this.message = 'You successfully granted us retrieving your location to ' +
-                       'enhance your experience with BeeCompanion.';
-      }
-    }
-  }
-
-  public locationError() {
-    this.message = 'Unfortunately we could not acquire your location which is recommended ' +
-                   'for best user experience with our service.';
-    this.messageType = 'danger';
+  public ngOnInit() {
+    this.isToggled = this.localStorage.retrieve('headerIsToggled');
+    this._eventsService.on('headerToggled', (toggle) => {
+      this.isToggled = toggle;
+      this.localStorage.store('headerIsToggled', toggle);
+    });
   }
 
   public enableNavigatorLocation() {
@@ -45,8 +35,7 @@ export class HeaderComponent implements OnInit {
         (location) => {
           this.processLocation(location);
         },
-        (err) => {
-          console.error(err);
+        () => {
           this.locationError();
         }
       );
@@ -56,11 +45,21 @@ export class HeaderComponent implements OnInit {
     this._eventsService.broadcast('headerToggled', toggle);
   }
 
-  public ngOnInit() {
-    this.isToggled = this.localStorage.retrieve('headerIsToggled');
-    this._eventsService.on('headerToggled', (toggle) => {
-      this.isToggled = toggle;
-      this.localStorage.store('headerIsToggled', toggle);
-    });
+  private processLocation(data: any) {
+    if (data) {
+      if (data.coords) {
+        this.lat = data.coords.latitude ? data.coords.latitude : this.lat;
+        this.lng = data.coords.longitude ? data.coords.longitude : this.lng;
+        this.messageType = 'success';
+        this.message = 'You successfully granted us retrieving your location to ' +
+          'enhance your experience with BeeCompanion.';
+      }
+    }
+  }
+
+  private locationError() {
+    this.message = 'Unfortunately we could not acquire your location which is recommended ' +
+      'for best user experience with our service.';
+    this.messageType = 'danger';
   }
 }
