@@ -9,7 +9,7 @@ import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
   templateUrl: './privacy.component.html'
 })
 export class PrivacyPolicyComponent implements OnInit {
-  constructor(private titleService: Title) {}
+  constructor(public titleService: Title) {}
 
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.PrivacyComponent);
