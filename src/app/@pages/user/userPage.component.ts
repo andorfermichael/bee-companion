@@ -57,7 +57,6 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
       }
       if (userData) {
         this.localUser = userData;
-        console.log(this.localUser);
       } else {
         setTimeout(() => {
           this.router.navigate(['/home']);

@@ -9,13 +9,13 @@
         <div class="col-8">
           <div class="form-group">
             <label for="given_name">Your First Name:</label>
-            <input type="text" class="form-control" id="given_name" aria-describedby="firstnameHelp" placeholder="Your firstname" name="given_name" [(ngModel)]="user.given_name">
+            <input type="text" class="form-control" id="given_name" aria-describedby="firstnameHelp" placeholder="Your firstname" name="given_name" [(ngModel)]="user.given_name" required>
           </div>
         </div>
         <div class="col-4">
           <div class="form-group given_name_privacy">
             <label for="given_name_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
-            <select class="form-control" id="given_name_privacy" name="given_name_privacy" [(ngModel)]="user.privacy.given_name" >
+            <select class="form-control" id="given_name_privacy" name="given_name_privacy" [(ngModel)]="user.privacy.given_name" required>
               <option value="public">Public</option>
               <option value="registered">Registered</option>
               <option value="donators">Donators</option>
@@ -28,13 +28,13 @@
         <div class="col-8">
           <div class="form-group">
             <label for="family_name">Your Last Name:</label>
-            <input type="text" class="form-control" id="family_name" aria-describedby="lastnameHelp" placeholder="Your lastname" name="family_name" [(ngModel)]="user.family_name">
+            <input type="text" class="form-control" id="family_name" aria-describedby="lastnameHelp" placeholder="Your lastname" name="family_name" [(ngModel)]="user.family_name" required>
           </div>
         </div>
         <div class="col-4">
           <div class="form-group lastname_privacy">
             <label for="lastname_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
-            <select class="form-control" id="family_name_privacy" name="family_name_privacy" [(ngModel)]="user.privacy.family_name">
+            <select class="form-control" id="family_name_privacy" name="family_name_privacy" [(ngModel)]="user.privacy.family_name" required>
               <option value="public">Public</option>
               <option value="registered">Registered</option>
               <option value="donators">Donators</option>
@@ -47,14 +47,14 @@
         <div class="col-8">
           <div class="form-group">
             <label for="username">Username:</label>
-            <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Your username" name="username" [(ngModel)]="user.username">
+            <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Your username" name="username" [(ngModel)]="user.username" required>
             <small id="usernameHelp" class="form-text text-muted">You need a username to get found by others.</small>
           </div>
         </div>
         <div class="col-4">
           <div class="form-group username_privacy">
             <label for="username_privacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
-            <select class="form-control" id="username_privacy" name="username_privacy" [(ngModel)]="user.privacy.username">
+            <select class="form-control" id="username_privacy" name="username_privacy" [(ngModel)]="user.privacy.username" required>
               <option value="public">Public</option>
               <option disabled value="registered">Registered</option>
               <option disabled value="donators">Donators</option>
@@ -130,6 +130,7 @@
           <div class="form-group">
             <label for="interests">Your Interests (#interests):</label>
             <textarea class="form-control" id="interests" rows="3" max-length="255" name="interests" [(ngModel)]="user.interests"></textarea>
+            <small id="interestsHelp" class="form-text text-muted">Tell others your interests, what motivates you, what are you really in for?</small>
           </div>
         </div>
         <div class="col-4">

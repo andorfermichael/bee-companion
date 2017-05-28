@@ -161,12 +161,23 @@ function buildQueryString(queryParams) {
   return `?${query.join('&')}`;
 }
 
+function buildColumnFilterBasedOnScope(scope, privacyRules) {
+  const scopes = ['public', 'registered', 'donators', 'private'];
+  const filtered = _.pickBy(privacyRules, function(value, key) {
+    if (scopes.indexOf(scope) >= scopes.indexOf(value)) {
+      return true;
+    } 
+    return false;
+  });
+  return Object.keys(filtered);
+}
+
 // Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
   jwtToken = getJWTToken(req);
   auth0.tokens.getInfo(jwtToken, function(err, userInfo) {
-    if (req.params.id == 'me') {
+    if (req.params.id == 'me' || req.params.id == userInfo.username) {
       //collect data from calling user itself
       const user_id = userInfo.user_id;
       models.User.findOne({ where: { auth_user_id: user_id }})
@@ -178,7 +189,6 @@ router.get('/user/:id', function(req, res) {
             })
         })
         .catch((err) => {
-          console.log(userInfo);
             // user was registered on auth0 but is not present in usermodel
             models.User.create({
               auth_user_id: userInfo.user_id || user_id,
@@ -244,8 +254,9 @@ router.get('/user/:id', function(req, res) {
               .then((user) => {
                 user.getUserPrivacy()
                   .then((userPrivacy) => {
-                    const data = _.assign({}, userData, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
-                    res.json(data);
+                    const privacy = userPrivacy.get({plain: true});
+                    const data = _.assign({}, userData, user.get({plain: true}));
+                    res.json(_.pick(data, buildColumnFilterBasedOnScope('registered', privacy)));
                   })
               });
             } else {
@@ -370,7 +381,13 @@ router.post('/user/:id/update', cors(), function(req, res) {
               //   //save changes from auth0 back to model
               //   res.json(data);
               // });
-              res.json(newUser);
+              models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
+                .then((updatedPrivacy) => {
+                  res.status(200);
+                })
+                .catch((err) => {
+                  res.status(400).json({error: 'An error ocurred while saving data!'});
+                })
             })
         });
     });

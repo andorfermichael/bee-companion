@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
+const models  = require('../models');
 
 const _ = require('lodash');
 const rp = require('request-promise');
@@ -112,7 +113,18 @@ function buildQueryString(queryParams) {
   return `?${query.join('&')}`;
 }
 
-// Get all users
+function buildColumnFilterBasedOnScope(scope, privacyRules) {
+  const scopes = ['public', 'registered', 'donators', 'private'];
+  const filtered = _.pickBy(privacyRules, function(value, key) {
+    if (scopes.indexOf(scope) >= scopes.indexOf(value)) {
+      return true;
+    } 
+    return false;
+  });
+  return Object.keys(filtered);
+}
+
+// Get all users from auth0
 router.use('/users', cors(corsConfig));
 router.get('/users', function(req, res) {
   const url = `${auth0BaseDomain}api/v2/users`;
@@ -120,13 +132,35 @@ router.get('/users', function(req, res) {
 });
 
 // Get specific user (only public data -> currently achieved by setting include_fields)
+// Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
-  const queryParams = { q: `username:"${req.params.id}"`};
-  const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
-  const method = 'GET';
-  console.log({url, method});
-  makeApiCall({ method, url }, (data) => { res.json(data); });
+  models.User.findOne({ 
+    where: { 
+      $or: [
+      {
+        username: {
+          $eq: req.params.id
+        }
+      },
+      {
+        auth_user_id: {
+          $eq: req.params.id
+        }
+      }]
+    }
+  }).then((user) => {
+      user.getUserPrivacy()
+        .then((userPrivacy) => {
+          const privacy = userPrivacy.get({plain: true});
+          const data = user.get({plain: true});
+          const filter = buildColumnFilterBasedOnScope('public', privacy);
+          res.json(_.pick(data, filter));
+        })
+    })
+    .catch((err) => {
+        res.status(404).json({error: 'User not found!'});
+    });
 });
 
 module.exports = router;
