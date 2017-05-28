@@ -91,6 +91,16 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      UserId: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        onUpdate: 'restrict',
+        onDelete: 'restrict',
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
