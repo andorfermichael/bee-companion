@@ -137,6 +137,14 @@ export class LoginCardComponent implements OnInit, OnDestroy {
     this.errorMsg = '';
   }
 
+  public resetUsernamePasswordEmpty(): void {
+    this.usernameEmpty = 'inactive';
+    this.username2Empty = 'inactive';
+    this.passwordEmpty = 'inactive';
+    this.emailEmpty = 'inactive';
+    this.submitErr = 'inactive';
+  }
+
   private setFocus(elementRef): any {
     elementRef.nativeElement.focus();
   }
@@ -144,14 +152,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
   private restoreFields(data: any): void {
     this.usernameElementRef.nativeElement.value = _.get(data, 'username', '');
     this.setFocus(this.passwordElementRef);
-  }
-
-  public resetUsernamePasswordEmpty(): void {
-    this.usernameEmpty = 'inactive';
-    this.username2Empty = 'inactive';
-    this.passwordEmpty = 'inactive';
-    this.emailEmpty = 'inactive';
-    this.submitErr = 'inactive';
   }
 
   private onLoginFail(error): void {
