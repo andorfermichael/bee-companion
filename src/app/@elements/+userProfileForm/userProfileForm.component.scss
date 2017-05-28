@@ -1,12 +1,25 @@
 .user-profile-form-buttons {
 	display: flex;
+	height: auto;
 	justify-content: flex-end;
 	margin-bottom: 1em;
-	.col-12 {
+	transition: height 2s ease;
+	.form-buttons {
 		display: flex;
 		justify-content: flex-end;
+		.btn {
+			height: 2.35em;
+			&.disabled {
+			    cursor: not-allowed;
+    			opacity: .65;
+			}
+		}
 	}
 	.btn:first-child {
 		margin: 0 1em;
 	}
+}
+.error-message {
+	color: darkred;
+	font-size: .85em;
 }

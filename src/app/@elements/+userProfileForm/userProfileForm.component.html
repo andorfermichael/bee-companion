@@ -1,14 +1,17 @@
-<form #userProfileForm="ngForm" (ngSubmit)="updateUser(userProfileForm)">
+<form #userProfileForm="ngForm" (ngSubmit)="validateForm(userProfileForm)">
     <div class="row user-profile-form-buttons">
-        <div class="col-12">
+        <div class="col-6 error-message">
+          {{errorMessage}}
+        </div>
+        <div class="col-6 form-buttons">
             <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" [ngClass]="{'disabled': errorMessage && !preventDisabledBtn}" [ngDisabled]="errorMessage && !preventDisabledBtn">Save</button>
         </div>
     </div>
     <div class="row">
         <div class="col-8">
           <div class="form-group">
-            <label for="given_name">Your First Name:</label>
+            <label for="given_name"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.given_name && errorMessage"></i> Your First Name:</label>
             <input type="text" class="form-control" id="given_name" aria-describedby="firstnameHelp" placeholder="Your firstname" name="given_name" [(ngModel)]="user.given_name" required>
           </div>
         </div>
@@ -27,7 +30,7 @@
     <div class="row">
         <div class="col-8">
           <div class="form-group">
-            <label for="family_name">Your Last Name:</label>
+            <label for="family_name"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.family_name && errorMessage"></i> Your Last Name:</label>
             <input type="text" class="form-control" id="family_name" aria-describedby="lastnameHelp" placeholder="Your lastname" name="family_name" [(ngModel)]="user.family_name" required>
           </div>
         </div>
@@ -46,7 +49,7 @@
     <div class="row">
         <div class="col-8">
           <div class="form-group">
-            <label for="username">Username:</label>
+            <label for="username"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.username && errorMessage"></i> Username:</label>
             <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Your username" name="username" [(ngModel)]="user.username" required>
             <small id="usernameHelp" class="form-text text-muted">You need a username to get found by others.</small>
           </div>
@@ -150,7 +153,7 @@
     <div class="row">
         <div class="col-8">
           <div class="form-group">
-            <label for="email">Email Adress:</label>
+            <label for="email"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.email.length && errorMessage"></i> Email Adress:</label>
             <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Emailaddress is verified" *ngIf="user.email_verified"></i>
             <i class="fa fa-times text-error" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Emailaddress has not been verified yet!" *ngIf="!user.email_verified"></i>
             <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="your@emailaddress.com" name="email" [(ngModel)]="user.email">
@@ -169,10 +172,10 @@
             </div>
         </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="role === 'Beekeeper'">
     <div class="col-8">
       <div class="form-group">
-        <label for="paypal">PayPal Email Adress:</label>
+        <label for="paypal"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.paypal && errorMessage"></i> PayPal Email Adress:</label>
         <input type="paypal" class="form-control" id="paypal" aria-describedby="paypalHelp" placeholder="your@emailaddress.com" name="paypal" [(ngModel)]="user.paypal">
         <small id="paypalHelp" class="form-text text-muted">You need to specify a registered paypal email-address to be able to receive donations!</small>
       </div>
@@ -214,7 +217,7 @@
   <div class="row">
     <div class="col-8">
       <div class="form-group">
-        <label for="street">Street:</label>
+        <label for="street"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.street && errorMessage"></i> Street:</label>
         <input type="text" class="form-control" id="street" aria-describedby="streetHelp" placeholder="Your street" name="street" [(ngModel)]="user.street">
         <small id="streetHelp" class="form-text text-muted">Your Street is not visible to others, but necessary to be shown on BeeRadar & BeeMap</small>
       </div>
@@ -234,7 +237,7 @@
   <div class="row">
     <div class="col-8">
       <div class="form-group">
-        <label for="street_number">Street number:</label>
+        <label for="street_number"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.street_number && errorMessage"></i> Street number:</label>
         <input type="text" class="form-control" id="street_number" aria-describedby="streetnumberHelp" placeholder="Your house number" name="street_number" [(ngModel)]="user.street_number">
         <small id="streetnumberHelp" class="form-text text-muted">Your Streetnumber is not visible to others, but necessary to be shown on BeeRadar & BeeMap</small>
       </div>
@@ -254,7 +257,7 @@
   <div class="row">
     <div class="col-8">
       <div class="form-group">
-        <label for="postal_code">Postal code:</label>
+        <label for="postal_code"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.postal_code && errorMessage"></i> Postal code:</label>
         <input type="text" class="form-control" id="postal_code" aria-describedby="postalcodeHelp" placeholder="Your postalcode" name="postal_code" [(ngModel)]="user.postal_code">
       </div>
     </div>
@@ -273,7 +276,7 @@
   <div class="row">
     <div class="col-8">
       <div class="form-group">
-        <label for="city">City:</label>
+        <label for="city"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.city && errorMessage"></i> City:</label>
         <input type="text" class="form-control" id="city" aria-describedby="cityHelp" placeholder="Your city" name="city" [(ngModel)]="user.city">
       </div>
     </div>
@@ -294,7 +297,7 @@
   <div class="row">
     <div class="col-8">
       <div class="form-group">
-        <label for="country">Country:</label>
+        <label for="country"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.country && errorMessage"></i> Country:</label>
         <input type="text" class="form-control" id="country" aria-describedby="countryHelp" placeholder="Your country" name="country" [(ngModel)]="user.country">
         <small id="countryHelp" class="form-text text-muted">It is necessary to show your homecountry within your profile for the experience of our service.</small>
       </div>
@@ -312,9 +315,12 @@
     </div>
   </div>
     <div class="row user-profile-form-buttons">
-        <div class="col-12">
-            <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save</button>
-        </div>
+      <div class="col-6 error-message">
+        {{errorMessage}}
+      </div>
+      <div class="col-6 form-buttons">
+          <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
+          <button type="submit" class="btn btn-primary" [ngClass]="{'disabled': errorMessage && !preventDisabledBtn}" [ngDisabled]="errorMessage && !preventDisabledBtn">Save</button>
+      </div>
     </div>
 </form>

@@ -18,8 +18,12 @@ import * as _ from 'lodash';
 export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
 
     @Input() public user: any;
-    @Input() public userPrivacy: any;
+    @Input() public role: any;
     public localUser: any;
+    public errorMessage: string;
+    public preventDisabledBtn: boolean;
+    private sub: any;
+    private changeSubmit: any;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
                   public authHttp: AuthHttp, public router: Router) {
@@ -34,17 +38,87 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
               });
     }
 
-    public updateUser(form: NgForm) {
-      console.log(this.user.privacy);
+    public validateForm(form: NgForm) {
+      if (this.preventDisabledBtn) {
+        this.preventDisabledBtn = false;
+      }
+      const formData = form.value;
+      const requiredFields = ['given_name', 'family_name', 'username', 'email', 'country',
+      'city', 'postal_code', 'street', 'street_number'];
+      const fieldTitles = {
+        given_name: 'first name',
+        family_name: 'last name',
+        postal_code: 'postal code',
+        street_number: 'street number',
+        paypal: 'paypal registered email address'
+      };
+      const errorFields = [];
+      if (this.user.role === 'Beekeeper' || this.role === 'Beekeeper') {
+        requiredFields.push('paypal');
+      }
+      _.each(requiredFields, (value, key) => {
+        if (!_.get(formData, value)) {
+          errorFields.push(_.get(fieldTitles, value, value));
+        }
+      });
+      const counter = this.errorMessage ? _.get(this.errorMessage, 'length') : 0;
+      if (errorFields.length) {
+        this.errorMessage = 'Please fill out following fields before you continue: Your '
+        + errorFields.join(', ');
+        if (_.get(this.errorMessage, 'length') < counter) {
+          this.updateUserDelayed();
+        }
+        if (!this.sub) {
+          this.sub = form.valueChanges.subscribe((data) => {
+            this.validateForm(form);
+          });
+        }
+      } else {
+        if (this.sub) {
+          this.errorMessage = null;
+          this.sub.unsubscribe();
+          this.sub = null;
+          this.updateUserDelayed();
+        } else {
+          this.updateUser();
+        }
+      }
+    }
+
+    public updateUser(preventAction = false) {
       this.authHttp.post(`http://localhost:3000/api/auth/user/${this.user.username}/update/`,
-      this.user)
-        .subscribe(
-            (data) => {
-              this.router.navigate([`/user/${this.user.username}`]);
-            },
-            (err) => {
-                console.error(err);
-            });
+          this.localUser)
+            .subscribe(
+                (data) => {
+                  this.changeSubmit = null;
+                  if (!preventAction) {
+                    this.router.navigate(['/user/', this.localUser.username]);
+                  }
+                },
+                (err) => {
+                  this.changeSubmit = null;
+                  if (!preventAction) {
+                    this.errorMessage = _.get( err.json(), 'error', err.message ||
+                     'An error ocurred while saving your data!');
+                    if (_.get(err.json(), 'code') === 'usernameTaken') {
+                      this.localUser.username = '';
+                    }
+                  }
+                  this.preventDisabledBtn = true;
+                });
+    }
+
+    public updateUserDelayed() {
+      if (this.changeSubmit) {
+        clearTimeout(this.changeSubmit);
+        this.changeSubmit = setTimeout(() => {
+            this.updateUser(true);
+          }, 4000);
+      } else {
+        this.changeSubmit = setTimeout(() => {
+          this.updateUser(true);
+        }, 4000);
+      }
     }
 
     public ngOnInit() {
@@ -53,7 +127,6 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
       this.localUser = this.user;
-      this.userPrivacy = this.user;
     }
 
     public ngOnChanges() {

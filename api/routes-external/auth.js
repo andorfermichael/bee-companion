@@ -237,32 +237,36 @@ router.get('/user/:id', function(req, res) {
       // lookup in our database for username:
       models.User.findOne({ where: { username: req.params.id }})
         .then((user) => {
-           user.getUserPrivacy()
-              .then((userPrivacy) => {
-                const data = _.assign({}, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
-                res.json(data);
-              })
-        }).catch((error) => {
-          const queryParams = { q: `username:"${req.params.id}"`};
-          const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
-          const method = 'GET';
-          makeApiCall({ method, url }, (userData) => {
-            const user_id = _.get(userData, '[0].user_id');
-            if (user_id) {
-              userData = userData[0];
-              models.User.findOne({ where: { auth_user_id: user_id }})
-              .then((user) => {
-                user.getUserPrivacy()
-                  .then((userPrivacy) => {
-                    const privacy = userPrivacy.get({plain: true});
-                    const data = _.assign({}, userData, user.get({plain: true}));
-                    res.json(_.pick(data, buildColumnFilterBasedOnScope('registered', privacy)));
-                  })
+          user.getUserPrivacy()
+            .then((userPrivacy) => {
+              const data = _.assign({}, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
+              res.json(data);
+            })
+            .catch((error) => {
+              const queryParams = { q: `username:"${req.params.id}"`};
+              const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
+              const method = 'GET';
+              makeApiCall({ method, url }, (userData) => {
+                const user_id = _.get(userData, '[0].user_id');
+                if (user_id) {
+                  userData = userData[0];
+                  models.User.findOne({ where: { auth_user_id: user_id }})
+                  .then((user) => {
+                    user.getUserPrivacy()
+                      .then((userPrivacy) => {
+                        const privacy = userPrivacy.get({plain: true});
+                        const data = _.assign({}, userData, user.get({plain: true}));
+                        res.json(_.pick(data, buildColumnFilterBasedOnScope('registered', privacy)));
+                      })
+                      .catch((error) => {
+                        res.status(400).json(error);
+                      })
+                  });
+                } else {
+                  res.status(404).json({error: 'User not found!'});
+                }           
               });
-            } else {
-              res.status(404).json({error: 'User not found!'});
-            }           
-          });
+            });  
         });  
     }
   });
@@ -382,12 +386,16 @@ router.post('/user/:id/update', cors(), function(req, res) {
               //   res.json(data);
               // });
               models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
-                .then((updatedPrivacy) => {
-                  res.status(200);
-                })
-                .catch((err) => {
-                  res.status(400).json({error: 'An error ocurred while saving data!'});
-                })
+              .then((updatedPrivacy) => {
+                  res.status(200).json(newUserData);
+                });
+            })
+            .catch((err) => {
+              if (_.get(err, 'original.constraint') === 'Users_username_key') {
+                res.status(400).json({error: 'This username is already taken!', code: 'usernameTaken'});
+              } else {
+                res.status(400).json({error: 'An error ocurred while saving data!', code: 'general'});
+              }
             })
         });
     });
