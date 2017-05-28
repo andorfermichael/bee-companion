@@ -14,6 +14,7 @@ describe(`PayPalFormComponent`, () => {
   let comp: PayPalFormComponent;
   let fixture: ComponentFixture<PayPalFormComponent>;
   let paypalService: PayPalService;
+  let localStorageService: LocalStorageService;
 
   // async beforeEach
   beforeEach(async(() => {
@@ -43,14 +44,55 @@ describe(`PayPalFormComponent`, () => {
     fixture = TestBed.createComponent(PayPalFormComponent);
     comp = fixture.componentInstance;
     paypalService = TestBed.get(PayPalService);
+    localStorageService = TestBed.get(LocalStorageService);
   });
 
-  xit('executeDonation should execute adaptive payment using paypal service ', async(() => {
-    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.of('some value'));
-    comp.executeDonation(15.00);
-    fixture.whenStable().then(() => {
-      expect(paypalService.executeAdaptivePayment).toHaveBeenCalled();
-    })
+  it('executeDonation should execute adaptive payment using paypal service and return payKey on success', (done) => {
+    fixture.detectChanges();
+    const amount = 15.00;
+    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.of({payKey: 'AP-12345'}));
+    comp.executeDonation(amount);
+
+    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe((payment) => {
+      fixture.detectChanges();
+      expect(paypalService.executeAdaptivePayment).toHaveBeenCalledWith(jasmine.any(String), amount);
+      expect(payment.payKey).toEqual('AP-12345');
+      done();
+    });
+  });
+
+  xit('executeDonation should execute adaptive payment using paypal service and return payKey on success', (done) => {
+    fixture.detectChanges();
+    const amount = 15.00;
+    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.of({payKey: 'AP-12345'}));
+    comp.executeDonation(amount);
+
+    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe((payment) => {
+      fixture.detectChanges();
+      expect(paypalService.executeAdaptivePayment).toHaveBeenCalledWith(jasmine.any(String), amount);
+    });
+    expect(localStorageService.retrieve('lastPayKey')).toEqual('AP-12345');
+    done();
+  });
+
+  xit('executeDonation should execute adaptive payment using paypal service and log error ' +
+    'if failed', async(() => {
+    fixture.detectChanges();
+    const amount = 15.00;
+    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.throw('error'));
+    spyOn(console, 'error');
+    comp.executeDonation(amount);
+
+    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
+      (payment) => {
+        // nothing
+      },
+      (error) => {
+        fixture.detectChanges();
+        expect(console.error).toHaveBeenCalled();
+        expect(error).toBe('error');
+      }
+    );
   }));
 });
 
