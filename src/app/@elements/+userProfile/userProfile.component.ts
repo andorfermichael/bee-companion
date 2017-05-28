@@ -22,10 +22,18 @@ export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
     public userRole: string;
     public isCurrentUser: boolean;
     public isAuthenticated: boolean;
+    public interests: string;
     public sub: any;
 
     constructor(  public auth: Auth, private activatedRoute: ActivatedRoute,
                   public authHttp: AuthHttp) {
+    }
+
+    // birthday is a date
+    public calculateAge(birthday: any) { // pass in player.dateOfBirth
+      const ageDifMs = Date.now() - new Date(birthday);
+      const ageDate = new Date(ageDifMs); // miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
     }
 
     public ngOnInit() {
@@ -35,13 +43,16 @@ export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
       this.localUser = this.user;
-      if (_.get(this.user, 'user_id', 'unknown') === _.get(this.auth.userProfile, 'user_id')
+      const userId = _.get(this.user, 'user_id') || _.get(this.user, 'auth_user_id', 'unknown');
+
+      if (userId === _.get(this.auth.userProfile, 'user_id')
         && this.isAuthenticated) {
         this.isCurrentUser = true;
         console.log('USER IS USER!');
       }
       this.userRole = _.get(this.localUser, 'roles[0]', null) ||
-                      _.get(this.localUser, 'app_metadata.roles[0]', null);
+                      _.get(this.localUser, 'app_metadata.roles[0]', null) ||
+                      _.get(this.localUser, 'role');
     }
 
     public ngOnChanges() {

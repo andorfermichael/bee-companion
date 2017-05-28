@@ -165,7 +165,7 @@ function buildQueryString(queryParams) {
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
   jwtToken = getJWTToken(req);
-  auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+  auth0.tokens.getInfo(jwtToken, function(err, userInfo) {
     if (req.params.id == 'me') {
       //collect data from calling user itself
       const user_id = userInfo.user_id;
@@ -176,31 +176,87 @@ router.get('/user/:id', function(req, res) {
               const data = _.assign({}, userInfo, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
               res.json(data);
             })
+        })
+        .catch((err) => {
+          console.log(userInfo);
+            // user was registered on auth0 but is not present in usermodel
+            models.User.create({
+              auth_user_id: userInfo.user_id || user_id,
+              given_name: userInfo.given_name || _.get(userInfo, 'user_metadata.firstName'),
+              family_name: userInfo.family_name || _.get(userInfo, 'user_metadata.lastName'),
+              username: userInfo.username,
+              description: userInfo.description,
+              interests: userInfo.interests,
+              birthday: userInfo.birthday,
+              role: _.get(userInfo.roles, '[0]') || _.get(userInfo, 'app_metadata.roles[0]') || role,
+              gender: userInfo.gender,
+              picture: userInfo.picture,
+              email: userInfo.email,
+              paypal: userInfo.paypal,
+              phone: userInfo.phone,
+              authenticated: userInfo.authenticated || false,
+              email_verified: userInfo.email_verified,
+              street: userInfo.street,
+              street_number: userInfo.street_number,
+              postal_code: userInfo.postal_code,
+              city: userInfo.city,
+              country: userInfo.country
+            }, {
+              include: [{
+                association: models.UserPrivacy.User,
+                include: [ models.User.Privacy ]
+              }]
+            }).then(function(user) {
+                // create UserPrivacy default Dataset
+                models.UserPrivacy.create({
+                  UserId: user.id
+                 }).then(function(userPrivacy) {
+
+                  const userData = _.pick(user.get({plain: true}), userColumnFilter);
+                  userData.privacy = userPrivacy.get({plain: true});
+                  res.json(userData);
+                 }).catch((error) => {
+                  console.log(error);
+                    res.status(400).json(error);
+                 });
+            });
         });
-    } 
+    }
     else {
-      const queryParams = { q: `username:"${req.params.id}"`};
-      const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
-      const method = 'GET';
-      makeApiCall({ method, url }, (userData) => {
-        const user_id = _.get(userData, '[0].user_id');
-        if (user_id) {
-          userData = userData[0];
-          models.User.findOne({ where: { auth_user_id: user_id }})
-          .then((user) => {
-            user.getUserPrivacy()
+      // fallback because username is not settable on auth0
+      // lookup in our database for username:
+      models.User.findOne({ where: { username: req.params.id }})
+        .then((user) => {
+           user.getUserPrivacy()
               .then((userPrivacy) => {
-                const data = _.assign({}, userData, user, { privacy: userPrivacy});
+                const data = _.assign({}, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
                 res.json(data);
               })
+        }).catch((error) => {
+          const queryParams = { q: `username:"${req.params.id}"`};
+          const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
+          const method = 'GET';
+          makeApiCall({ method, url }, (userData) => {
+            const user_id = _.get(userData, '[0].user_id');
+            if (user_id) {
+              userData = userData[0];
+              models.User.findOne({ where: { auth_user_id: user_id }})
+              .then((user) => {
+                user.getUserPrivacy()
+                  .then((userPrivacy) => {
+                    const data = _.assign({}, userData, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
+                    res.json(data);
+                  })
+              });
+            } else {
+              res.status(404).json({error: 'User not found!'});
+            }           
           });
-        } else {
-          res.status(404).json({error: 'User not found!'});
-        }           
-      });
+        });  
     }
-  });    
+  });
 });
+
 
 // Get all users
 // moved to user.js
@@ -215,7 +271,7 @@ router.get('/user/:id/userPrivacy/', checkJwt, function(req, res) {
         .then((user) => {
           user.getUserPrivacy()
             .then((userPrivacy) => {
-              res.json(userPrivacy);
+              res.json(userPrivacy.get({plain: true}));
             })
         });
     });
@@ -239,7 +295,6 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
       }
       const opts = getRoleChangeOpts(role, userInfo.user_id);
       makeApiCall(opts, (data) => {
-
         // create User
         models.User.create({
           auth_user_id: data.user_id || user_id,
@@ -250,6 +305,7 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
           interests: data.interests,
           birthday: data.birthday,
           role: _.get(data.roles, '[0]') || _.get(data, 'app_metadata.roles[0]') || role,
+          gender: data.gender,
           picture: data.picture,
           email: data.email,
           paypal: data.paypal,
@@ -281,8 +337,46 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
     });
   }
 });
+    
+const userColumnFilter = ['given_name','family_name','username','description',
+  'interests','birthday','role','gender','picture','email','paypal','phone','street',
+  'street_number','postal_code','city','country'];
 
-// Save a transaction (payment)
+const auth0ColumnFilter = ['email' ];
+
+// Update a user
+router.use('/user/:id/update', cors(corsConfig));
+router.post('/user/:id/update', cors(), function(req, res) {
+  const newUserData = _.pick(req.body, userColumnFilter);
+  const newPrivacyData = req.body.privacy;
+  jwtToken = getJWTToken(req);
+  // get user_id out of JWT
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      // now we have the userInfo / user_id
+      const user_id = userInfo.user_id;
+      // get user from model
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          // filter fields and update with new data
+          const newUser = _.assign({}, _.pick(user.get({plain: true}), userColumnFilter), newUserData);
+          models.User.update(newUser, {where: { auth_user_id: user_id}})
+            .then((updatedUser) => {
+              // filter fields again for submit to auth0 
+              // NOT SUPPORTET <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!>
+              // const url = `${auth0BaseDomain}api/v2/users/` + encodeURIComponent(user_id);
+              // const opts = { url: url, body: _.pick(newUser, auth0ColumnFilter)};
+              // makeApiCall(opts, (data) => {
+              //   console.log(data);
+              //   //save changes from auth0 back to model
+              //   res.json(data);
+              // });
+              res.json(newUser);
+            })
+        });
+    });
+});
+
+// create a userPrivacy Dataset
 router.use('/userPrivacy/create', cors(corsConfig));
 router.post('/userPrivacy/create', cors(), function(req, res) {
   jwtToken = getJWTToken(req);
@@ -292,7 +386,7 @@ router.post('/userPrivacy/create', cors(), function(req, res) {
         .then((user) => {
           models.UserPrivacy.create({id: user.id})
             .then(function(userPrivacy) {
-              res.json(userPrivacy);
+              res.json(userPrivacy.get({plain: true}));
             }).catch((error) => {
               res.status(400).json(error);
             })
@@ -306,23 +400,7 @@ module.exports = router;
 // Create a new user
 router.use('/user/create', cors(corsConfig));
 router.post('/user/create', cors(), function(req, res) {
-  models.User.create({
-    firstName: req.body,
-    lastName: req.body,
-    userName:req.body,
-    role:req.body,
-    picture:req.body,
-    email:req.body,
-    paypalId:req.body,
-    phone:req.body,
-    authenticated:req.body,
-    verified:req.body,
-    street:req.body,
-    streetNumber:req.body,
-    postalCode:req.body,
-    city:req.body,
-    country:req.body
-  }).then(function(user) {
+  models.User.create(_.pick(req.body, userColumnFilter)).then(function(user) {
     res.json(user);
   });
 });

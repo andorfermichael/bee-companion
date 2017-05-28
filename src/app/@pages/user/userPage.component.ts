@@ -76,12 +76,17 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
         }
       }
       if (this.auth.isAuthenticated()) {
+        // set localUser to null to toggle loading animation
+        this.localUser = null;
         // get authenticated information:
         this.authHttp.get('http://localhost:3000/api/auth/user/' + username)
           .subscribe(
               (data) => { this.processUserData(data); },
               (err) => {
-                  console.error(err);
+                  console.error(err.json());
+                  setTimeout(() => {
+                    this.router.navigate(['/home']);
+                  }, 250);
               });
       } else {
         // get public information

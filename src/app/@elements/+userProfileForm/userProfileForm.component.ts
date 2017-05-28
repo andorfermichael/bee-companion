@@ -35,7 +35,16 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public updateUser(form: NgForm) {
-      console.log(this.user);
+      console.log(this.user.privacy);
+      this.authHttp.post(`http://localhost:3000/api/auth/user/${this.user.username}/update/`,
+      this.user)
+        .subscribe(
+            (data) => {
+              this.router.navigate([`/user/${this.user.username}`]);
+            },
+            (err) => {
+                console.error(err);
+            });
     }
 
     public ngOnInit() {

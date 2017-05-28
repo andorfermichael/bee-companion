@@ -24,7 +24,7 @@
             <a href="#" class="list-group-item" data-parent="#menu3">Epsylon</a>
             <a href="#" class="list-group-item" data-parent="#menu3">Foxtrot</a>
         </div>
-        <a href="#" class="list-group-item collapsed" data-parent="#beekeeper-menu" [ngClass]="{'hidden-sm-down': isMenuActive()}"><i class="icon_id_alt"></i> <span class="hidden-sm-down">My</span><span>&nbsp;Profile</span></a>
+        <a href="" class="list-group-item collapsed" data-parent="#beekeeper-menu" [ngClass]="{'hidden-sm-down': isMenuActive()}" [routerLink]="['/user/', auth.userProfile.username || 'me']" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="icon_id_alt"></i> <span class="hidden-sm-down">My</span><span>&nbsp;Profile</span></a>
         <a href="#menu4" class="list-group-item collapsed" data-toggle="collapse" data-parent="#beekeeper-menu" aria-expanded="false" [ngClass]="{'hidden-sm-down': isMenuActive() && !isMenuActive(4)}" (click)="setMenuActive(4)" *ngIf="!userIsAdmin"><i class="icon_cog"></i> <span class="hidden-sm-down">My</span><span>&nbsp;Settings</span></a>
         <div class="collapse" id="menu4" *ngIf="!userIsAdmin">
             <a href="#" class="list-group-item" data-parent="#menu4">Accountsettings</a>
