@@ -197,9 +197,10 @@ router.get('/user/:id', function(req, res) {
       /* ............................. Userdata */
       models.User.findOne({ where: { auth_user_id: user_id }})
         .then((user) => {
-          userData = user.get({plain: true});
+          if (user) {
+          const userData = user.get({plain: true});
           // compare retrieved username with called one, if matches, caller access his own profile
-          if (req.params.id == 'me' || req.params.id == userData.username) {
+          if (user && (req.params.id == 'me' || req.params.id == userData.username)) {
             /* ............................. Privacy */
             user.getUserPrivacy()
               .then((userPrivacy) => {
@@ -208,7 +209,7 @@ router.get('/user/:id', function(req, res) {
                 user.getBuzzs({raw: true})
                   .then((data) => {
                     res.status(200).json(appendBuzzsToUser(attachedData,data));
-                  })
+                  }).catch((error) => { });
               })
           } else {
             // fallback because username is not settable on auth0
@@ -238,9 +239,11 @@ router.get('/user/:id', function(req, res) {
                   const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
                   const method = 'GET';
                   makeApiCall({ method, url }, (userData) => {
+                    console.log(userData);
                     /* ............................. auth0 Userdata of matched user */
                     const user_id = _.get(userData, '[0].user_id');
                     if (user_id) {
+
                       userData = userData[0];
                       // now we lookup up the same user in our database
                       models.User.findOne({ where: { auth_user_id: user_id }})
@@ -321,7 +324,8 @@ router.get('/user/:id', function(req, res) {
                 console.error(error);
               })
           }
-        })
+        }
+      })
   });
 });
           
@@ -365,8 +369,8 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
         // create User
         models.User.create({
           auth_user_id: data.user_id || user_id,
-          given_name: data.given_name,
-          family_name: data.family_name,
+          given_name: data.given_name || _.get(data, 'user_metadata.firstName'),
+          family_name: data.family_name || _.get(data, 'user_metadata.lastName'),
           username: data.username,
           description: data.description,
           interests: data.interests,
@@ -416,7 +420,7 @@ function getUserDiff(a, b) {
 function createProfileUpdateBuzzFeed(trigger, user, diff) {
   console.log(diff);
   _.forOwn(diff, (val, key) => { _.set(diff, key, _.get(columnNameMap, val, val.replace('_', ' ')))});
-  var message = _.get(user, 'first_name') || _.get(user, 'username');
+  var message = _.get(user, 'first_name') || _.get(user, 'username',' ');
   message = message.charAt(0).toUpperCase() + message.slice(1);
   message += ' has just now updated ';
   message += _.get(user, 'gender') === 'female' ? 'her ' : (_.get(user, 'gender') === 'male' ? 'his ' : 'his/her ');
@@ -471,9 +475,9 @@ router.post('/user/:id/update', cors(), function(req, res) {
       };
 
       geocoder.geocode(location)
-        .then(function(res) {
-          newUserData.latitude = res[0].latitude;
-          newUserData.longitude = res[0].longitude;
+        .then(function(response) {
+          newUserData.latitude = response[0].latitude;
+          newUserData.longitude = response[0].longitude;
 
           // now we have the userInfo / user_id
           const user_id = userInfo.user_id;
@@ -496,9 +500,9 @@ router.post('/user/:id/update', cors(), function(req, res) {
                   models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
                     .then((updatedPrivacy) => {
                       const diff = getUserDiff(newUserData, user.get({plain: true}));
-                      saveBuzz(createProfileUpdateBuzzFeed('Profile Update', user.get({plain: true}), diff))
+                      saveBuzz(createProfileUpdateBuzzFeed('Profile Update', _.assign({}, user.get({plain: true}), newUserData), diff))
                         .then((data) => {
-                          res.status(200).json(appendBuzzToUser(newUser,data));
+                          res.status(200).json(appendBuzzsToUser(newUser,data));
                         })
                     });
                 })

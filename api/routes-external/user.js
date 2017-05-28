@@ -103,6 +103,11 @@ const defaultUserQueryParamters = {
   include_fields: true
 };
 
+function appendBuzzsToUser(user, buzzs) {
+  _.set(user, 'buzzes', buzzs);
+  return user;
+}
+
 function buildQueryString(queryParams) {
   const options = _.assign({}, defaultUserQueryParamters, queryParams);
   let query = [];
@@ -111,6 +116,16 @@ function buildQueryString(queryParams) {
     query.push(`${encodeURIComponent(key)}=${encodeURIComponent(value)}`);
   })
   return `?${query.join('&')}`;
+}
+
+function filterBuzzesBasedOnScope(scope, buzzes) {
+  const scopes = ['public', 'registered', 'donators', 'private'];
+  _.reject(buzzes, (b) => {
+    if (scopes.indexOf(scope) < scopes.indexOf(b.value)) {
+      return true;
+    } 
+    return false;
+  });
 }
 
 function buildColumnFilterBasedOnScope(scope, privacyRules) {
@@ -152,10 +167,13 @@ router.get('/user/:id', function(req, res) {
   }).then((user) => {
       user.getUserPrivacy()
         .then((userPrivacy) => {
-          const privacy = userPrivacy.get({plain: true});
-          const data = user.get({plain: true});
-          const filter = buildColumnFilterBasedOnScope('public', privacy);
-          res.json(_.pick(data, filter));
+          user.getBuzzs({raw: true})
+            .then((buzzes) => {
+              const privacy = userPrivacy.get({plain: true});
+              const data = user.get({plain: true});
+              const filter = buildColumnFilterBasedOnScope('public', privacy);
+              res.status(200).json(appendBuzzsToUser(_.pick(data, filter),buzzes));
+            })
         })
     })
     .catch((err) => {

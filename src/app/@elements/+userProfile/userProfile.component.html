@@ -18,19 +18,29 @@
 					    </div>
 					    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne">
       						<div class="card-block">
-                                <h4 style="text-align: center;">{{localUser.given_name}} {{localUser.family_name}}</h4>
-	      						<hr>
-			                    <h3><strong>Bio</strong></h3>
-			                    <p>{{localUser.description}}</p>
-			                    <hr>
-			                    <h3><strong>Lives in</strong></h3>
-			                    <p>{{localUser.city}}, {{localUser.country}}</p>
-			                    <hr>
-			                    <h3><strong>Gender</strong></h3>
-			                    <p>{{localUser.gender}}</p>
-			                    <hr>
-			                    <h3><strong>Age</strong></h3>
-			                    <p>{{calculateAge(localUser.birthday)}}</p>
+                                <div *ngIf="localUser.given_name || localUser.family_name">
+                                    <h4 style="text-align: center;">{{localUser.given_name}} {{localUser.family_name}}</h4>
+                                </div>
+                                <div *ngIf="localUser.description">
+    	      						<hr>
+    			                    <h3><strong>Bio</strong></h3>
+    			                    <p>{{localUser.description}}</p>
+                                </div>
+                                <div *ngIf="localUser.city || localUser.country">
+    			                    <hr>
+    			                    <h3><strong>Lives in</strong></h3>
+    			                    <p>{{localUser.city}}, {{localUser.country}}</p>
+                                </div>
+                                <div *ngIf="localUser.gender">
+    			                    <hr>
+    			                    <h3><strong>Gender</strong></h3>
+    			                    <p>{{localUser.gender}}</p>
+                                </div>
+                                <div *ngIf="localUser.birthday">
+    			                    <hr>
+    			                    <h3><strong>Age</strong></h3>
+    			                    <p>{{calculateAge(localUser.birthday)}}</p>
+                                </div>
       						</div>
   						</div>
 					</div>
