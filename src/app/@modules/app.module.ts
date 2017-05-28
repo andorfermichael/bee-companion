@@ -59,8 +59,10 @@ import { BeekeeperMenuComponent } from '../@elements/+beekeeperMenu';
 import { SupporterMenuComponent } from '../@elements/+supporterMenu';
 import { PayPalFormComponent } from '../@elements/+paypalForm';
 import { RadarCardComponent } from '../@elements/+radarCard';
+import { RibbonComponent } from '../@elements/+ribbon';
 import { SignupCardComponent } from '../@elements/+signupCard';
 import { UserProfileComponent } from '../@elements/+userProfile';
+import { UserProfileFormComponent } from '../@elements/+userProfileForm';
 
 // Styles
 import '../../styles/styles.scss';
@@ -101,12 +103,14 @@ const APP_PROVIDERS = [
     PrivacyPolicyComponent,
     RadarCardComponent,
     RestrictedComponent,
+    RibbonComponent,
     SignupCardComponent,
     SignupPageComponent,
     SupporterMenuComponent,
     TermsAndConditionsComponent,
     UserPageComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    UserProfileFormComponent
   ],
   imports: [ // import Angular's modules
     AgmCoreModule.forRoot({ apiKey: process.env.GOOGLE_MAPS_API_KEY }),

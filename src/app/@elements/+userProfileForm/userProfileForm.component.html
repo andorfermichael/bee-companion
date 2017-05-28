@@ -1,0 +1,321 @@
+<form>
+    <div class="row user-profile-form-buttons">
+        <div class="col-12">
+            <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="firstname">Your First Name:</label>
+            <input type="text" class="form-control" id="firstname" aria-describedby="firstnameHelp" placeholder="Your firstname" value="{{user.given_name}}">
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group firstnamePrivacy">
+            <label for="firstnamePrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="firstnamePrivacy">
+              <option>Public</option>
+              <option selected>Registered</option>
+              <option>Donators</option>
+              <option disabled>only me</option>
+            </select>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="lastname">Your Last Name:</label>
+            <input type="text" class="form-control" id="lastname" aria-describedby="lastnameHelp" placeholder="Your lastname" value="{{user.family_name}}">
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group lastnamePrivacy">
+            <label for="lastnamePrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="lastnamePrivacy">
+              <option>Public</option>
+              <option selected>Registered</option>
+              <option>Donators</option>
+              <option disabled>only me</option>
+            </select>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" aria-describedby="usernameHelp" placeholder="Your username" value="{{user.username}}">
+            <small id="usernameHelp" class="form-text text-muted">You need a username to get found by others.</small>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="form-group usernamePrivacy">
+            <label for="usernamePrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="usernamePrivacy">
+              <option selected>Public</option>
+              <option disabled>Registered</option>
+              <option disabled>Donators</option>
+              <option disabled>only me</option>
+            </select>
+          </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="birthday-date-input" class="col-form-label">Your birthday:</label>
+              <input class="form-control" type="date" value="{{user.birthday}}" id="birthday-date-input" name="birthday" aria-describedby="birthdayHelp">
+              <small id="birthdayHelp" class="form-text text-muted">Public users will always be shown only your age. For a birthday banner on your birthday set your privacy settings on the right!</small>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group birthdayPrivacy">
+                <label for="birthdayPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="birthdayPrivacy">
+                    <option>Public</option>
+                    <option selected>Registered</option>
+                    <option>Donators</option>
+                    <option>only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="gender">Your Gender:</label>
+            <select class="form-control" id="gender">
+              <option>- select -</option>
+              <option>male</option>
+              <option>female</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group genderPrivacy">
+                <label for="genderPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="genderPrivacy">
+                    <option selected>Public</option>
+                    <option>Registered</option>
+                    <option>Donators</option>
+                    <option>only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="description">Your Biography/Short Introduction:</label>
+            <textarea class="form-control" id="description" rows="3" max-length="255">{{user.description}}</textarea>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group descriptionPrivacy">
+                <label for="descriptionPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="descriptionPrivacy">
+                    <option selected>Public</option>
+                    <option>Registered</option>
+                    <option>Donators</option>
+                    <option>only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="interests">Your Interests (#interests):</label>
+            <textarea class="form-control" id="interests" rows="3" max-length="255">
+              {{user.interests}}
+            </textarea>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group interestsPrivacy">
+                <label for="interestsPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="interestsPrivacy">
+                    <option selected>Public</option>
+                    <option>Registered</option>
+                    <option>Donators</option>
+                    <option>only me</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <h3>Your Contact Information:</h3>
+    <div class="row">
+        <div class="col-8">
+          <div class="form-group">
+            <label for="email">Email Adress:</label>
+            <i class="fa fa-check text-success" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Emailaddress is verified" *ngIf="user.email_verified"></i>
+            <i class="fa fa-times text-error" aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="Emailaddress has not been verified yet!" *ngIf="!user.email_verified"></i>
+            <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="your@emailaddress.com" value="{{user.email}}">
+            <small id="emailHelp" class="form-text text-muted">Needs to be verified!</small>
+          </div>
+        </div>
+        <div class="col-4">
+            <div class="form-group emailPrivacy">
+                <label for="emailPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+                <select class="form-control" id="emailPrivacy">
+                    <option selected>Public</option>
+                    <option>Registered</option>
+                    <option>Donators</option>
+                    <option>only me</option>
+                </select>
+            </div>
+        </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="paypal">PayPal Email Adress:</label>
+        <input type="paypal" class="form-control" id="paypal" aria-describedby="paypalHelp" placeholder="your@emailaddress.com" value="{{user.paypal}}">
+        <small id="paypalHelp" class="form-text text-muted">You need to specify a registered paypal email-address to be able to receive donations!</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group paypalPrivacy">
+            <label for="paypalPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="paypalPrivacy">
+                <option disabled>Public</option>
+                <option selected>Registered</option>
+                <option disabled>Donators</option>
+                <option disabled>only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="phone">Phone number:</label>
+        <input type="text" class="form-control" id="phone" aria-describedby="phoneHelp" placeholder="+43 660 1234 1234" value="{{user.phone}}">
+        <small id="phoneHelp" class="form-text text-muted">This will never be shared with others!</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group phonePrivacy">
+            <label for="phonePrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="phonePrivacy">
+                <option disabled>Public</option>
+                <option disabled>Registered</option>
+                <option disabled>Donators</option>
+                <option selected>only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <hr>
+  <h3>Your Residence:</h3>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="street">Street:</label>
+        <input type="text" class="form-control" id="street" aria-describedby="streetHelp" placeholder="Your street" value="{{user.street}}">
+        <small id="streetHelp" class="form-text text-muted">Your Street is not visible to others, but necessary to be shown on BeeRadar & BeeMap</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group streetPrivacy">
+            <label for="streetPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="streetPrivacy">
+                <option disabled>Public</option>
+                <option disabled>Registered</option>
+                <option>Donators</option>
+                <option selected>only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="streetnumber">Street number:</label>
+        <input type="text" class="form-control" id="street" aria-describedby="streetnumberHelp" placeholder="Your house number" value="{{user.street_number}}">
+        <small id="streetnumberHelp" class="form-text text-muted">Your Streetnumber is not visible to others, but necessary to be shown on BeeRadar & BeeMap</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group streetnumberPrivacy">
+            <label for="streetPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="streetnumberPrivacy">
+                <option disabled>Public</option>
+                <option disabled>Registered</option>
+                <option>Donators</option>
+                <option selected>only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="postalcode">Postal code:</label>
+        <input type="text" class="form-control" id="postalcode" aria-describedby="postalcodeHelp" placeholder="Your postalcode" value="{{user.postal_code}}">
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group postalcodePrivacy">
+            <label for="postalcodePrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="postalcodePrivacy">
+                <option disabled>Public</option>
+                <option disabled>Registered</option>
+                <option>Donators</option>
+                <option selected>only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="city">City:</label>
+        <input type="text" class="form-control" id="city" aria-describedby="cityHelp" placeholder="Your city" value="{{user.city}}">
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="cityPrivacy">
+        <div class="form-group cityPrivacy">
+            <label for="cityPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="cityPrivacy">
+                <option selected>Public</option>
+                <option>Registered</option>
+                <option disabled>Donators</option>
+                <option disabled>only me</option>
+            </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-8">
+      <div class="form-group">
+        <label for="country">Country:</label>
+        <input type="text" class="form-control" id="country" aria-describedby="countryHelp" placeholder="Your country" value="{{user.country}}">
+        <small id="countryHelp" class="form-text text-muted">It is necessary to show your homecountry within your profile for the experience of our service.</small>
+      </div>
+    </div>
+    <div class="col-4">
+        <div class="form-group countryPrivacy">
+            <label for="countryPrivacy"><i class="fa fa-globe" aria-hidden="true"></i> Privacy:</label>
+            <select class="form-control" id="countryPrivacy">
+                <option selected>Public</option>
+                <option disabled>Registered</option>
+                <option disabled>Donators</option>
+                <option disabled>only me</option>
+            </select>
+        </div>
+    </div>
+  </div>
+    <div class="row user-profile-form-buttons">
+        <div class="col-12">
+            <button class="btn btn-default" [routerLink]="['/user/', localUser.username || 'me']">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>
