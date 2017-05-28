@@ -37,7 +37,6 @@ import { EventsService } from '../../@services/events.service';
     ])
   ]
 })
-
 export class LoginCardComponent implements OnInit, OnDestroy {
   public forgotPassword: boolean;
   public usernameEmpty: string = 'inactive';
@@ -52,18 +51,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
 
   constructor(public auth: Auth, public router: Router, public _eventsService: EventsService) {}
 
-  public setFocus(elementRef): any {
-    if (!elementRef) {
-      return;
-    }
-    elementRef.nativeElement.focus();
-  }
-
-  public restoreFields(data: any): void {
-    this.usernameElementRef.nativeElement.value = _.get(data, 'username', '');
-    this.setFocus(this.passwordElementRef);
-  }
-
   public ngOnInit() {
     this._eventsService.on('loginFail', (err, data) => {
       this.onLoginFail(err);
@@ -73,20 +60,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this._eventsService.off('loginFail');
-  }
-
-  public resetUsernamePasswordEmpty(): void {
-    this.usernameEmpty = 'inactive';
-    this.username2Empty = 'inactive';
-    this.passwordEmpty = 'inactive';
-    this.emailEmpty = 'inactive';
-    this.submitErr = 'inactive';
-  }
-
-  public toggleForgotPassword(toggleTo: boolean): void {
-    this.forgotPassword = toggleTo;
-    this.resetUsernamePasswordEmpty();
-    this.errorMsg = '';
   }
 
   public loginWithSocial(type: string): any {
@@ -156,6 +129,32 @@ export class LoginCardComponent implements OnInit, OnDestroy {
           this.forgotPassword = false;
         });
     }
+  }
+
+  public toggleForgotPassword(toggleTo: boolean): void {
+    this.forgotPassword = toggleTo;
+    this.resetUsernamePasswordEmpty();
+    this.errorMsg = '';
+  }
+
+  private setFocus(elementRef): any {
+    if (!elementRef) {
+      return;
+    }
+    elementRef.nativeElement.focus();
+  }
+
+  private restoreFields(data: any): void {
+    this.usernameElementRef.nativeElement.value = _.get(data, 'username', '');
+    this.setFocus(this.passwordElementRef);
+  }
+
+  public resetUsernamePasswordEmpty(): void {
+    this.usernameEmpty = 'inactive';
+    this.username2Empty = 'inactive';
+    this.passwordEmpty = 'inactive';
+    this.emailEmpty = 'inactive';
+    this.submitErr = 'inactive';
   }
 
   private onLoginFail(error): void {
