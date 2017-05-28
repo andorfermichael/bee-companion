@@ -1,3 +1,9 @@
+export const GeolocationOptions = {
+  enableHighAccuracy: true,
+  timeout: 10000,
+  maximumAge: 0
+};
+
 export const MarkerIcon = {
   url: '../../assets/img/beekeeper-marker.png'
 };

@@ -12,9 +12,9 @@ import { LocalStorageService } from 'ngx-webstorage';
   ]
 })
 export class PayPalFormComponent {
-  constructor(private paypalService: PayPalService, private localStorage: LocalStorageService) {}
+  constructor(public paypalService: PayPalService, public localStorage: LocalStorageService) {}
 
-  public executeDonation(amount: number) {
+  public executeDonation(amount: number): void {
     // TODO: Replace email with email from profile page owner (real receiver)
     // TODO: Replace ids with real ids
     this.paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
@@ -26,7 +26,7 @@ export class PayPalFormComponent {
         window.location.href = payment.paymentApprovalUrl;
       },
       (err) => {
-        console.log(err);
+        console.error(err);
       }
     );
   }

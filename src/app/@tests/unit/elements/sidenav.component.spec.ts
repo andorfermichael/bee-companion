@@ -4,19 +4,19 @@ import { async, TestBed, ComponentFixture } from '@angular/core/testing';
 // Load the implementations that should be tested
 import { Auth } from '../../../@services/auth.service';
 import { EventsService } from '../../../@services/events.service';
-import { BeekeeperMenuComponent } from '../../../@elements/+beekeeperMenu/bkMenu.component';
+import { SideNavComponent } from '../../../@elements/+sidenav/sidenav.component';
 
 import { MockAuthService } from '../_doubles/auth.doubles'
 
-describe(`BeekeeperMenuComponent`, () => {
-  let comp: BeekeeperMenuComponent;
-  let fixture: ComponentFixture<BeekeeperMenuComponent>;
+describe(`SideNavComponent`, () => {
+  let comp: SideNavComponent;
+  let fixture: ComponentFixture<SideNavComponent>;
 
   // async beforeEach
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [],
-      declarations: [BeekeeperMenuComponent],
+      declarations: [SideNavComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         EventsService,
@@ -28,7 +28,7 @@ describe(`BeekeeperMenuComponent`, () => {
 
   // synchronous beforeEach
   beforeEach(() => {
-    fixture = TestBed.createComponent(BeekeeperMenuComponent);
+    fixture = TestBed.createComponent(SideNavComponent);
     comp = fixture.componentInstance;
   });
 

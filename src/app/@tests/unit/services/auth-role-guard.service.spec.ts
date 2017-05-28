@@ -30,21 +30,24 @@ describe('AuthRoleGuardService', () => {
 
   it('canActivate should navigate to homepage if not authenticated', () => {
     authService.authenticated = false;
-    authService.userRole = false;
+    authService.hasUserRole = false;
+    authService.userProfile = {role: 'Beekeeper'};
     expect(authRoleGuardService.canActivate()).toBe(false);
     expect(MockRouter.navigate).toHaveBeenCalledWith(['/']);
   });
 
   it('canActivate should navigate to "signup/complete if authenticated but no user role was defined', () => {
     authService.authenticated = true;
-    authService.userRole = false;
+    authService.hasUserRole = false;
+    authService.userProfile = {role: 'Beekeeper'};
     expect(authRoleGuardService.canActivate()).toBe(false);
     expect(MockRouter.navigate).toHaveBeenCalledWith(['/signup/complete']);
   });
 
   it('canActivate should let user visit page (should not navigate) if authenticated and user role defined', () => {
     authService.authenticated = true;
-    authService.userRole = true;
+    authService.hasUserRole = true;
+    authService.userProfile = {role: 'Beekeeper'};
     expect(authRoleGuardService.canActivate()).toBe(true);
     expect(MockRouter.navigate).not.toHaveBeenCalled();
   });

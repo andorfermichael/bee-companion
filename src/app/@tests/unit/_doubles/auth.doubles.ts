@@ -1,8 +1,9 @@
-import { Observable } from "rxjs/Observable";
+import { Observable } from 'rxjs/Observable';
 
 export class MockAuthService {
   public authenticated: boolean = true;
-  public userRole: boolean = true;
+  public hasUserRole: boolean = true;
+  public userProfile: any;
 
   public handleAuth(): void {
     return;
@@ -12,8 +13,12 @@ export class MockAuthService {
     return this.authenticated;
   }
 
-  public checkUserHasRole(): boolean {
-    return this.userRole;
+  public checkUserHasRole(): any {
+    console.log(this.userProfile.role);
+    if (this.userProfile !== 'undefined' && this.userProfile.role === 'Admin') {
+      return this.userProfile.role;
+    }
+    return this.hasUserRole;
   }
 
   public _updateProfile(): boolean {

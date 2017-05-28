@@ -118,6 +118,7 @@ describe(`HomeComponent`, () => {
 
     it('ngOnInit should clear payKey from local storage', () => {
       spyOn(localStorageService, 'clear');
+      authService.userProfile = {role: 'Beekeeper'};
       authService.authenticated = true;
       fixture.detectChanges();
       expect(localStorageService.clear).toHaveBeenCalled();
@@ -125,6 +126,7 @@ describe(`HomeComponent`, () => {
 
     it('ngOnInit should remove /payment/cancelled from url', fakeAsync(() => {
       spyOn(location, 'replaceState');
+      authService.userProfile = {role: 'Beekeeper'};
       authService.authenticated = true;
       comp.ngOnInit();
       tick(5000);
