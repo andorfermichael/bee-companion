@@ -51,29 +51,39 @@ export class SingleBuzzComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-    public ngOnInit() {
-      this.isAuthenticated = this.auth.isAuthenticated();
-      if (!this.user) {
-        console.error('User needs to be passed to buzz Component!');
-        return;
-      }
-      const userId = _.get(this.user, 'user_id') || _.get(this.user, 'auth_user_id', 'unknown');
+  public updateScope(scope: string) {
+    this.buzz.scope = scope;
+    this.updateBuzz();
+  }
 
-      if (userId === _.get(this.auth.userProfile, 'user_id')
-        && this.isAuthenticated) {
-        this.isCurrentUser = true;
-        console.log('USER IS USER!');
-      }
+  public ngOnInit() {
+    this.isAuthenticated = this.auth.isAuthenticated();
+    if (!this.user) {
+      console.error('User needs to be passed to buzz Component!');
+      return;
     }
+    const userId = _.get(this.user, 'user_id') || _.get(this.user, 'auth_user_id', 'unknown');
 
-    public ngOnChanges() {
-      this.ngOnDestroy();
-      this.ngOnInit();
+    if (userId === _.get(this.auth.userProfile, 'user_id')
+      && this.isAuthenticated) {
+      this.isCurrentUser = true;
+      console.log('USER IS USER!');
     }
+  }
 
-    public ngOnDestroy() {
-      this.isCurrentUser = false;
-      this.isAuthenticated = false;
-      this.userRole = null;
-    }
+  public ngOnChanges() {
+    this.ngOnDestroy();
+    this.ngOnInit();
+  }
+
+  public ngOnDestroy() {
+    this.isCurrentUser = false;
+    this.isAuthenticated = false;
+    this.userRole = null;
+  }
+
+  private updateBuzz() {
+    this.authHttp.post(`http://localhost:3000/api/auth/buzz/${this.buzz.id}/update`,
+        this.buzz);
+  }
 }

@@ -565,4 +565,23 @@ router.post('/signup', function(req, res) {
       res.status(400).json({ error }); });
 });
 
+router.use('/buzz/:id/update', cors(corsConfig));
+router.post('/buzz/:id/update', checkJwt, function(req, res) {
+  const id = req.params.id;
+  const buzzUpdate = req.body;
+  jwtToken = getJWTToken(req);
+  auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+    const user_id = userInfo.user_id;
+    models.User.findOne({ where: { auth_user_id: user_id }})
+      .then((user) => {
+        models.Buzz.update(buzzUpdate, 
+          { where: { $and: [ { id: { $eq: id } },
+            { UserId: {  $eq: user.get({plain: true}).id } } ] }
+          }).then((buzz) => {
+            res.status(200);
+          });
+      })
+  });
+});
+
 module.exports = router;

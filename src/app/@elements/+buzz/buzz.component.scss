@@ -18,8 +18,13 @@
 			}
 		}
 	}
-	.buzz-privacy-control {
-
+	.buzz-privacy-control ul li {
+	    margin-left: 1em;
+	    position: relative;
+	    i.fa.fa-check {
+    	    position: absolute;
+			right: 15px;
+	    }
 	}
 }
 

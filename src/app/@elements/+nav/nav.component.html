@@ -11,13 +11,10 @@
           <a class="nav-link">Home</a>
         </li>
         <li class="nav-item" routerLink="/bee-radar" routerLinkActive="active" (mouseover)="onMouseOver($event)">
-          <a class="nav-link">BeeRadar</a>
+          <a class="nav-link">BeeMap</a>
         </li>
         <li class="nav-item" routerLink="/about" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
           <a class="nav-link">AboutUs</a>
-        </li>
-        <li class="nav-item" *ngIf="auth.isAuthenticated()" routerLink="/restricted" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (mouseover)="onMouseOver($event)">
-          <a class="nav-link">RestrictedArea</a>
         </li>
         <li class="nav-item d-flex ml-auto hidden-sm-down error-msg">
           <span #errorMsg class="error">{{extErrorMessage}}</span>
