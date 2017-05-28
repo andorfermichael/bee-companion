@@ -4,8 +4,16 @@ export const GeolocationOptions = {
   maximumAge: 0
 };
 
-export const MarkerIcon = {
+export const MarkerIconBeekeeper = {
   url: '../../assets/img/beekeeper-marker.png'
+};
+
+export const MarkerIconSupporter = {
+  url: '../../assets/img/supporter-marker.png'
+};
+
+export const MarkerIconCurrent = {
+  url: '../../assets/img/current-location-marker.png'
 };
 
 const clusterStyle = {
