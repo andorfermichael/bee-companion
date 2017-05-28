@@ -1,12 +1,17 @@
 'use strict';
 module.exports = {
   up: function(queryInterface, Sequelize) {
-    return queryInterface.createTable('User', {
+    return queryInterface.createTable('Users', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      },
+      auth_user_id: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        unique: true
       },
       given_name: {
         allowNull: false,
@@ -17,8 +22,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       username: {
-        allowNull: false,
-        type: Sequelize.STRING
+        allowNull: true,
+        type: Sequelize.STRING,
+        unique: true
       },
       description: {
         allowNull: true,
@@ -35,6 +41,11 @@ module.exports = {
       role: {
         allowNull: false,
         type: Sequelize.ENUM('Admin', 'Supporter', 'Beekeeper')
+      },
+      gender: {
+        allowNull: true,
+        type: Sequelize.ENUM('male', 'female', null),
+        default: null
       },
       picture: {
         allowNull: true,
@@ -54,11 +65,13 @@ module.exports = {
       },
       authenticated: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        default: false
       },
       email_verified: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
+        default: false
       },
       street: {
         allowNull: true,

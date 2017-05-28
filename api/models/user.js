@@ -1,6 +1,7 @@
 'use strict';
 module.exports = function(sequelize, DataTypes) {
   const User = sequelize.define('User', {
+    auth_user_id: DataTypes.STRING,
     given_name: DataTypes.STRING,
     family_name: DataTypes.STRING,
     username: DataTypes.STRING,
@@ -8,6 +9,7 @@ module.exports = function(sequelize, DataTypes) {
     interests: DataTypes.STRING,
     birthday: DataTypes.DATE,
     role: DataTypes.ENUM('Admin', 'Supporter', 'Beekeeper'),
+    gender: DataTypes.ENUM('male', 'female'),
     picture: DataTypes.STRING,
     email: DataTypes.STRING,
     paypal: DataTypes.STRING,
@@ -23,6 +25,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
+        models.User.Privacy = models.User.hasOne(models.UserPrivacy);
+        // User.Payments = User.hasMany(models.PaypalTransactions);
       }
     }
   });
