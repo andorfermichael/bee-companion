@@ -138,9 +138,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
   }
 
   private setFocus(elementRef): any {
-    if (!elementRef) {
-      return;
-    }
     elementRef.nativeElement.focus();
   }
 
