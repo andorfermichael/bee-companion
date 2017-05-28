@@ -26,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
         models.User.Privacy = models.User.hasOne(models.UserPrivacy);
-        // User.Payments = User.hasMany(models.PaypalTransactions);
+        models.User.Buzzes = models.User.hasMany(models.Buzz);
       }
     }
   });

@@ -65,9 +65,9 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
       if (errorFields.length) {
         this.errorMessage = 'Please fill out following fields before you continue: Your '
         + errorFields.join(', ');
-        if (_.get(this.errorMessage, 'length') < counter) {
-          this.updateUserDelayed();
-        }
+        // if (_.get(this.errorMessage, 'length') < counter) {
+        //   this.updateUserDelayed();
+        // }
         if (!this.sub) {
           this.sub = form.valueChanges.subscribe((data) => {
             this.validateForm(form);
@@ -78,10 +78,11 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
           this.errorMessage = null;
           this.sub.unsubscribe();
           this.sub = null;
-          this.updateUserDelayed();
-        } else {
+          // this.updateUserDelayed();
+        } 
+        // else {
           this.updateUser();
-        }
+        // }
       }
     }
 

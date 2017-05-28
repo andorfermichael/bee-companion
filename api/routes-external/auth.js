@@ -352,16 +352,61 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
     });
   }
 });
+
+function getUserDiff(a, b) {
+  // only one level deep, no performance issue ;)
+  return _.reduce(a, function(result, value, key) {
+      return _.isEqual(value, b[key]) ?
+          result : result.concat(key);
+  }, []);
+}
+
+function createProfileUpdateBuzzFeed(trigger, user, diff) {
+  console.log(diff);
+  _.forOwn(diff, (val, key) => { _.set(diff, key, _.get(columnNameMap, val, val.replace('_', ' ')))});
+  var message = _.get(user, 'first_name') || _.get(user, 'username');
+  message = message.charAt(0).toUpperCase() + message.slice(1);
+  message += ' has just now updated ';
+  message += _.get(user, 'gender') === 'female' ? 'her' : (_.get(user, 'gender') === 'male' ? 'his' : 'his/her');
+  message += ' Profile. ' + diff.length ? (diff.join(', ') + (diff.length > 1 ? ' are' : ' is ') + ' now uptodate.') : '';
+  return {
+    UserId: user.id,
+    trigger: 'Profile Update',
+    message: message,
+    resource: '/user/' + _.get(user, 'username'),
+    published: false,
+    likes: 0,
+    scope: 'public',
+    archived: false
+  };
+}
+
+function saveBuzz(buzz) {
+  return models.Buzz.create(
+    buzz
+  )
+}
+
+function appendBuzzToUser(user, buzz) {
+  _.set(user, 'buzzes', _.get(user, 'buzzes', []).push(buzz));
+  return user;
+}
     
 const userColumnFilter = ['given_name','family_name','username','description',
   'interests','birthday','role','gender','picture','email','paypal','phone','street',
   'street_number','postal_code','city','country'];
+
+const columnNameMap = {
+  given_name: 'First name',
+  family_name: 'family name'
+};
 
 const auth0ColumnFilter = ['email' ];
 
 // Update a user
 router.use('/user/:id/update', cors(corsConfig));
 router.post('/user/:id/update', cors(), function(req, res) {
+  const preventBuzzFlag = _.get(req.body, 'preventBuzzFlag');
   const newUserData = _.pick(req.body, userColumnFilter);
   const newPrivacyData = req.body.privacy;
   jwtToken = getJWTToken(req);
@@ -387,7 +432,11 @@ router.post('/user/:id/update', cors(), function(req, res) {
               // });
               models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
               .then((updatedPrivacy) => {
-                  res.status(200).json(newUserData);
+                  const diff = getUserDiff(newUserData, user.get({plain: true}));
+                  saveBuzz(createProfileUpdateBuzzFeed('Profile Update', user.get({plain: true}), diff))
+                    .then((data) => {
+                      res.status(200).json(appendBuzzToUser(newUser,data));
+                    })                  
                 });
             })
             .catch((err) => {
