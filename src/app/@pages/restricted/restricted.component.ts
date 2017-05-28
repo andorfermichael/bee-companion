@@ -10,7 +10,7 @@ import { Auth } from '../../@services/auth.service';
   templateUrl: './restricted.component.html'
 })
 export class RestrictedComponent implements OnInit {
-  constructor(private titleService: Title, public auth: Auth) {}
+  constructor(public titleService: Title, public auth: Auth) {}
 
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.RestrictedComponent);
