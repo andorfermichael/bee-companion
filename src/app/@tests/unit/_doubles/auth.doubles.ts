@@ -4,15 +4,19 @@ export class MockAuthService {
   public authenticated: boolean = true;
   public userRole: boolean = true;
 
-  public isAuthenticated() {
+  public handleAuth(): void {
+    return;
+  }
+
+  public isAuthenticated(): boolean {
     return this.authenticated;
   }
 
-  public checkUserHasRole() {
+  public checkUserHasRole(): boolean {
     return this.userRole;
   }
 
-  public _updateProfile() {
+  public _updateProfile(): boolean {
     return true;
   }
 

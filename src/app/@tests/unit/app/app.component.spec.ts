@@ -7,13 +7,7 @@ import { MockBackend } from '@angular/http/testing';
 // Load the implementations that should be tested
 import { AppComponent } from '../../../app.component';
 import { Auth } from '../../../@services/auth.service';
-
-// Mock our Auth service
-export class MockAuth0 {
-  public handleAuth(): void {
-    return;
-  }
-}
+import { MockAuthService } from '../_doubles/auth.doubles'
 
 describe(`App`, () => {
   let comp: AppComponent;
@@ -40,7 +34,7 @@ describe(`App`, () => {
       })
       .overrideComponent(AppComponent, {
         set: {
-          providers: [{ provide: Auth, useValue: new MockAuth0() }]
+          providers: [{ provide: Auth, useValue: new MockAuthService() }]
         }
       })
       .compileComponents();
@@ -55,7 +49,7 @@ describe(`App`, () => {
     fixture.detectChanges(); // trigger initial data binding
   });
 
-  it(`should be readly initialized`, () => {
+  it(`should be readily initialized`, () => {
     expect(fixture).toBeDefined();
     expect(comp).toBeDefined();
   });
