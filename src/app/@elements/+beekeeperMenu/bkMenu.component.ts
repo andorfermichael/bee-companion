@@ -10,7 +10,7 @@ import * as _ from 'lodash';
   templateUrl: './bkMenu.component.html'
 })
 export class BeekeeperMenuComponent {
-  public menus = {
+  public menus: any = {
     1: false,
     2: false,
     3: false,
