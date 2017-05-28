@@ -1,8 +1,6 @@
 import { NO_ERRORS_SCHEMA} from '@angular/core';
 import { async, TestBed, ComponentFixture } from '@angular/core/testing';
-import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { MockBackend } from '@angular/http/testing';
 import { AuthHttp} from 'angular2-jwt';
 import { Router } from '@angular/router';
 
@@ -30,15 +28,6 @@ describe(`LoginCardComponent`, () => {
         AuthRoleGuard,
         AuthHttp,
         EventsService,
-        BaseRequestOptions,
-        MockBackend,
-        {
-          provide: Http,
-          useFactory: (backend: ConnectionBackend, defaultOptions: BaseRequestOptions) => {
-            return new Http(backend, defaultOptions);
-          },
-          deps: [MockBackend, BaseRequestOptions]
-        },
         { provide: Auth, useClass: MockAuthService },
         {
           provide: Router,
@@ -66,12 +55,6 @@ describe(`LoginCardComponent`, () => {
       expect(comp.errorMsg).toEqual('');
     });
 
-    it('restoreFields should set focus on password field', () => {
-      spyOn(comp, 'setFocus');
-      comp.restoreFields({username: 'John Doe'});
-      expect(comp.setFocus).toHaveBeenCalledWith(comp.passwordElementRef);
-    });
-
     it('resetUsernamePasswordEmpty should set username and password to empty ', () => {
       comp.resetUsernamePasswordEmpty();
       expect(comp.usernameEmpty).toEqual('inactive');
@@ -84,20 +67,16 @@ describe(`LoginCardComponent`, () => {
     it('checkInputs should set "passwordEmpty" to active, set focus on password element and set error message to "Password is required!" if no password passed to', () => {
       comp.passwordEmpty = 'inactive';
       comp.errorMsg = '';
-      spyOn(comp, 'setFocus');
       comp.checkInputs('Michael', null);
       expect(comp.passwordEmpty).toEqual('active');
-      expect(comp.setFocus).toHaveBeenCalledWith(comp.passwordElementRef);
       expect(comp.errorMsg).toEqual('Password is required!');
     });
 
     it('checkInputs should set "usernameEmpty" to active, set focus on username element and set error message to "Username is required!" if no username passed to', () => {
       comp.usernameEmpty = 'inactive';
       comp.errorMsg = '';
-      spyOn(comp, 'setFocus');
       comp.checkInputs(null, 'Password');
       expect(comp.usernameEmpty).toEqual('active');
-      expect(comp.setFocus).toHaveBeenCalledWith(comp.usernameElementRef);
       expect(comp.errorMsg).toEqual('Username is required!');
     });
 
@@ -119,20 +98,64 @@ describe(`LoginCardComponent`, () => {
       expect(eventsService.broadcast).toHaveBeenCalledWith('loginStart');
     });
 
+    it('checkInputs should restore fields and variables on auth login error', (done) => {
+      fixture.detectChanges();
+      let spy = spyOn(authService, 'login').and.returnValue(Promise.reject('error'));
+      comp.checkInputs('reject', 'Password');
+
+      spy.calls.mostRecent().returnValue.catch((error) => {
+        fixture.detectChanges();
+        expect(comp.errorMsg).toEqual(error);
+        expect(comp.submitErr).toEqual('active');
+        expect(comp.usernameEmpty).toEqual('active');
+        expect(comp.passwordEmpty).toEqual('active');
+        done();
+      });
+    });
+
     it('checkForgotPasswordInputs should set "usernameEmpty" and "emailEmpty" to active, set focus on username' +
       'element and set error message to "Username or email-address are necessary!" if no username and email passed to', () => {
-      spyOn(comp, 'setFocus');
       comp.checkForgotPasswordInputs(null, null);
       expect(comp.usernameEmpty).toEqual('active');
       expect(comp.username2Empty).toEqual('active');
       expect(comp.emailEmpty).toEqual('active');
-      expect(comp.setFocus).toHaveBeenCalledWith(comp.usernameElementRef);
       expect(comp.errorMsg).toEqual('Username or email-address are necessary!');
+    });
+
+    it('checkForgotPasswordInputs should set "forgotPassword" to false and set success message on successful password forgot', (done) => {
+      fixture.detectChanges();
+      let spy = spyOn(authService, 'forgotPassword').and.returnValue(Promise.resolve('success'));
+      comp.checkForgotPasswordInputs('Michael', 'michael.supporter@gmail.com');
+
+      spy.calls.mostRecent().returnValue.then((data) => {
+        fixture.detectChanges();
+        expect(comp.successMsg).toEqual(data);
+        expect(comp.forgotPassword).toEqual(false);
+        done();
+      });
+    });
+
+    it('checkForgotPasswordInputs should set "forgotPassword" to false and set error message on failed password forgot', (done) => {
+      fixture.detectChanges();
+      let spy = spyOn(authService, 'forgotPassword').and.returnValue(Promise.reject('error'));
+      comp.checkForgotPasswordInputs('Michael', 'michael.supporter@gmail.com');
+
+      spy.calls.mostRecent().returnValue.catch((error) => {
+        fixture.detectChanges();
+        expect(comp.errorMsg).not.toEqual(error);
+        done();
+      });
     });
   });
 
   describe(`lifecycle methods`, () => {
     it('ngOnInit should force subscribe on event listener "loginFail"', () => {
+      spyOn(eventsService, 'on');
+      comp.ngOnInit();
+      expect(eventsService.on).toHaveBeenCalled();
+    });
+
+    it('ngOnInit should restore fields and reset variables if login fails', () => {
       spyOn(eventsService, 'on');
       comp.ngOnInit();
       expect(eventsService.on).toHaveBeenCalled();
