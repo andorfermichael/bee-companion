@@ -88,19 +88,11 @@ export class NavComponent implements OnInit {
   @Input() public extErrorMessage: string;
   public errorMsg: string;
   public isError: boolean;
-  public isLoading = false;
+  public isLoading: boolean = false;
 
-  constructor(private elemRef: ElementRef, private sanitizer: DomSanitizer,
-              public auth: Auth, private router: Router, public _eventsService: EventsService,
-              private localStorage: LocalStorageService) {
-  }
-
-  @HostListener('click', ['$event'])
-  public onClick(event) {
-    if (!this.elemRef.nativeElement.contains(event.target) && this.loginClicked) {
-      this.clickedLogin();
-    }
-  }
+  constructor(public sanitizer: DomSanitizer,
+              public auth: Auth, public router: Router, public _eventsService: EventsService,
+              public localStorage: LocalStorageService) {}
 
   @HostListener('mouseover', ['$event'])
   public onMouseOver(event) {

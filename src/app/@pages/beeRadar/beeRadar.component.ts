@@ -38,9 +38,9 @@ export class BeeRadarComponent implements OnInit {
 
   public displayFlag = 'map';
 
-  constructor(private titleService: Title, private localStorage: LocalStorageService,
+  constructor(public titleService: Title, public localStorage: LocalStorageService,
               public _eventsService: EventsService,
-              private geolocationService: GeolocationService) {}
+              public geolocationService: GeolocationService) {}
 
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.BeeRadarComponent);
