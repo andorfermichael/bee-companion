@@ -122,7 +122,6 @@ export class Auth {
       if (authResult && authResult.accessToken && authResult.idToken) {
         // window.location.hash = '';
         this._getProfile(authResult);
-        this.router.navigate(['/']);
       } else if (err) {
         this.router.navigate(['/']);
         console.error(`Error: ${err.error}`);
@@ -187,6 +186,8 @@ export class Auth {
       this._setSession(authResult, profile);
       if (!this.checkUserHasRole(profile)) {
         this.router.navigate(['/signup/complete']);
+      } else {
+        this.router.navigate(['/user/edit/me']);
       }
     });
   }

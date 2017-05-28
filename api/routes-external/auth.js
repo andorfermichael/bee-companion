@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
+const models  = require('../models');
 
 const _ = require('lodash');
 const rp = require('request-promise');
@@ -163,15 +164,63 @@ function buildQueryString(queryParams) {
 // Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
-  const queryParams = { q: `username:"${req.params.id}"`};
-  const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
-  const method = 'GET';
-  console.log({url, method});
-  makeApiCall({ method, url }, (data) => { res.json(data); });
+  jwtToken = getJWTToken(req);
+  auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+    if (req.params.id == 'me') {
+      //collect data from calling user itself
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          user.getUserPrivacy()
+            .then((userPrivacy) => {
+              const data = _.assign({}, userInfo, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
+              res.json(data);
+            })
+        });
+    } 
+    else {
+      const queryParams = { q: `username:"${req.params.id}"`};
+      const url = `${auth0BaseDomain}api/v2/users${buildQueryString(queryParams)}`;
+      const method = 'GET';
+      makeApiCall({ method, url }, (userData) => {
+        const user_id = _.get(userData, '[0].user_id');
+        if (user_id) {
+          userData = userData[0];
+          models.User.findOne({ where: { auth_user_id: user_id }})
+          .then((user) => {
+            user.getUserPrivacy()
+              .then((userPrivacy) => {
+                const data = _.assign({}, userData, user, { privacy: userPrivacy});
+                res.json(data);
+              })
+          });
+        } else {
+          res.status(404).json({error: 'User not found!'});
+        }           
+      });
+    }
+  });    
 });
 
 // Get all users
 // moved to user.js
+
+// get userPrivacy
+router.use('/user/:id/userPrivacy/', cors(corsConfig));
+router.get('/user/:id/userPrivacy/', checkJwt, function(req, res) {
+    jwtToken = getJWTToken(req);
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          user.getUserPrivacy()
+            .then((userPrivacy) => {
+              res.json(userPrivacy);
+            })
+        });
+    });
+});
+
 
 // Set the role of a user
 router.use('/user/set/role/:role', cors(corsConfig));
@@ -184,14 +233,75 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
     jwtToken = getJWTToken(req);
     auth0.tokens.getInfo(jwtToken, function(err, userInfo){
       const userRoles = userInfo.roles || userInfo.app_metadata.roles;
-      if (userRoles.indexOf(role) > 1) {
+      const user_id = userInfo.id;
+      if (userRoles.indexOf(role) >= 0) {
         return res.status(400).json({'error':'User has already this role!'});
       }
       const opts = getRoleChangeOpts(role, userInfo.user_id);
-      makeApiCall(opts, (data) => { res.json(data); });
+      makeApiCall(opts, (data) => {
+
+        // create User
+        models.User.create({
+          auth_user_id: data.user_id || user_id,
+          given_name: data.given_name,
+          family_name: data.family_name,
+          username: data.username,
+          description: data.description,
+          interests: data.interests,
+          birthday: data.birthday,
+          role: _.get(data.roles, '[0]') || _.get(data, 'app_metadata.roles[0]') || role,
+          picture: data.picture,
+          email: data.email,
+          paypal: data.paypal,
+          phone: data.phone,
+          authenticated: data.authenticated || false,
+          email_verified: data.email_verified,
+          street: data.street,
+          street_number: data.street_number,
+          postal_code: data.postal_code,
+          city: data.city,
+          country: data.country
+        }, {
+          include: [{
+            association: models.UserPrivacy.User,
+            include: [ models.User.Privacy ]
+          }]
+        }).then(function(user) {
+            // create UserPrivacy default Dataset
+            models.UserPrivacy.create({
+              UserId: user.id
+             }).then(function(userPrivacy) {
+              res.json(userPrivacy);
+             }).catch((error) => {
+              console.log(error);
+                res.status(400).json(error);
+             });
+        });
+      });
     });
   }
 });
+
+// Save a transaction (payment)
+router.use('/userPrivacy/create', cors(corsConfig));
+router.post('/userPrivacy/create', cors(), function(req, res) {
+  jwtToken = getJWTToken(req);
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          models.UserPrivacy.create({id: user.id})
+            .then(function(userPrivacy) {
+              res.json(userPrivacy);
+            }).catch((error) => {
+              res.status(400).json(error);
+            })
+        });
+    });
+});
+
+module.exports = router;
+
 
 // Create a new user
 router.use('/user/create', cors(corsConfig));

@@ -51,13 +51,13 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
     private processUserData(data: any): void {
       let userData;
       try {
-        const parseData = data.json();
-        userData = _.isArray(parseData) && parseData.length ? parseData[0] : null;
+        userData = data.json();
       } catch (e) {
         console.log(e);
       }
       if (userData) {
         this.localUser = userData;
+        console.log(this.localUser);
       } else {
         setTimeout(() => {
           this.router.navigate(['/home']);
@@ -70,13 +70,10 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
         return;
       }
       if (username === 'me') {
-        if (!this.auth.isAuthenticated() || !this.auth.userProfile) {
+        if (!this.auth.isAuthenticated()) {
           this.router.navigate(['/login']);
           return;
         }
-        this.localUser = this.auth.userProfile;
-        console.log(this.localUser);
-        return;
       }
       if (this.auth.isAuthenticated()) {
         // get authenticated information:

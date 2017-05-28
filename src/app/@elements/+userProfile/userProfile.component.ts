@@ -40,7 +40,8 @@ export class UserProfileComponent implements OnInit, OnChanges, OnDestroy {
         this.isCurrentUser = true;
         console.log('USER IS USER!');
       }
-      this.userRole = _.get(this.localUser, 'roles[0]') || _.get(this.localUser, 'app_metadata.roles[0]');
+      this.userRole = _.get(this.localUser, 'roles[0]', null) ||
+                      _.get(this.localUser, 'app_metadata.roles[0]', null);
     }
 
     public ngOnChanges() {
