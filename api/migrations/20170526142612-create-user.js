@@ -8,17 +8,29 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      firstName: {
+      given_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      lastName: {
+      family_name: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      userName: {
+      username: {
         allowNull: false,
         type: Sequelize.STRING
+      },
+      description: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      interests: {
+        allowNull: true,
+        type: Sequelize.STRING
+      },
+      birthday: {
+        allowNull: true,
+        type: Sequelize.DATE
       },
       role: {
         allowNull: false,
@@ -32,7 +44,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      paypalId: {
+      paypal: {
         allowNull: true,
         type: Sequelize.STRING
       },
@@ -44,7 +56,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
-      verified: {
+      email_verified: {
         allowNull: false,
         type: Sequelize.BOOLEAN
       },
@@ -52,11 +64,11 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      streetNumber: {
+      street_number: {
         allowNull: true,
         type: Sequelize.STRING
       },
-      postalCode: {
+      postal_code: {
         allowNull: true,
         type: Sequelize.STRING
       },
