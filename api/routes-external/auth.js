@@ -4,6 +4,10 @@ const cors = require('cors');
 const corsConfig = require('../config/cors');
 const models  = require('../models');
 
+const NodeGeocoder = require('node-geocoder');
+const geocoderConfig = require('../config/geocoder');
+const geocoder = NodeGeocoder(geocoderConfig);
+
 const _ = require('lodash');
 const rp = require('request-promise');
 
@@ -460,43 +464,56 @@ router.post('/user/:id/update', cors(), function(req, res) {
   jwtToken = getJWTToken(req);
   // get user_id out of JWT
     auth0.tokens.getInfo(jwtToken, function(err, userInfo){
-      // now we have the userInfo / user_id
-      const user_id = userInfo.user_id;
-      // get user from model
-      models.User.findOne({ where: { auth_user_id: user_id }})
-        .then((user) => {
-          // filter fields and update with new data
-          const newUser = _.assign({}, _.pick(user.get({plain: true}), userColumnFilter), newUserData);
-          models.User.update(newUser, {where: { auth_user_id: user_id}})
-            .then((updatedUser) => {
-              // filter fields again for submit to auth0 
-              // NOT SUPPORTET <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!>
-              // const url = `${auth0BaseDomain}api/v2/users/` + encodeURIComponent(user_id);
-              // const opts = { url: url, body: _.pick(newUser, auth0ColumnFilter)};
-              // makeApiCall(opts, (data) => {
-              //   console.log(data);
-              //   //save changes from auth0 back to model
-              //   res.json(data);
-              // });
-              models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
-              .then((updatedPrivacy) => {
-                  const diff = getUserDiff(newUserData, user.get({plain: true}));
-                  saveBuzz(createProfileUpdateBuzzFeed('Profile Update', user.get({plain: true}), diff))
-                    .then((data) => {
-                      user.getBuzzs()
+       const location = {
+        address: newUserData.street + newUserData.street_number,
+        zipcode: newUserData.postal_code,
+        country: newUserData.country
+      };
+
+      geocoder.geocode(location)
+        .then(function(res) {
+          newUserData.latitude = res[0].latitude;
+          newUserData.longitude = res[0].longitude;
+
+          // now we have the userInfo / user_id
+          const user_id = userInfo.user_id;
+          // get user from model
+          models.User.findOne({ where: { auth_user_id: user_id }})
+            .then((user) => {
+              // filter fields and update with new data
+              const newUser = _.assign({}, _.pick(user.get({plain: true}), userColumnFilter), newUserData);
+              models.User.update(newUser, {where: { auth_user_id: user_id}})
+                .then((updatedUser) => {
+                  // filter fields again for submit to auth0
+                  // NOT SUPPORTET <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!> <!>
+                  // const url = `${auth0BaseDomain}api/v2/users/` + encodeURIComponent(user_id);
+                  // const opts = { url: url, body: _.pick(newUser, auth0ColumnFilter)};
+                  // makeApiCall(opts, (data) => {
+                  //   console.log(data);
+                  //   //save changes from auth0 back to model
+                  //   res.json(data);
+                  // });
+                  models.UserPrivacy.update(newPrivacyData, { where: { UserId: user.id }})
+                    .then((updatedPrivacy) => {
+                      const diff = getUserDiff(newUserData, user.get({plain: true}));
+                      saveBuzz(createProfileUpdateBuzzFeed('Profile Update', user.get({plain: true}), diff))
                         .then((data) => {
-                          res.status(200).json(appendBuzzsToUser(newUser,data));
+                          res.status(200).json(appendBuzzToUser(newUser,data));
                         })
-                    })                  
-                });
-            })
-            .catch((err) => {
-              if (_.get(err, 'original.constraint') === 'Users_username_key') {
-                res.status(400).json({error: 'This username is already taken!', code: 'usernameTaken'});
-              } else {
-                res.status(400).json({error: 'An error ocurred while saving data!', code: 'general'});
-              }
-            })
+                    });
+                })
+                .catch((err) => {
+                  if (_.get(err, 'original.constraint') === 'Users_username_key') {
+                    res.status(400).json({error: 'This username is already taken!', code: 'usernameTaken'});
+                  } else {
+                    res.status(400).json({error: 'An error ocurred while saving data!', code: 'general'});
+                  }
+                })
+            });
+        })
+        .catch(function(err) {
+          console.error ('Coordinates could not be saved due to: ' + err);
+          res.status(400).json({error: 'Coordinates could not be saved due to: ' + err});
         });
     });
 });
