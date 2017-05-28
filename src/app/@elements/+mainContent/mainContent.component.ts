@@ -1,8 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { Auth } from '../../@services/auth.service';
 import { EventsService } from '../../@services/events.service';
 import { LocalStorageService } from 'ngx-webstorage';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'mainContent',
@@ -17,7 +18,7 @@ export class MainContentComponent implements OnInit {
   @Input() public hideSideNav: boolean;
 
   constructor(public auth: Auth, public _eventsService: EventsService,
-              private localStorage: LocalStorageService, private router: Router) {}
+              public localStorage: LocalStorageService, public router: Router) {}
 
   public ngOnInit() {
     this.headerIsToggled = this.localStorage.retrieve('headerIsToggled');
