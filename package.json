@@ -22,7 +22,7 @@
     "build:prod": "npm run clean:dist && webpack --config config/webpack.prod.js --progress --profile --bail",
     "ci:aot": "npm run lint && npm run test && npm run build:aot && npm run e2e",
     "ci:jit": "npm run lint && npm run test && npm run build:prod && npm run e2e",
-    "ci:testall": "npm run test && npm run e2e",
+    "ci:testall": "npm run test:nolint && npm run e2e",
     "clean:dll": "npm run rimraf -- dll",
     "clean:aot": "npm run rimraf -- compiled",
     "clean:dist": "npm run rimraf -- dist",
