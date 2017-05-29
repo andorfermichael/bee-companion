@@ -80,7 +80,7 @@ export class SignupCardComponent {
   public successMsg: string;
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
   'https://bee-companion.com';
 
   constructor(public http: Http, public router: Router, public auth: Auth,

@@ -9,7 +9,7 @@ import 'rxjs/add/operator/catch';
 export class PayPalService {
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
   'https://bee-companion.com';
 
   private paypalApiUrl: string = this.BASE_URL + '/api/paypal';

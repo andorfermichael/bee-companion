@@ -23,7 +23,7 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
   private changeSubmit: any;
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
   'https://bee-companion.com';
 
   constructor(public auth: Auth, public authHttp: AuthHttp, public router: Router) {}

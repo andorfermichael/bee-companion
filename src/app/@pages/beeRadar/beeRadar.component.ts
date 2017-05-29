@@ -45,7 +45,7 @@ export class BeeRadarComponent implements OnInit {
   public displayFlag = 'map';
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
   'https://bee-companion.com';
 
   private usersApiUrl: string = this.BASE_URL + '/api/users';
@@ -133,13 +133,16 @@ export class BeeRadarComponent implements OnInit {
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      try {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      } catch (e) {
+        e = e ;
+      }
     } else {
-      errMsg = error.message ? error.message : error.toString();
+      errMsg = error.message ? error.message : 'An error ocurred!';
     }
-    console.error(errMsg);
     return Observable.throw(errMsg);
   }
 }

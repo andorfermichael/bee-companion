@@ -21,7 +21,7 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
   private sub: any;
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
   'https://bee-companion.com';
 
   constructor(public titleService: Title, public auth: Auth,

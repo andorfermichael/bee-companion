@@ -43,7 +43,7 @@ import { EventsService } from '../../@services/events.service';
 export class SignupPageComponent implements OnInit {
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
   'https://bee-companion.com';
 
   constructor(private titleService: Title, public auth: Auth, public router: Router,
