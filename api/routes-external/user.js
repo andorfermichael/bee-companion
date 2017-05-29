@@ -181,4 +181,17 @@ router.get('/user/:id', function(req, res) {
     });
 });
 
+// Get all user locations
+router.use('/users/locations', cors(corsConfig));
+router.get('/users/locations', function(req, res) {
+  models.User.findAll({
+    attributes: ['latitude', 'longitude', 'role', 'username']
+  }).then((users) => {
+    return res.json(users);
+  })
+  .catch((err) => {
+    res.status(404).json({error: err});
+  });
+});
+
 module.exports = router;

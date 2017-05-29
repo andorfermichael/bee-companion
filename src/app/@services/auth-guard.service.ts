@@ -6,7 +6,7 @@ import { Auth } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(public auth: Auth, public router: Router) {}
 
   public canActivate(): boolean {
     // If user is not logged in we'll send them to the homepage

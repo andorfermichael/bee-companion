@@ -6,7 +6,7 @@ import { Auth } from './auth.service';
 
 @Injectable()
 export class NonAuthGuard implements CanActivate {
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(public auth: Auth, public router: Router) {}
 
   public canActivate(): boolean {
     // If user is logged in we'll send him back to the homepage

@@ -14,7 +14,7 @@
 	        [streetViewControl]="streetViewControl">
     </radarCard>
 
-    <beeMap *ngIf="mapIsActive && displayFlag != 'radar'"
+    <beeMap *ngIf="mapIsActive && displayFlag != 'radar' && locations"
             [styles]="styles"
             [lat]="lat"
             [lng]="lng"
@@ -24,7 +24,7 @@
             [disableDoubleClickZoom]="disableDoubleClickZoom"
             [scrollwheel]="scrollwheel"
             [streetViewControl]="streetViewControl"
-            [points]="points">
+            [locations]="locations">
     </beeMap>
     <button *ngIf="!mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Karte wechseln</button>
     <button *ngIf="mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Radar wechseln</button>

@@ -16,5 +16,5 @@ export class BeeMapComponent {
   @Input() public disableDoubleClickZoom: boolean;
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
-  @Input() public points: any[];
+  @Input() public locations: any[];
 }

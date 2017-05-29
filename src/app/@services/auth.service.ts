@@ -10,9 +10,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { myConfig, postConfig, necessaryRoles } from '../@config/auth.config';
 
-// Avoid name not found warnings
-// declare var auth0: any;
-
 @Injectable()
 export class Auth {
   public lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
@@ -32,7 +29,7 @@ export class Auth {
   private loggedIn: boolean;
   private loggedIn$ = new BehaviorSubject<boolean>(this.loggedIn);
 
-  constructor(private router: Router, private http: Http) {
+  constructor(public router: Router, public http: Http) {
     // Set userProfile attribute of already saved profile
     this.userProfile = JSON.parse(localStorage.getItem('profile'));
   }
@@ -58,7 +55,7 @@ export class Auth {
     return this.processLogin(username, password);
   }
 
-  public logout() {
+  public logout(): void {
     // Remove tokens and profile and update login status subject
     localStorage.removeItem('token');
     localStorage.removeItem('id_token');
@@ -69,10 +66,6 @@ export class Auth {
 
     // Go back to the home rout
     this.router.navigate(['/']);
-  }
-
-  public loginWithWidget(): void {
-    this.lock.show();
   }
 
   public signup(email?, password?): void {
@@ -94,9 +87,8 @@ export class Auth {
     }
   }
 
-  public forgotPassword(
-    username?: string, email?: string,
-    onSuccess?: any, onError?: any): Promise<any> {
+  public forgotPassword(username?: string, email?: string,
+                        onSuccess?: any, onError?: any): Promise<any> {
     if (!username && !email) {
       return;
     }
@@ -155,7 +147,7 @@ export class Auth {
     }
   }
 
-  public _updateProfile() {
+  public _updateProfile(): void {
     const tokenId = localStorage.getItem('id_token');
     const tokenAc = localStorage.getItem('token');
 
@@ -166,13 +158,13 @@ export class Auth {
     }
   }
 
-  private setLoggedIn(value: boolean) {
+  private setLoggedIn(value: boolean): void {
     // Update login status subject
     this.loggedIn$.next(value);
     this.loggedIn = value;
   }
 
-  private _getProfile(authResult) {
+  private _getProfile(authResult): void {
     // Use access token to retrieve user's profile and set session
     // const lock2 = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock)
     const idToken = authResult.id_token || authResult.idToken;
@@ -192,7 +184,7 @@ export class Auth {
     });
   }
 
-  private _setSession(authResult, profile) {
+  private _setSession(authResult, profile): void {
     // Save session data and update login status subject
     localStorage.setItem('token', authResult.access_token || authResult.accessToken);
     localStorage.setItem('id_token', authResult.id_token || authResult.idToken);
@@ -249,7 +241,7 @@ export class Auth {
       .catch(this.handleError);
   }
 
-  private handleLoginError(error: Response | any) {
+  private handleLoginError(error: Response | any): any {
     // simplified handleError method
     let errMsg: string;
     if (error instanceof Response) {
@@ -261,7 +253,7 @@ export class Auth {
     return Promise.reject(errMsg);
   }
 
-  private extractData(res: Response) {
+  private extractData(res: Response): any {
     let body: string;
     try {
       body = res.json();
@@ -271,7 +263,7 @@ export class Auth {
     return body || { };
   }
 
-  private handleError(error: Response | any) {
+  private handleError(error: Response | any): any {
     let errMsg: string;
     if (error instanceof Response) {
       const body = error.json() || '';

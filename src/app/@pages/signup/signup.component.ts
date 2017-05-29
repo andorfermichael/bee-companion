@@ -41,8 +41,6 @@ import { EventsService } from '../../@services/events.service';
 })
 
 export class SignupPageComponent implements OnInit {
-  public extErrorMessage: string;
-
   constructor(private titleService: Title, public auth: Auth, public router: Router,
               public authHttp: AuthHttp, public _eventsService: EventsService) {}
 
