@@ -403,7 +403,10 @@ router.get('/user/set/role/:role', checkJwt, function(req, res) {
              }).catch((error) => {
               console.log(error);
                 res.status(400).json(error);
-             });
+             })
+          .catch((error) => {
+            res.status(400).json(error);
+          });
         });
       });
     });
