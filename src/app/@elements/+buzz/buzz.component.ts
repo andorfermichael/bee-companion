@@ -18,6 +18,10 @@ export class SingleBuzzComponent implements OnInit, OnChanges, OnDestroy {
   public isCurrentUser: boolean;
   public userRole: string;
 
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
+  'https://bee-companion.com';
+
   constructor(public auth: Auth, public authHttp: AuthHttp) {}
 
   public ngOnInit() {
@@ -77,6 +81,10 @@ export class SingleBuzzComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private updateBuzz() {
-    this.authHttp.post(`http://localhost:3000/api/auth/buzz/${this.buzz.id}/update`, this.buzz);
+    this.authHttp.post(`${this.BASE_URL}/api/auth/buzz/${this.buzz.id}/update`, this.buzz)
+      .subscribe(
+        (data) => { console.log('Buzz Scope updated successfully.'); },
+        (error) => { console.log(error); } );
+      return false;
   }
 }

@@ -39,7 +39,8 @@ export const fakePaypalAdaptivePaymentDetailsResponse = {
     correlationId: "f5ba559dd972c",
     build: "32250686"
   },
-  cancelUrl: "http://localhost:3000/api/paypal/pay/cancelled",
+  cancelUrl: (process.env.ENV === "development" ? "http://localhost:8000" :
+    "https://bee-companion.com") + "/api/paypal/pay/cancelled",
   currencyCode: "EUR",
   paymentInfoList: {
     paymentInfo: [{
@@ -58,7 +59,8 @@ export const fakePaypalAdaptivePaymentDetailsResponse = {
       senderTransactionStatus: "COMPLETED"
     }]
   },
-  returnUrl: "http://localhost:3000/api/paypal/pay/approved",
+  returnUrl: (process.env.ENV === "development" ? "http://localhost:8000" :
+    "https://bee-companion.com") + "/api/paypal/pay/approved",
   senderEmail: "supporter.pp@beecompanion.com",
   status: "COMPLETED",
   payKey: "AP-1VR17193BV163813X",

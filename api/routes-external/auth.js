@@ -197,6 +197,7 @@ router.get('/user/:id', function(req, res) {
       /* ............................. Userdata */
       models.User.findOne({ where: { auth_user_id: user_id }})
         .then((user) => {
+          console.log(user);
           if (user) {
           const userData = user.get({plain: true});
           // compare retrieved username with called one, if matches, caller access his own profile

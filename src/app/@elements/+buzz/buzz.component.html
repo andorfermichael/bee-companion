@@ -42,10 +42,10 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dd1" style="float: right;left: auto;right: 0;">
-                    <li><a href="" (click)="updateScope('public')">Public</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'public'"></i></li>
-                    <li><a href="" (click)="updateScope('registered')">Registered</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'registered'"></i></li>
-                    <li><a href="" (click)="updateScope('donators')">Donators</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'donators'"></i></li>
-                    <li><a href="" (click)="updateScope('private')">only me</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'private'"></i></li>
+                    <li><a href="" (click)="updateScope('public'); $event.preventDefault()">Public</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'public'"></i></li>
+                    <li><a href="" (click)="updateScope('registered'); $event.preventDefault()">Registered</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'registered'"></i></li>
+                    <li><a href="" (click)="updateScope('donators'); $event.preventDefault()">Donators</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'donators'"></i></li>
+                    <li><a href="" (click)="updateScope('private'); $event.preventDefault()">only me</a><i class="fa fa-check" aria-hidden="true" *ngIf="this.buzz.scope == 'private'"></i></li>
                 </ul>
             </div>
             <br>

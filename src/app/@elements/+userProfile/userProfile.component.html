@@ -91,9 +91,9 @@
         </div>
         <hr>
         <div class="col-12 user-profile-buzzes" *ngIf="!inEditMode && localUser">
-            <template ngFor [ngForOf]="localUser.buzzes" let-item>
+            <ng-template ngFor [ngForOf]="localUser.buzzes" let-item>
                 <buzz [user]="localUser" [role]="userRole" [buzz]=item></buzz>
-            </template>
+            </ng-template>
         </div>
         <div style="clear: both;"></div>
     </div>

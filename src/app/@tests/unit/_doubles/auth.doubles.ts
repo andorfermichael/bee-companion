@@ -58,7 +58,8 @@ export class MockAuthService {
 
 export class MockAuthHttp {
   public get(url: string): Observable<any> {
-    if (url === 'http://localhost:3000/api/auth/user/set/role/Error') {
+    if (url === `http://localhost:8000/api/auth/user/set/role/Error` ||
+      url === `https://bee-companion.com/api/auth/user/set/role/Error`) {
       return Observable.throw({});
     } else {
       return Observable.of({});

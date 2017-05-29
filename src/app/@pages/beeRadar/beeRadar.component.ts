@@ -44,8 +44,11 @@ export class BeeRadarComponent implements OnInit {
 
   public displayFlag = 'map';
 
-  private usersApiUrl: string = 'http://localhost:3000/api/users';
-  private domain: string = null;
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:3000' :
+  'https://bee-companion.com';
+
+  private usersApiUrl: string = this.BASE_URL + '/api/users';
 
   constructor(public titleService: Title, public localStorage: LocalStorageService,
               public _eventsService: EventsService,
@@ -54,17 +57,11 @@ export class BeeRadarComponent implements OnInit {
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.BeeRadarComponent);
 
-    if (process.env.NODE_ENV === 'development') {
-      this.domain = 'http://localhost:8000';
-    } else {
-      this.domain = 'https://bee-companion.com';
-    }
-
     this.fetchCurrentLocation().subscribe(
       (data) => {
         // Add current location
         this.locations.push(
-          {lat: this.lat, lng: this.lng, role: 'Current', url: this.domain + '/me'}
+          {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/me'}
         );
         // Generate and add other users' locations
         const usersLocations = this.fetchUserLocations();
@@ -123,7 +120,7 @@ export class BeeRadarComponent implements OnInit {
         lat: location[0].latitude,
         lng: location[0].longitude,
         role: location[0].role,
-        url: this.domain + '/' + location[0].username
+        url: this.BASE_URL + '/' + location[0].username
       };
       this.locations.push(generatedLocation);
     });
@@ -136,13 +133,16 @@ export class BeeRadarComponent implements OnInit {
   private handleError(error: Response | any) {
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
-      errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      try {
+        const body = error.json() || '';
+        const err = body.error || JSON.stringify(body);
+        errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
+      } catch (e) {
+        e = e ;
+      }
     } else {
-      errMsg = error.message ? error.message : error.toString();
+      errMsg = error.message ? error.message : 'An error ocurred!';
     }
-    console.error(errMsg);
     return Observable.throw(errMsg);
   }
 }
