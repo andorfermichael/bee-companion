@@ -4,6 +4,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Observable } from 'rxjs/Observable';
 import { BaseRequestOptions, ConnectionBackend, Http } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
+import { Title } from '@angular/platform-browser';
 
 import { AgmCoreModule, MarkerManager, GoogleMapsAPIWrapper } from '@agm/core';
 import { BeeRadarComponent } from '../../../@pages/beeRadar/beeRadar.component';
@@ -24,11 +25,13 @@ import { BeekeeperMenuComponent } from '../../../@elements/+beekeeperMenu/bkMenu
 import { AdminMenuComponent } from '../../../@elements/+adminMenu/adminMenu.component';
 import { GeolocationService } from '../../../@services/geolocation.service';
 import { MarkerClusterDirective } from '../../../@directives/marker-cluster.directive';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 
 describe('BeeRadarComponent', () => {
   let comp: BeeRadarComponent;
   let fixture: ComponentFixture<BeeRadarComponent>;
   let geolocationService: GeolocationService;
+  let titleService: Title;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -47,7 +50,9 @@ describe('BeeRadarComponent', () => {
         BeekeeperMenuComponent,
         AdminMenuComponent
       ],
+      schemas: [NO_ERRORS_SCHEMA],
       providers: [
+        Title,
         EventsService,
         LocalStorageService,
         GeolocationService,
@@ -74,6 +79,13 @@ describe('BeeRadarComponent', () => {
     fixture = TestBed.createComponent(BeeRadarComponent);
     comp = fixture.componentInstance;
     geolocationService = TestBed.get(GeolocationService);
+    titleService = TestBed.get(Title);
+  });
+
+  it('ngOnInit should set page title', () => {
+    spyOn(titleService, 'setTitle');
+    comp.ngOnInit();
+    expect(titleService.setTitle).toHaveBeenCalled();
   });
 
   it('toggleMap should toggle value of mapIsActive variable', () => {
