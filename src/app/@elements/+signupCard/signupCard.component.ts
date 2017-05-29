@@ -79,6 +79,10 @@ export class SignupCardComponent {
   public errorMsg: string;
   public successMsg: string;
 
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  'https://bee-companion.com';
+
   constructor(public http: Http, public router: Router, public auth: Auth,
               public _eventsService: EventsService) {
   }
@@ -149,7 +153,7 @@ export class SignupCardComponent {
       this.errorMsg = _.get(errors, '[0]', '');
     } else {
       this._eventsService.broadcast('loginStart');
-      this.http.post('http://localhost:3000/api/auth/signup/', {
+      this.http.post(`${this.BASE_URL}/api/auth/signup/`, {
         user: {
           firstName,
           lastName,

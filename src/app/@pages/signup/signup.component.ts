@@ -41,6 +41,11 @@ import { EventsService } from '../../@services/events.service';
 })
 
 export class SignupPageComponent implements OnInit {
+
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  'https://bee-companion.com';
+
   constructor(private titleService: Title, public auth: Auth, public router: Router,
               public authHttp: AuthHttp, public _eventsService: EventsService) {}
 
@@ -50,8 +55,7 @@ export class SignupPageComponent implements OnInit {
 
   public addUserRole(role) {
     this._eventsService.broadcast('loginStart');
-
-    this.authHttp.get('http://localhost:3000/api/auth/user/set/role/' + role)
+    this.authHttp.get(this.BASE_URL + '/api/auth/user/set/role/' + role)
       .subscribe(
         (data) => {
           console.log(data);

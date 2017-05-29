@@ -7,8 +7,13 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class PayPalService {
-  private paypalApiUrl: string = 'http://localhost:3000/api/paypal';
-  private paypalDBApiUrl: string = 'http://localhost:3000/api/paypaltransaction';
+
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  'https://bee-companion.com';
+
+  private paypalApiUrl: string = this.BASE_URL + '/api/paypal';
+  private paypalDBApiUrl: string = this.BASE_URL + '/api/paypaltransaction';
 
   constructor(public http: Http) {}
 

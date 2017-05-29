@@ -22,6 +22,10 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
   private sub: any;
   private changeSubmit: any;
 
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  'https://bee-companion.com';
+
   constructor(public auth: Auth, public authHttp: AuthHttp, public router: Router) {}
 
   public ngOnInit() {
@@ -42,7 +46,7 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
   }
 
     public getUserPrivacy() {
-      this.authHttp.get(`http://localhost:3000/api/auth/user/${this.user.username}/userPrivacy/`)
+      this.authHttp.get(`${this.BASE_URL}/api/auth/user/${this.user.username}/userPrivacy/`)
           .subscribe(
               (data) => { console.log(data); },
               (err) => {
@@ -92,7 +96,7 @@ export class UserProfileFormComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public updateUser(preventAction = false) {
-      this.authHttp.post(`http://localhost:3000/api/auth/user/${this.user.username}/update/`,
+      this.authHttp.post(`${this.BASE_URL}/api/auth/user/${this.user.username}/update/`,
           this.localUser)
             .subscribe(
                 (data) => {

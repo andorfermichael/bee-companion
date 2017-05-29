@@ -20,6 +20,10 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
   public localUser: any;
   private sub: any;
 
+  private BASE_URL: string =
+  process.env.ENV === 'development' ? 'http://localhost:8000' :
+  'https://bee-companion.com';
+
   constructor(public titleService: Title, public auth: Auth,
               public activatedRoute: ActivatedRoute,
               public authHttp: AuthHttp, public router: Router, public http: Http) {}
@@ -77,7 +81,7 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
       // set localUser to null to toggle loading animation
       this.localUser = null;
       // get authenticated information:
-      this.authHttp.get('http://localhost:3000/api/auth/user/' + username)
+      this.authHttp.get(`${this.BASE_URL}/api/auth/user/${username}`)
         .subscribe(
             (data) => { this.processUserData(data); },
             (err) => {
@@ -88,7 +92,7 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
             });
     } else {
       // get public information
-      this.http.get('http://localhost:3000/api/user/' + username)
+      this.http.get(`${this.BASE_URL}/api/user/${username}`)
              .toPromise()
              .then((data) => { this.processUserData(data); })
              .catch((err) => { console.error(err); });
