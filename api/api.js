@@ -18,17 +18,6 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 app.use(bodyParser.json());
 app.use(helmet()); // Use default helmet packages for better security
 
-// Use HTTP Public Key Pinning to prevent person-in-the-middle attacks
-const secret = process.env.API_PUBLIC_KEY_PINNING_SECRET;
-const hash1 = crypto.createHash('sha256').update(secret).digest('hex');
-const hash2 = crypto.createHash('sha256').update(secret).digest('hex');
-const thirtyDaysInSeconds = 2592000;
-app.use(helmet.hpkp({
-  maxAge: thirtyDaysInSeconds,
-  sha256s: [hash1, hash2],
-  includeSubdomains: true
-}));
-
 // Use Referrer Policy for more privacy about origin
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 
