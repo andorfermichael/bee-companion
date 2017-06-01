@@ -11,7 +11,7 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     tokenGetter: (() => localStorage.getItem('id_token')),
     globalHeaders: [{
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': 'http://localhost:8000'}],
+      'Access-Control-Allow-Origin': 'https://bee-companion.com'}],
     }), http, options);
 }
 
