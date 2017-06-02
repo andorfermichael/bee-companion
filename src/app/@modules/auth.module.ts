@@ -9,7 +9,9 @@ export function authHttpServiceFactory(http: Http, options: RequestOptions) {
     headerName: 'Authorization',
     headerPrefix: 'Bearer',
     tokenGetter: (() => localStorage.getItem('id_token')),
-    globalHeaders: [{'Content-Type': 'application/json'}],
+    globalHeaders: [{
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': 'https://bee-companion.com'}],
     }), http, options);
 }
 

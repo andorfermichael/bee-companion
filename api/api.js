@@ -6,6 +6,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const crypto = require('crypto');
+const setOrigin = require('./middlewares/setOrigin');
 
 // Express App
 const app = express();
@@ -17,6 +18,7 @@ const NODE_ENV = process.env.NODE_ENV || 'development';
 // Config
 app.use(bodyParser.json());
 app.use(helmet()); // Use default helmet packages for better security
+app.use(setOrigin);
 
 // Use Referrer Policy for more privacy about origin
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
