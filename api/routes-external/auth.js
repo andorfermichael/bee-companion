@@ -480,8 +480,7 @@ router.post('/user/:id/update', cors(), function(req, res) {
 
       geocoder.geocode(location)
         .then(function(response) {
-          newUserData.latitude = response[0].latitude;
-          newUserData.longitude = response[0].longitude;
+          newUserData.geographicLocation = { type: 'Point', coordinates: [response[0].latitude, response[0].longitude]};
 
           // now we have the userInfo / user_id
           const user_id = userInfo.user_id;

@@ -1,4 +1,4 @@
-import { Directive, Input, OnInit } from '@angular/core';
+import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Observable } from 'rxjs';
 
@@ -18,6 +18,7 @@ export declare const MarkerClusterer;
 })
 export class MarkerClusterDirective implements OnInit {
   @Input() public locations: any[];
+  @Output() public onBoundsChanged = new EventEmitter<any>();
   public markerCluster: any;
   public markers: any[] = [];
 
@@ -30,6 +31,25 @@ export class MarkerClusterDirective implements OnInit {
         .skipWhile((s) => this.locations == null || this.locations.length <= 0)
         .take(1)
         .subscribe(() => {
+          let northEastLat = map.getBounds().getNorthEast().lat();
+          let northEastLng = map.getBounds().getNorthEast().lng();
+          let southWestLat = map.getBounds().getSouthWest().lat();
+          let southWestLng = map.getBounds().getSouthWest().lng();
+          let bounds = {northEastLat, northEastLng, southWestLat, southWestLng};
+
+          this.onBoundsChanged.emit(bounds);
+
+          // Update/Fetch locations on bound change
+          google.maps.event.addListener(map, 'bounds_changed', () => {
+            northEastLat = map.getBounds().getNorthEast().lat();
+            northEastLng = map.getBounds().getNorthEast().lng();
+            southWestLat = map.getBounds().getSouthWest().lat();
+            southWestLng = map.getBounds().getSouthWest().lng();
+            bounds = {northEastLat, northEastLng, southWestLat, southWestLng};
+
+            this.onBoundsChanged.emit(bounds);
+          });
+
           if (this.markerCluster) {
             this.markerCluster.clearMarkers();
           }

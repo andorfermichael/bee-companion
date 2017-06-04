@@ -24,7 +24,8 @@
             [disableDoubleClickZoom]="disableDoubleClickZoom"
             [scrollwheel]="scrollwheel"
             [streetViewControl]="streetViewControl"
-            [locations]="locations">
+            [locations]="locations"
+            (onBoundsChangedRedirect)="onBoundsChangedRedirect($event)">
     </beeMap>
     <button *ngIf="!mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Karte wechseln</button>
     <button *ngIf="mapIsActive && displayFlag == 'both'" class="button toogle-map rounded" (click)="toggleMap()">Zu Radar wechseln</button>

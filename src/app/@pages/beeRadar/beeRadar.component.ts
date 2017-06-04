@@ -45,8 +45,7 @@ export class BeeRadarComponent implements OnInit {
   public displayFlag = 'map';
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:3000' :
-  'https://bee-companion.com';
+  process.env.ENV === 'development' ? 'http://localhost:3000' : 'https://bee-companion.com';
 
   private usersApiUrl: string = this.BASE_URL + '/api/users';
 
@@ -58,14 +57,11 @@ export class BeeRadarComponent implements OnInit {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.BeeRadarComponent);
 
     this.fetchCurrentLocation().subscribe(
-      (data) => {
+      () => {
         // Add current location
         this.locations.push(
           {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/me'}
         );
-        // Generate and add other users' locations
-        const usersLocations = this.fetchUserLocations();
-        this.generateLocationsFromData(usersLocations);
       },
       (err) => {
         console.error(err);
@@ -73,16 +69,20 @@ export class BeeRadarComponent implements OnInit {
     );
   }
 
-  public fetchUserLocations(): any {
+  public fetchUserLocations(bounds: any): any {
     const headers = new Headers({
       'Content-Type': 'application/json'
     });
+
+    const params = {
+      bounds
+    };
 
     const requestOptions = new RequestOptions({
       headers
     });
 
-    return this.http.get(this.usersApiUrl + '/locations', requestOptions)
+    return this.http.post(this.usersApiUrl + '/locations', JSON.stringify(params), requestOptions)
       .map(this.extractData)
       .catch(this.handleError);
   }
@@ -108,6 +108,12 @@ export class BeeRadarComponent implements OnInit {
     });
   }
 
+  public onBoundsChangedRedirect(bounds: any) {
+    // Generate and add other users' locations
+    const usersLocations = this.fetchUserLocations(bounds);
+    this.generateLocationsFromData(usersLocations);
+  }
+
   public toggleMap(): void {
     this.mapIsActive = !this.mapIsActive;
     this.localStorage.store('mapIsActive', this.mapIsActive);
@@ -117,8 +123,8 @@ export class BeeRadarComponent implements OnInit {
   private generateLocationsFromData(data: any): void {
     data.forEach((location) => {
       const generatedLocation = {
-        lat: location[0].latitude,
-        lng: location[0].longitude,
+        lat: location[0].geographicLocation.coordinates[0],
+        lng: location[0].geographicLocation.coordinates[1],
         role: location[0].role,
         url: this.BASE_URL + '/' + location[0].username
       };

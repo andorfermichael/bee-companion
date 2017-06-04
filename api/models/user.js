@@ -21,8 +21,7 @@ module.exports = function(sequelize, DataTypes) {
     postal_code: DataTypes.STRING,
     city: DataTypes.STRING,
     country: DataTypes.STRING,
-    latitude: DataTypes.DECIMAL,
-    longitude: DataTypes.DECIMAL
+    geographicLocation: DataTypes.GEOMETRY
   }, {
     classMethods: {
       associate: function(models) {

@@ -3,6 +3,7 @@ const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
 const models  = require('../models');
+const sequelize = require('sequelize');
 
 const _ = require('lodash');
 const rp = require('request-promise');
@@ -182,13 +183,19 @@ router.get('/user/:id', function(req, res) {
 
 // Get all user locations
 router.use('/users/locations', cors(corsConfig));
-router.get('/users/locations', function(req, res) {
+router.post('/users/locations', function(req, res) {
   models.User.findAll({
-    attributes: ['latitude', 'longitude', 'role', 'username']
-  }).then((users) => {
+    where: {
+      geographicLocation: {
+        $overlap: sequelize.fn('ST_MakeEnvelope', req.body.bounds.southWestLng, req.body.bounds.southWestLat, req.body.bounds.northEastLng, req.body.bounds.northEastLat, 4326)
+      }
+    },
+    attributes: ['geographicLocation', 'role', 'username']
+  })
+  .then(users => {
     return res.json(users);
   })
-  .catch((err) => {
+  .catch(err => {
     res.status(404).json({error: err});
   });
 });
