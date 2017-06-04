@@ -111,7 +111,7 @@
     "ngx-webstorage": "^1.8.0",
     "node-geocoder": "^3.16.0",
     "npm-run": "^4.1.2",
-    "paypal-adaptive": "^0.4.2",
+    "paypal-rest-sdk": "^1.7.1",
     "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "postcss-loader": "^1.2.2",

@@ -6,30 +6,29 @@ const corsConfig = require('../config/cors');
 
 // Save a transaction (payment)
 router.use('/create', cors(corsConfig));
-router.post('/create', cors(), function(req, res) {
+router.post('/create', function(req, res) {
   models.PaypalTransaction.create({
-    responseEnvelopeTimestamp: req.body.responseEnvelopeTimestamp,
-    responseEnvelopeAck: req.body.responseEnvelopeAck,
-    responseEnvelopeCorrelationId: req.body.responseEnvelopeCorrelationId,
-    responseEnvelopeBuild: req.body.responseEnvelopeBuild,
-    currencyCode: req.body.currencyCode,
-    transactionId: req.body.transactionId,
-    transactionStatus: req.body.transactionStatus,
-    receiverAmount: req.body.receiverAmount,
-    receiverEmail: req.body.receiverEmail,
-    receiverPrimary: req.body.receiverPrimary,
-    receiverPaymentType: req.body.receiverPaymentType,
-    receiverAccountId: req.body.receiverAccountId,
-    refundedAmount: req.body.refundedAmount,
-    pendingRefund: req.body.pendingRefund,
-    senderTransactionId: req.body.senderTransactionId,
-    senderTransactionStatus: req.body.senderTransactionStatus,
-    status: req.body.status,
-    payKey: req.body.payKey,
-    actionType: req.body.actionType,
-    feesPayer: req.body.feesPayer,
-    senderEmail: req.body.senderEmail,
-    senderAccountId: req.body.senderAccountId
+    paymentId: req.body.paymentId,
+    intent: req.body.intent,
+    state: req.body.state,
+    paymentMethod: req.body.paymentMethod,
+    payerEmail: req.body.payerEmail,
+    payerFirstName: req.body.payerFirstName,
+    payerLastName: req.body.payerLastName,
+    payerId: req.body.payerId,
+    shippingAddressRecipientName: req.body.shippingAddressRecipientName,
+    shippingAddressStreet: req.body.shippingAddressStreet,
+    shippingAddressCadastral: req.body.shippingAddressCadastral,
+    shippingAddressCity: req.body.shippingAddressCity,
+    shippingAddressState: req.body.shippingAddressState,
+    shippingAddressPostalCode: req.body.shippingAddressPostalCode,
+    shippingAddressCountryCode: req.body.shippingAddressCountryCode,
+    payerCountryCode: req.body.payerCountryCode,
+    transactionTotalAmount: req.body.transactionTotalAmount,
+    transactionCurrency: req.body.transactionCurrency,
+    createTime: req.body.createTime,
+    ReceiverId: req.body.ReceiverId,
+    PayerId: req.body.PayerId
   }).then(function(paypalTransaction) {
     res.json(paypalTransaction);
   });

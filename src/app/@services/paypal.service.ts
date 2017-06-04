@@ -7,17 +7,15 @@ import 'rxjs/add/operator/catch';
 
 @Injectable()
 export class PayPalService {
-
-  private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:3000' :
-  'https://bee-companion.com';
+  private BASE_URL: string = process.env.ENV === 'development' ? 'http://localhost:3000'
+    : 'https://bee-companion.com';
 
   private paypalApiUrl: string = this.BASE_URL + '/api/paypal';
   private paypalDBApiUrl: string = this.BASE_URL + '/api/paypaltransaction';
 
   constructor(public http: Http) {}
 
-  public executeAdaptivePayment(receiverEmail: string, amount: number): Observable<any> {
+  public preparePayment(receiverEmail: string, amount: number): Observable<any> {
     const headers = new Headers({
       'Content-Type': 'application/json'
     });
@@ -31,25 +29,27 @@ export class PayPalService {
       headers
     });
 
-    return this.http.post(this.paypalApiUrl + '/pay', JSON.stringify(params), requestOptions)
+    return this.http.post(this.paypalApiUrl + '/payment/prepare', JSON.stringify(params),
+      requestOptions)
       .map(this.extractData)
       .catch(this.handleError);
   }
 
-  public getPaymentDetails(payKey: string): Observable<any>  {
+  public executePayment(paymentId: string, payerId: string): Observable<any>  {
     const headers = new Headers({
       'Content-Type': 'application/json'
     });
 
     const params = {
-      payKey
+      paymentId,
+      payerId
     };
 
     const requestOptions = new RequestOptions({
       headers
     });
 
-    return this.http.post(this.paypalApiUrl + '/pay/payment-details', JSON.stringify(params),
+    return this.http.post(this.paypalApiUrl + '/payment/execute', JSON.stringify(params),
       requestOptions)
       .map(this.extractData)
       .catch(this.handleError);
@@ -61,28 +61,25 @@ export class PayPalService {
     });
 
     const params = {
-      responseEnvelopeTimestamp: payment.responseEnvelope.timestamp,
-      responseEnvelopeAck: payment.responseEnvelope.ack,
-      responseEnvelopeCorrelationId: payment.responseEnvelope.correlationId,
-      responseEnvelopeBuild: payment.responseEnvelope.build,
-      currencyCode: payment.currencyCode,
-      transactionId: payment.paymentInfoList.paymentInfo[0].transactionId,
-      transactionStatus: payment.paymentInfoList.paymentInfo[0].transactionStatus,
-      receiverAmount: payment.paymentInfoList.paymentInfo[0].receiver.amount,
-      receiverEmail: payment.paymentInfoList.paymentInfo[0].receiver.email,
-      receiverPrimary: payment.paymentInfoList.paymentInfo[0].receiver.primary,
-      receiverPaymentType: payment.paymentInfoList.paymentInfo[0].receiver.paymentType,
-      receiverAccountId: payment.paymentInfoList.paymentInfo[0].receiver.accountId,
-      refundedAmount: payment.paymentInfoList.paymentInfo[0].refundedAmount,
-      pendingRefund: payment.paymentInfoList.paymentInfo[0].pendingRefund,
-      senderTransactionId: payment.paymentInfoList.paymentInfo[0].senderTransactionId,
-      senderTransactionStatus: payment.paymentInfoList.paymentInfo[0].senderTransactionStatus,
-      status: payment.status,
-      payKey: payment.payKey,
-      actionType: payment.actionType,
-      feesPayer: payment.feesPayer,
-      senderEmail: payment.sender.email,
-      senderAccountId: payment.sender.accountId
+      paymentId: payment.id,
+      intent: payment.intent,
+      state: payment.state,
+      paymentMethod: payment.payer.payment_method,
+      payerEmail: payment.payer.payer_info.email,
+      payerFirstName: payment.payer.payer_info.first_name,
+      payerLastName: payment.payer.payer_info.last_name,
+      payerId: payment.payer.payer_info.payer_id,
+      shippingAddressRecipientName: payment.payer.payer_info.shipping_address.recipient_name,
+      shippingAddressStreet: payment.payer.payer_info.shipping_address.line1,
+      shippingAddressCadastral: payment.payer.payer_info.shipping_address.line2,
+      shippingAddressCity: payment.payer.payer_info.shipping_address.city,
+      shippingAddressState: payment.payer.payer_info.shipping_address.state,
+      shippingAddressPostalCode: payment.payer.payer_info.shipping_address.postal_code,
+      shippingAddressCountryCode: payment.payer.payer_info.shipping_address.country_code,
+      payerCountryCode: payment.payer.payer_info.country_code,
+      transactionTotalAmount: payment.transactions[0].amount.total,
+      transactionCurrency: payment.transactions[0].amount.currency,
+      createTime: payment.create_time
     };
 
     const requestOptions = new RequestOptions({
@@ -107,7 +104,6 @@ export class PayPalService {
     } else {
       errMsg = error.message ? error.message : error.toString();
     }
-    console.error(errMsg);
     return Observable.throw(errMsg);
   }
 }
