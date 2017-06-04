@@ -5,15 +5,19 @@ const corsConfig = require('../config/cors');
 
 const paypal = require('paypal-rest-sdk');
 
-let mode = 'sandbox';
-if (process.env.PAYPAL_SANDBOX_ENABLED === 'false') {
-  mode = 'live';
+if (process.env.PAYPAL_LIVE_ENABLED === 'true') {
+  paypal.configure({
+    'mode': 'live', // sandbox or live
+    'client_id': process.env.PAYPAL_LIVE_REST_API_CLIENTID,
+    'client_secret': process.env.PAYPAL_LIVE_REST_API_SECRET
+  });
+} else {
+  paypal.configure({
+    'mode': 'sandbox', // sandbox or live
+    'client_id': process.env.PAYPAL_SANDBOX_REST_API_CLIENTID,
+    'client_secret': process.env.PAYPAL_SANDBOX_REST_API_SECRET
+  });
 }
-paypal.configure({
-  'mode': mode, // sandbox or live
-  'client_id': process.env.PAYPAL_SANDBOX_REST_API_CLIENTID,
-  'client_secret': process.env.PAYPAL_SANDBOX_REST_API_SECRET
-});
 
 router.use('/payment/prepare', cors(corsConfig));
 router.post('/payment/prepare', function(req, res) {
@@ -76,7 +80,6 @@ router.post('/payment/execute', function(req, res) {
     if (error) {
       return res.json(error.response);
     } else {
-      console.log(response);
       return res.json(response);
     }
   });
