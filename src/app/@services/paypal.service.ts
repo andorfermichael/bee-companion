@@ -80,9 +80,7 @@ export class PayPalService {
       payerCountryCode: payment.payer.payer_info.country_code,
       transactionTotalAmount: payment.transactions[0].amount.total,
       transactionCurrency: payment.transactions[0].amount.currency,
-      createTime: payment.create_time,
-      ReceiverId: '1',
-      PayerId: '2'
+      createTime: payment.create_time
     };
 
     const requestOptions = new RequestOptions({
