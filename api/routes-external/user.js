@@ -123,7 +123,7 @@ function filterBuzzesBasedOnScope(scope, buzzes) {
   _.reject(buzzes, (b) => {
     if (scopes.indexOf(scope) < scopes.indexOf(b.value)) {
       return true;
-    } 
+    }
     return false;
   });
 }
@@ -133,7 +133,7 @@ function buildColumnFilterBasedOnScope(scope, privacyRules) {
   const filtered = _.pickBy(privacyRules, function(value, key) {
     if (scopes.indexOf(scope) >= scopes.indexOf(value)) {
       return true;
-    } 
+    }
     return false;
   });
   return Object.keys(filtered);
@@ -147,11 +147,10 @@ router.get('/users', function(req, res) {
 });
 
 // Get specific user (only public data -> currently achieved by setting include_fields)
-// Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
-  models.User.findOne({ 
-    where: { 
+  models.User.findOne({
+    where: {
       $or: [
       {
         username: {
