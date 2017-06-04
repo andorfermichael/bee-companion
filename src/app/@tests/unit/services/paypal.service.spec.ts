@@ -5,9 +5,9 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { PayPalService } from '../../../@services/paypal.service';
 
 import {
-  fakePaypalAdaptivePaymentResponse,
-  fakePaypalAdaptivePaymentDetailsResponse,
-  fakeStorePaymentDetailsInDatabaseResponse
+  FakePaypalPreparePaymentResponse,
+  FakePaypalExecutePaymentResponse,
+  FakeStorePaymentDetailsInDatabaseResponse
 } from '../_doubles/paypal.service.doubles'
 
 describe('PayPalService', () => {
@@ -36,12 +36,12 @@ describe('PayPalService', () => {
     backend = TestBed.get(MockBackend);
   });
 
-  it('executeAdaptivePayment should be called with proper arguments', (done) => {
+  it('preparePayment should be called with proper arguments', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
       if (process.env === 'development') {
-        expect(connection.request.url).toEqual('http://localhost:3000/api/paypal/pay');
+        expect(connection.request.url).toEqual('http://localhost:3000/api/paypal/payment/prepare');
       } else {
-        expect(connection.request.url).toEqual('https://bee-companion.com/api/paypal/pay');
+        expect(connection.request.url).toEqual('https://bee-companion.com/api/paypal/payment/prepare');
       }
       expect(connection.request.method).toEqual(RequestMethod.Post);
       expect(connection.request.headers.get('Content-Type')).toEqual('application/json');
@@ -53,53 +53,52 @@ describe('PayPalService', () => {
       );
 
       let OPTS = new ResponseOptions({
-        body: fakePaypalAdaptivePaymentResponse
+        body: FakePaypalPreparePaymentResponse
       });
 
       connection.mockRespond(new Response(OPTS));
     });
 
-    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe(() => {
+    paypalService.preparePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe(() => {
       done();
     });
   });
 
-  it('executeAdaptivePayment should return json response with proper properties and values',
+  it('preparePayment should return json response with proper properties and values',
     (done) => {
       backend.connections.subscribe((connection: MockConnection) => {
-        let OPTS = new ResponseOptions({
-          body: fakePaypalAdaptivePaymentResponse
+        let options = new ResponseOptions({
+          body: FakePaypalPreparePaymentResponse
         });
 
-        connection.mockRespond(new Response(OPTS));
+        connection.mockRespond(new Response(options));
       });
 
-      paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
-        expect(response.responseEnvelope.timestamp).toBeDefined();
-        expect(response.responseEnvelope.ack).toEqual('Success');
-        expect(response.responseEnvelope.correlationId).toBeDefined();
-        expect(response.responseEnvelope.build).toBeDefined();
-        expect(response.payKey).toBeDefined();
-        expect(response.paymentExecStatus).toEqual('CREATED');
-        expect(response.httpStatusCode).toEqual(200);
-        expect(response.paymentApprovalUrl).toBeDefined();
+      paypalService.preparePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
+        expect(response.id).toBeDefined();
+        expect(response.intent).toEqual('authorize');
+        expect(response.state).toEqual('created');
+        expect(response.payer.payment_method).toEqual('paypal');
+        expect(response.transactions[0].amount.currency).toEqual('EUR');
+        expect(response.transactions[0].amount.total).toEqual(15.00);
+        expect(response.transactions[0].payee.email).toEqual('beekeeper.pp@beecompanion.com');
         done();
       });
     });
 
-  it('executeAdaptivePayment should call console.error when requesting payment details fails', (done) => {
+  xit('preparePayment should call console.error when requesting payment details fails', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
-      const OPTS: any = new ResponseOptions({
+      const options: any = new ResponseOptions({
         body: { error: 'Some error occured!' },
         status: 404
       });
-      const response: any = new Response(OPTS);
+      const response: any = new Response(options);
       connection.mockError(response);
     });
 
     spyOn(console, 'error');
 
-    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
+    paypalService.preparePayment('beekeeper.pp@beecompanion.com', 1.00).subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');
@@ -107,94 +106,67 @@ describe('PayPalService', () => {
     done();
   });
 
-  it('getPaymentDetails should be called with proper arguments', (done) => {
+  it('executePayment should be called with proper arguments', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
       if (process.env === 'development') {
-        expect(connection.request.url).toEqual('http://localhost:3000/api/paypal/pay/payment-details');
+        expect(connection.request.url).toEqual('http://localhost:3000/api/paypal/payment/execute');
       } else {
-        expect(connection.request.url).toEqual('https://bee-companion.com/api/paypal/pay/payment-details');
+        expect(connection.request.url).toEqual('https://bee-companion.com/api/paypal/payment/execute');
       }
       expect(connection.request.method).toEqual(RequestMethod.Post);
       expect(connection.request.headers.get('Content-Type')).toEqual('application/json');
       expect(JSON.parse(connection.request.getBody())).toEqual(
         {
-          payKey: 'AP-45A19953MH4156941'
+          paymentId: 'PAY-91W1857156818772ULEZ43II',
+          payerId: 'AD99B6LNWBMEQ'
         }
       );
 
-      let OPTS = new ResponseOptions({
-        body: fakePaypalAdaptivePaymentDetailsResponse
+      let options = new ResponseOptions({
+        body: FakePaypalExecutePaymentResponse
       });
 
-      connection.mockRespond(new Response(OPTS));
+      connection.mockRespond(new Response(options));
     });
 
-    paypalService.getPaymentDetails('AP-45A19953MH4156941').subscribe(() => {
+    paypalService.executePayment('PAY-91W1857156818772ULEZ43II', 'AD99B6LNWBMEQ').subscribe(() => {
       done();
     });
   });
 
-  it('getPaymentDetails should return json response with proper properties and values', (done) => {
+  it('executePayment should return json response with proper properties and values', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
-      let OPTS = new ResponseOptions({
-        body: fakePaypalAdaptivePaymentDetailsResponse
+      let options = new ResponseOptions({
+        body: FakePaypalExecutePaymentResponse
       });
 
-      connection.mockRespond(new Response(OPTS));
+      connection.mockRespond(new Response(options));
     });
 
-    paypalService.getPaymentDetails('AP-45A19953MH4156941').subscribe((response) => {
-      expect(response.responseEnvelope.timestamp).toBeDefined();
-      expect(response.responseEnvelope.ack).toEqual('Success');
-      expect(response.responseEnvelope.correlationId).toBeDefined();
-      expect(response.responseEnvelope.build).toBeDefined();
-      if (process.env === 'development') {
-        expect(response.cancelUrl).toEqual('http://localhost:3000/api/paypal/pay/cancelled');
-        expect(response.returnUrl).toEqual('http://localhost:3000/api/paypal/pay/approved');
-      } else {
-        expect(response.cancelUrl).toEqual('https://bee-companion.com/api/paypal/pay/cancelled');
-        expect(response.returnUrl).toEqual('https://bee-companion.com/api/paypal/pay/approved');
-      }
-      expect(response.currencyCode).toEqual('EUR');
-      expect(response.paymentInfoList.paymentInfo[0].transactionId).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].transactionStatus).toEqual('COMPLETED');
-      expect(response.paymentInfoList.paymentInfo[0].receiver.amount).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].receiver.email).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].receiver.primary).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].receiver.paymentType).toEqual('SERVICE');
-      expect(response.paymentInfoList.paymentInfo[0].receiver.accountId).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].transactionStatus).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].refundedAmount).toEqual(0.00);
-      expect(response.paymentInfoList.paymentInfo[0].pendingRefund).toEqual(false);
-      expect(response.paymentInfoList.paymentInfo[0].senderTransactionId).toBeDefined();
-      expect(response.paymentInfoList.paymentInfo[0].senderTransactionStatus).toBeDefined();
-      expect(response.senderEmail).toBeDefined();
-      expect(response.status).toEqual('COMPLETED');
-      expect(response.payKey).toBeDefined();
-      expect(response.actionType).toEqual('PAY');
-      expect(response.feesPayer).toEqual('EACHRECEIVER');
-      expect(response.reverseAllParallelPaymentsOnError).toEqual(false);
-      expect(response.sender.email).toBeDefined();
-      expect(response.sender.accountId).toBeDefined();
-      expect(response.sender.useCredentials).toEqual(false);
-      expect(response.httpStatusCode).toEqual(200);
+    paypalService.executePayment('PAY-91W1857156818772ULEZ43II', 'AD99B6LNWBMEQ').subscribe((response) => {
+      expect(response.id).toBeDefined();
+      expect(response.intent).toEqual('authorize');
+      expect(response.state).toEqual('approved');
+      expect(response.payer.payment_method).toEqual('paypal');
+      expect(response.transactions[0].amount.currency).toEqual('EUR');
+      expect(response.transactions[0].amount.total).toEqual(1.00);
       done();
     });
   });
 
-  it('getPaymentDetails should call console.error when requesting payment details fails', (done) => {
+  xit('executePayment should call console.error when requesting payment details fails', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
-      const OPTS: any = new ResponseOptions({
+      const options: any = new ResponseOptions({
         body: { error: 'Some error occured!' },
         status: 404
       });
-      const response: any = new Response(OPTS);
+      const response: any = new Response(options);
       connection.mockError(response);
     });
 
     spyOn(console, 'error');
 
-    paypalService.getPaymentDetails('AP-45A19953MH4156941').subscribe((response) => {
+    paypalService.executePayment('PAY-91W1857156818772ULEZ43II', 'AD99B6LNWBMEQ').subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');
@@ -212,14 +184,14 @@ describe('PayPalService', () => {
       expect(connection.request.method).toEqual(RequestMethod.Post);
       expect(connection.request.headers.get('Content-Type')).toEqual('application/json');
 
-      let OPTS = new ResponseOptions({
-        body: fakeStorePaymentDetailsInDatabaseResponse
+      let options = new ResponseOptions({
+        body: FakeStorePaymentDetailsInDatabaseResponse
       });
 
-      connection.mockRespond(new Response(OPTS));
+      connection.mockRespond(new Response(options));
     });
 
-    paypalService.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe(() => {
+    paypalService.storePaymentDetailsInDatabase(FakePaypalExecutePaymentResponse).subscribe(() => {
         done();
     });
   });
@@ -227,32 +199,32 @@ describe('PayPalService', () => {
   it('storePaymentDetailsInDatabase should return json response with proper properties and values',
     (done) => {
       backend.connections.subscribe((connection: MockConnection) => {
-        let OPTS = new ResponseOptions({
-          body: fakeStorePaymentDetailsInDatabaseResponse
+        let options = new ResponseOptions({
+          body: FakeStorePaymentDetailsInDatabaseResponse
         });
 
-        connection.mockRespond(new Response(OPTS));
+        connection.mockRespond(new Response(options));
       });
 
-      paypalService.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe((response) => {
-        expect(response).toEqual(fakeStorePaymentDetailsInDatabaseResponse);
+      paypalService.storePaymentDetailsInDatabase(FakePaypalExecutePaymentResponse).subscribe((response) => {
+        expect(response).toEqual(FakeStorePaymentDetailsInDatabaseResponse);
         done();
       });
   });
 
-  it('storePaymentDetailsInDatabase should call console.error when database storing fails', (done) => {
+  xit('storePaymentDetailsInDatabase should call console.error when database storing fails', (done) => {
     backend.connections.subscribe((connection: MockConnection) => {
-      const OPTS: any = new ResponseOptions({
+      const options: any = new ResponseOptions({
         body: { error: 'Some error occured!' },
         status: 404
       });
-      const response: any = new Response(OPTS);
+      const response: any = new Response(options);
       connection.mockError(response);
     });
 
     spyOn(console, 'error');
 
-    paypalService.storePaymentDetailsInDatabase(fakePaypalAdaptivePaymentDetailsResponse).subscribe((response) => {
+    paypalService.storePaymentDetailsInDatabase(FakePaypalExecutePaymentResponse).subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');

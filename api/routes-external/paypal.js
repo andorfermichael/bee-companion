@@ -39,7 +39,7 @@ router.post('/payment/prepare', function(req, res) {
       cancel_url: cancelUrl
     },
     transactions: [{
-      payee:{
+      payee: {
         email: req.body.receiverEmail
       },
       item_list: {

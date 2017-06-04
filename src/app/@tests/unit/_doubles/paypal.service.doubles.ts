@@ -18,64 +18,151 @@ export class MockPayPalService {
   }
 }
 
-export const fakePaypalAdaptivePaymentResponse = {
-  responseEnvelope:
-    {
-      timestamp: "2017-05-13T10:36:57.307-07:00",
-      ack: "Success",
-      correlationId: "55958871e6806",
-      build: "32250686"
+export const FakePaypalPreparePaymentResponse = {
+  id: 'PAY-91W1857156818772ULEZ43II',
+  intent: 'authorize',
+  state: 'created',
+  payer: {
+    payment_method: 'paypal'
+  },
+  transactions: [{
+    amount: {
+      currency: 'EUR',
+      total: 15.00
     },
-  payKey: "AP-45A19953MH4156941",
-  paymentExecStatus: "CREATED",
-  httpStatusCode: 200,
-  paymentApprovalUrl: "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=AP-45A19953MH4156941"
+    payee: {
+      email: 'beekeeper.pp@beecompanion.com'
+    },
+    description: 'Donation',
+    item_list: {
+      items: [{
+        name: 'donation to beekeeper',
+        sku: 'donation',
+        price: 15.00,
+        currency: 'EUR',
+        quantity: 1
+      }]
+    },
+    related_resources: []
+  }],
+  create_time: '2017-06-04T09:06:41Z',
+  links: [{
+    href: 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-91W1857156818772ULEZ43II',
+    rel: 'self',
+    method: 'GET'
+  },
+  {
+    href: 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-0Y175173VD261171B',
+    rel: 'approval_url',
+    method: 'REDIRECT'
+  },
+  {
+    href: 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-91W1857156818772ULEZ43II/execute',
+    rel: 'execute',
+    method: 'POST'
+  }],
+  httpStatusCode: 201
 };
 
-export const fakePaypalAdaptivePaymentDetailsResponse = {
-  responseEnvelope: {
-    timestamp: "2017-05-19T08:02:17.853-07:00",
-    ack: "Success",
-    correlationId: "f5ba559dd972c",
-    build: "32250686"
-  },
-  cancelUrl: (process.env.ENV === "development" ? "http://localhost:8000" :
-    "https://bee-companion.com") + "/api/paypal/pay/cancelled",
-  currencyCode: "EUR",
-  paymentInfoList: {
-    paymentInfo: [{
-      transactionId: "5CL981702V8930202",
-      transactionStatus: "COMPLETED",
-      receiver: {
-        amount: 1.00,
-        email: "beekeeper.pp@beecompanion.com",
-        primary: false,
-        paymentType: "SERVICE",
-        accountId: "CU9RFC9CEK5C4"
+export const FakePaypalExecutePaymentResponse = {
+  id: 'PAY-8V631080519529720LEZMZHI',
+  intent: 'authorize',
+  state: 'approved',
+  cart: '96812445YU595874G',
+  payer: {
+  payment_method: 'paypal',
+    payer_info: {
+    email: 'supporter.pp@beecompanion.com',
+      first_name: 'Sepp',
+      last_name: 'Supporter',
+      payer_id: 'AD99B6LNWBMEQ',
+      shipping_address: {
+      recipient_name: 'Sepp Supporter',
+        line1: 'Weingartenweg 1',
+        line2: 'Rafing',
+        city: 'PULKAU',
+        state: '',
+        postal_code: '3741',
+        country_code: 'AT'
       },
-      refundedAmount: 0.00,
-      pendingRefund: false,
-      senderTransactionId: "9K210475363581720",
-      senderTransactionStatus: "COMPLETED"
+      country_code: 'AT'
+    }
+  },
+  transactions: [{
+    amount: {
+      total: 1.00,
+      currency: 'EUR',
+      details: {}
+    },
+    description: 'Donation',
+    item_list: {
+      items: [{
+        name: 'donation to beekeeper',
+        sku: 'donation',
+        price: 1.00,
+        currency: 'EUR',
+        quantity: 1
+      }],
+      shipping_address: {
+        line1: 'Weingartenweg 1',
+        line2: 'Rafing',
+        city: 'PULKAU',
+        state: '',
+        postal_code: '3741',
+        country_code: 'AT'
+      }
+    },
+    related_resources: [{
+      authorization: {
+        id: '4PS47107NY6995701',
+        state: 'authorized',
+        amount: {
+          total: 1.00,
+          currency: 'EUR',
+          details: {}
+        },
+        payment_mode: 'INSTANT_TRANSFER',
+        reason_code: 'AUTHORIZATION',
+        protection_eligibility: 'ELIGIBLE',
+        protection_eligibility_type: 'ITEM_NOT_RECEIVED_ELIGIBLE,UNAUTHORIZED_PAYMENT_ELIGIBLE',
+        parent_payment: 'PAY-8V631080519529720LEZMZHI',
+        valid_until: '2017-07-02T14:51:21Z',
+        create_time: '2017-06-03T14:51:21Z',
+        update_time: '2017-06-03T14:51:21Z',
+        links: [{
+            href: 'https://api.sandbox.paypal.com/v1/payments/authorization/4PS47107NY6995701',
+            rel: 'self',
+            method: 'GET'
+          }, {
+            href: 'https://api.sandbox.paypal.com/v1/payments/authorization/4PS47107NY6995701/capture',
+            rel: 'capture',
+            method: 'POST'
+          }, {
+            href: 'https://api.sandbox.paypal.com/v1/payments/authorization/4PS47107NY6995701/void',
+            rel: 'void',
+            method: 'POST'
+          }, {
+            href: 'https://api.sandbox.paypal.com/v1/payments/authorization/4PS47107NY6995701/reauthorize',
+            rel: 'reauthorize',
+            method: 'POST'
+          }, {
+            href: 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-8V631080519529720LEZMZHI',
+            rel: 'parent_payment',
+            method: 'GET'
+        }]
+      }
     }]
-  },
-  returnUrl: (process.env.ENV === "development" ? "http://localhost:8000" :
-    "https://bee-companion.com") + "/api/paypal/pay/approved",
-  senderEmail: "supporter.pp@beecompanion.com",
-  status: "COMPLETED",
-  payKey: "AP-1VR17193BV163813X",
-  actionType: "PAY",
-  feesPayer: "EACHRECEIVER",
-  reverseAllParallelPaymentsOnError: false,
-  sender: {
-    email: "supporter.pp@beecompanion.com",
-    accountId: "AD99B6LNWBMEQ",
-    useCredentials: false
-  },
+  }],
+  create_time: '2017-06-03T14:51:21Z',
+  links: [{
+    href: 'https://api.sandbox.paypal.com/v1/payments/payment/PAY-8V631080519529720LEZMZHI',
+    rel: 'self',
+    method: 'GET'
+  }],
   httpStatusCode: 200
 };
 
-export const fakeStorePaymentDetailsInDatabaseResponse = {
+export const FakeStorePaymentDetailsInDatabaseResponse = {
   body: `
       { receiverEmail: 'beekeeper.pp@beecompanion.com',amount: '1.44' }
       Executing (default): INSERT INTO "PaypalTransactions" 

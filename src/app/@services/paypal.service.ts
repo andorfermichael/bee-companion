@@ -4,7 +4,6 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
-import { Auth } from './auth.service';
 
 @Injectable()
 export class PayPalService {
@@ -14,7 +13,7 @@ export class PayPalService {
   private paypalApiUrl: string = this.BASE_URL + '/api/paypal';
   private paypalDBApiUrl: string = this.BASE_URL + '/api/paypaltransaction';
 
-  constructor(public http: Http, public auth: Auth) {}
+  constructor(public http: Http) {}
 
   public preparePayment(receiverEmail: string, amount: number): Observable<any> {
     const headers = new Headers({

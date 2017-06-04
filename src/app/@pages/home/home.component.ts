@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (paymentStatus === 'approved') {
         const queryParams = this.route.snapshot.queryParams;
 
-        // Get execute approved payment
+        // Execute approved payment
         this.sub = this.paypalService.executePayment(queryParams.paymentId, queryParams.PayerID)
           .subscribe(
             (executedPaymentDetails) => {

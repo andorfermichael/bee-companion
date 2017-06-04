@@ -16,7 +16,6 @@ export class PayPalFormComponent {
 
   public executeDonation(amount: number): void {
     // TODO: Replace email with email from profile page owner (real receiver)
-    // TODO: Replace ids with real ids
     this.paypalService.preparePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
       (payment) => {
         // Redirect to approval url
