@@ -3,6 +3,7 @@ const dotenv = require('dotenv').config({path: '../.env'});
 
 // Express and middleware
 const express = require('express');
+const raven = require('raven');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const crypto = require('crypto');
@@ -14,6 +15,12 @@ const app = express();
 // Env
 const PORT     = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
+
+raven.config('__DSN__').install();
+// the request handler must be the first middleware on the app
+app.use(raven.requestHandler());
+// the error handler must be before any mother error middleware
+app.use(raven.errorHandler());
 
 // Config
 app.use(bodyParser.json());
