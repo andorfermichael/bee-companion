@@ -11,6 +11,7 @@
     "noEmitHelpers": true,
     "importHelpers": true,
     "strictNullChecks": false,
+    "allowJs": true,
     "lib": [
       "dom",
       "es6"
