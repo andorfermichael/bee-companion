@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'beeMap',
@@ -16,5 +16,10 @@ export class BeeMapComponent {
   @Input() public disableDoubleClickZoom: boolean;
   @Input() public scrollwheel: boolean;
   @Input() public streetViewControl: boolean;
-  @Input() public locations: any[];
+  @Input() public locations: any;
+  @Output() public onBoundsChangedRedirect = new EventEmitter<any>();
+
+  public onBoundsChanged(bounds: any) {
+    this.onBoundsChangedRedirect.emit(bounds);
+  }
 }

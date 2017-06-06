@@ -3,6 +3,7 @@ const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
 const models  = require('../models');
+const sequelize = require('sequelize');
 
 const _ = require('lodash');
 const rp = require('request-promise');
@@ -123,7 +124,7 @@ function filterBuzzesBasedOnScope(scope, buzzes) {
   _.reject(buzzes, (b) => {
     if (scopes.indexOf(scope) < scopes.indexOf(b.value)) {
       return true;
-    } 
+    }
     return false;
   });
 }
@@ -133,7 +134,7 @@ function buildColumnFilterBasedOnScope(scope, privacyRules) {
   const filtered = _.pickBy(privacyRules, function(value, key) {
     if (scopes.indexOf(scope) >= scopes.indexOf(value)) {
       return true;
-    } 
+    }
     return false;
   });
   return Object.keys(filtered);
@@ -147,11 +148,10 @@ router.get('/users', function(req, res) {
 });
 
 // Get specific user (only public data -> currently achieved by setting include_fields)
-// Get specific user (only public data -> currently achieved by setting include_fields)
 router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
-  models.User.findOne({ 
-    where: { 
+  models.User.findOne({
+    where: {
       $or: [
       {
         username: {
@@ -183,13 +183,19 @@ router.get('/user/:id', function(req, res) {
 
 // Get all user locations
 router.use('/users/locations', cors(corsConfig));
-router.get('/users/locations', function(req, res) {
+router.post('/users/locations', function(req, res) {
   models.User.findAll({
-    attributes: ['latitude', 'longitude', 'role', 'username']
-  }).then((users) => {
+    where: {
+      geographicLocation: {
+        $overlap: sequelize.fn('ST_MakeEnvelope', req.body.bounds.southWestLng, req.body.bounds.southWestLat, req.body.bounds.northEastLng, req.body.bounds.northEastLat, 4326)
+      }
+    },
+    attributes: ['geographicLocation', 'role', 'username']
+  })
+  .then(users => {
     return res.json(users);
   })
-  .catch((err) => {
+  .catch(err => {
     res.status(404).json({error: err});
   });
 });

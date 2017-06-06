@@ -8,98 +8,80 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      responseEnvelopeTimestamp: {
+      paymentId: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      intent: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      state: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      paymentMethod: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      payerEmail: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      payerFirstName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      payerLastName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      payerId: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressRecipientName: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressStreet: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressCadastral: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressCity: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressState: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressPostalCode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      shippingAddressCountryCode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      payerCountryCode: {
+        allowNull: false,
+        type: Sequelize.STRING
+      },
+      transactionTotalAmount: {
+        allowNull: false,
+        type: Sequelize.DECIMAL
+      },
+      transactionCurrency: {
+        type: Sequelize.STRING
+      },
+      createTime: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      responseEnvelopeAck: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      responseEnvelopeCorrelationId: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      responseEnvelopeBuild: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      currencyCode: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      transactionId: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      transactionStatus: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      receiverAmount: {
-        allowNull: false,
-        type: Sequelize.DECIMAL
-      },
-      receiverEmail: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      receiverPrimary: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      receiverPaymentType: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      receiverAccountId: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      refundedAmount: {
-        allowNull: false,
-        type: Sequelize.DECIMAL
-      },
-      pendingRefund: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN
-      },
-      senderTransactionId: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      senderTransactionStatus: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      status: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      payKey: {
-        type: Sequelize.STRING
-      },
-      feesPayer: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      senderEmail: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      senderAccountId: {
-        allowNull: false,
-        type: Sequelize.STRING
-      },
-      UserId: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        onUpdate: 'restrict',
-        onDelete: 'restrict',
-        references: {
-          model: 'Users',
-          key: 'id'
-        }
       },
       createdAt: {
         allowNull: false,

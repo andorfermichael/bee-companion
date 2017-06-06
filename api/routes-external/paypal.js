@@ -3,18 +3,24 @@ const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
 
-const Paypal = require('paypal-adaptive');
+const paypal = require('paypal-rest-sdk');
 
-const paypalSdk = new Paypal({
-  userId:    process.env.PAYPAL_SANDBOX_API_USERID,
-  password:  process.env.PAYPAL_SANDBOX_API_PASSWORD,
-  signature: process.env.PAYPAL_SANDBOX_API_SIGNATURE,
-  sandbox:   true // Defaults to false
-});
+if (process.env.PAYPAL_LIVE_ENABLED === 'true') {
+  paypal.configure({
+    'mode': 'live', // sandbox or live
+    'client_id': process.env.PAYPAL_LIVE_REST_API_CLIENTID,
+    'client_secret': process.env.PAYPAL_LIVE_REST_API_SECRET
+  });
+} else {
+  paypal.configure({
+    'mode': 'sandbox', // sandbox or live
+    'client_id': process.env.PAYPAL_SANDBOX_REST_API_CLIENTID,
+    'client_secret': process.env.PAYPAL_SANDBOX_REST_API_SECRET
+  });
+}
 
-// Execute payment
-router.use('/pay', cors(corsConfig));
-router.post('/pay', function(req, res) {
+router.use('/payment/prepare', cors(corsConfig));
+router.post('/payment/prepare', function(req, res) {
   // Define payment return and cancel urls for different environment
   let returnUrl = 'http://localhost:8000/#/home/payment/approved';
   let cancelUrl = 'http://localhost:8000/#/home/payment/cancelled';
@@ -23,47 +29,58 @@ router.post('/pay', function(req, res) {
     cancelUrl = 'https://bee-companion.com/#/home/payment/cancelled';
   }
 
-  let payload = {
-    requestEnvelope: {
-      errorLanguage:  'en_US'
+  const payload = {
+    intent: 'authorize',
+    payer: {
+      payment_method: 'paypal'
     },
-    actionType:     'PAY',
-    currencyCode:   'EUR',
-    cancelUrl:      cancelUrl,
-    returnUrl:      returnUrl,
-    receiverList: {
-      receiver: [
-        {
-          email:  req.body.receiverEmail,
-          amount: req.body.amount
-        }
-      ]
-    }
+    redirect_urls: {
+      return_url: returnUrl,
+      cancel_url: cancelUrl
+    },
+    transactions: [{
+      payee: {
+        email: req.body.receiverEmail
+      },
+      item_list: {
+        items: [{
+          name: 'donation to beekeeper',
+          sku: 'donation',
+          price: req.body.amount,
+          currency: 'EUR',
+          quantity: 1
+        }]
+      },
+      amount: {
+        currency: 'EUR',
+        total: req.body.amount
+      },
+      description: 'Donation'
+    }]
   };
 
-  paypalSdk.pay(payload, function (err, response) {
-    if (err) {
-      return res.json(err);
+  paypal.payment.create(payload, function (error, response) {
+    if (error) {
+      return res.json(error.response);
     } else {
-      // Response will have the original Paypal API response
-      return res.json(response)
+      return res.json(response);
     }
   });
 });
 
 // Get payment details
-router.use('/pay/payment-details', cors(corsConfig));
-router.post('/pay/payment-details', function(req, res) {
-  let payload = {
-    payKey: req.body.payKey
+router.options('/payment/execute', cors(corsConfig));
+router.use('/payment/execute', cors(corsConfig));
+router.post('/payment/execute', function(req, res) {
+  const payload = {
+    payer_id: req.body.payerId
   };
 
-  paypalSdk.paymentDetails(payload, function (err, response) {
-    if (err) {
-      return res.json(err);
+  paypal.payment.execute(req.body.paymentId, payload, function (error, response) {
+    if (error) {
+      return res.json(error.response);
     } else {
-      // Payments details for this payKey
-      return res.json(response)
+      return res.json(response);
     }
   });
 });

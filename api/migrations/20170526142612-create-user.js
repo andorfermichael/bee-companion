@@ -93,13 +93,9 @@ module.exports = {
         allowNull: true,
         type: Sequelize.STRING
       },
-      latitude: {
+      geographicLocation: {
         allowNull: true,
-        type: Sequelize.DECIMAL
-      },
-      longitude: {
-        allowNull: true,
-        type: Sequelize.DECIMAL
+        type: Sequelize.GEOMETRY
       },
       createdAt: {
         allowNull: false,

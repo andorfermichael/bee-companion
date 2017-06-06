@@ -16,14 +16,10 @@ export class PayPalFormComponent {
 
   public executeDonation(amount: number): void {
     // TODO: Replace email with email from profile page owner (real receiver)
-    // TODO: Replace ids with real ids
-    this.paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
+    this.paypalService.preparePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
       (payment) => {
-        // Store payment key for later use
-        this.localStorage.store('lastPayKey', payment.payKey);
-
         // Redirect to approval url
-        window.location.href = payment.paymentApprovalUrl;
+        window.location.href = payment.links[1].href;
       },
       (err) => {
         console.error(err);

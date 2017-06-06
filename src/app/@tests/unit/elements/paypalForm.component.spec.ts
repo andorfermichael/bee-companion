@@ -47,43 +47,29 @@ describe(`PayPalFormComponent`, () => {
     localStorageService = TestBed.get(LocalStorageService);
   });
 
-  it('executeDonation should execute adaptive payment using paypal service and return payKey on success', (done) => {
+  it('executeDonation should prepare payment using paypal service and return response with payment id on success', (done) => {
     fixture.detectChanges();
     const amount = 15.00;
-    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.of({payKey: 'AP-12345'}));
+    spyOn(paypalService, 'preparePayment').and.returnValue(Observable.of({id: 'PAY-91W1857156818772ULEZ43II'}));
     comp.executeDonation(amount);
 
-    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe((payment) => {
+    paypalService.preparePayment('beekeeper.pp@beecompanion.com', amount).subscribe((payment) => {
       fixture.detectChanges();
-      expect(paypalService.executeAdaptivePayment).toHaveBeenCalledWith(jasmine.any(String), amount);
-      expect(payment.payKey).toEqual('AP-12345');
+      expect(paypalService.preparePayment).toHaveBeenCalledWith(jasmine.any(String), amount);
+      expect(payment.id).toEqual('PAY-91W1857156818772ULEZ43II');
       done();
     });
-  });
-
-  xit('executeDonation should execute adaptive payment using paypal service and return payKey on success', (done) => {
-    fixture.detectChanges();
-    const amount = 15.00;
-    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.of({payKey: 'AP-12345'}));
-    comp.executeDonation(amount);
-
-    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe((payment) => {
-      fixture.detectChanges();
-      expect(paypalService.executeAdaptivePayment).toHaveBeenCalledWith(jasmine.any(String), amount);
-    });
-    expect(localStorageService.retrieve('lastPayKey')).toEqual('AP-12345');
-    done();
   });
 
   xit('executeDonation should execute adaptive payment using paypal service and log error ' +
     'if failed', async(() => {
     fixture.detectChanges();
     const amount = 15.00;
-    spyOn(paypalService, 'executeAdaptivePayment').and.returnValue(Observable.throw('error'));
+    spyOn(paypalService, 'preparePayment').and.returnValue(Observable.throw('error'));
     spyOn(console, 'error');
     comp.executeDonation(amount);
 
-    paypalService.executeAdaptivePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
+    paypalService.preparePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
       (payment) => {
         // nothing
       },

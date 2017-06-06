@@ -34,48 +34,40 @@ export class HomeComponent implements OnInit, OnDestroy {
 
     if (this.auth.isAuthenticated()) {
       this.auth.checkUserHasRole();
-      this.checkPayments();
+      this.processPayments();
     }
   }
 
-  public checkPayments(): void {
+  public processPayments(): void {
       // Get payment status, approved or cancelled
       const paymentStatus = this.route.snapshot.params['status'];
       if (paymentStatus === 'approved') {
-        // Get last pay key from local storage
-        const lastPayKey = this.localStorage.retrieve('lastPayKey');
+        const queryParams = this.route.snapshot.queryParams;
 
-        // Get payment details from last payment
-        this.sub = this.paypalService.getPaymentDetails(lastPayKey).subscribe(
-          (paymentDetails) => {
-            this.paypalService.storePaymentDetailsInDatabase(paymentDetails).subscribe(
-              () => {
-                // Clear payment key from local storage
-                this.localStorage.clear('lastPayKey');
-
-                // Remove state query param from url after a few seconds
-                this.timeout = setTimeout(() => {
-                  this.location.replaceState('/home');
-                }, 4000);
-              },
-              (err) => {
-                console.error(err);
-              });
-          },
-          (err) => {
-            console.error(err);
-          });
+        // Execute approved payment
+        this.sub = this.paypalService.executePayment(queryParams.paymentId, queryParams.PayerID)
+          .subscribe(
+            (executedPaymentDetails) => {
+              this.paypalService.storePaymentDetailsInDatabase(executedPaymentDetails).subscribe(
+                () => {
+                  // Remove state query param from url after a few seconds
+                  this.timeout = setTimeout(() => {
+                    this.location.replaceState('/home');
+                  }, 4000);
+                },
+                (err) => {
+                  console.error(err);
+                });
+            },
+            (err) => {
+              console.error(err);
+            }
+          );
       } else {
-        // Clear payment key from local storage
-        this.localStorage.clear('lastPayKey');
-
         // Remove state query param from url after a few seconds
         this.timeout = setTimeout(() => {
           this.location.replaceState('/home');
         }, 4000);
-
-        // If payment is cancelled, nothing has to be done, since pay keys are only valid for
-        // three hours
       }
   }
 

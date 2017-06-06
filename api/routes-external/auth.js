@@ -170,7 +170,7 @@ function filterBuzzesBasedOnScope(scope, buzzes) {
   _.reject(buzzes, (b) => {
     if (scopes.indexOf(scope) < scopes.indexOf(b.value)) {
       return true;
-    } 
+    }
     return false;
   });
 }
@@ -180,7 +180,7 @@ function buildColumnFilterBasedOnScope(scope, privacyRules) {
   const filtered = _.pickBy(privacyRules, function(value, key) {
     if (scopes.indexOf(scope) >= scopes.indexOf(value)) {
       return true;
-    } 
+    }
     return false;
   });
   return Object.keys(filtered);
@@ -329,7 +329,7 @@ router.get('/user/:id', function(req, res) {
       })
   });
 });
-          
+
 // Get all users
 // moved to user.js
 
@@ -451,7 +451,7 @@ function appendBuzzsToUser(user, buzzs) {
   _.set(user, 'buzzes', buzzs);
   return user;
 }
-    
+
 const userColumnFilter = ['given_name','family_name','username','description',
   'interests','birthday','role','gender','picture','email','paypal','phone','street',
   'street_number','postal_code','city','country'];
@@ -480,8 +480,7 @@ router.post('/user/:id/update', cors(), function(req, res) {
 
       geocoder.geocode(location)
         .then(function(response) {
-          newUserData.latitude = response[0].latitude;
-          newUserData.longitude = response[0].longitude;
+          newUserData.geographicLocation = { type: 'Point', coordinates: [response[0].latitude, response[0].longitude]};
 
           // now we have the userInfo / user_id
           const user_id = userInfo.user_id;
@@ -544,9 +543,6 @@ router.post('/userPrivacy/create', cors(), function(req, res) {
     });
 });
 
-module.exports = router;
-
-
 // Create a new user
 router.use('/user/create', cors(corsConfig));
 router.post('/user/create', cors(), function(req, res) {
@@ -555,11 +551,9 @@ router.post('/user/create', cors(), function(req, res) {
   });
 });
 
-// Enabling CORS Pre-Flight 
+// Signup Process
 router.options('/signup', cors(corsConfig));
 router.use('/signup', cors(corsConfig));
-
-// Signup Process
 router.post('/signup', function(req, res) {
   const userdata = _.get(req, 'body.user');
   const opts = getSignupOpts(userdata);
@@ -578,7 +572,7 @@ router.post('/buzz/:id/update', checkJwt, function(req, res) {
     const user_id = userInfo.user_id;
     models.User.findOne({ where: { auth_user_id: user_id }})
       .then((user) => {
-        models.Buzz.update(buzzUpdate, 
+        models.Buzz.update(buzzUpdate,
           { where: { $and: [ { id: { $eq: id } },
             { UserId: {  $eq: user.get({plain: true}).id } } ] }
           }).then((buzz) => {

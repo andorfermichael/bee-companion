@@ -9,6 +9,9 @@ export class ActivatedRouteStub {
   private subject = new BehaviorSubject(this.testParams);
   params = this.subject.asObservable();
 
+  private subjectQuery = new BehaviorSubject(this.testQueryParams);
+  queryParams = this.subjectQuery.asObservable();
+
   // Test parameters
   private _testParams: {};
   get testParams() { return this._testParams; }
@@ -17,9 +20,17 @@ export class ActivatedRouteStub {
     this.subject.next(params);
   }
 
+  // Test query parameters
+  private _testQueryParams: {};
+  get testQueryParams() { return this._testQueryParams; }
+  set testQueryParams(queryParams: {}) {
+    this._testQueryParams = queryParams;
+    this.subjectQuery.next(queryParams);
+  }
+
   // ActivatedRoute.snapshot.params
   get snapshot() {
-    return { params: this.testParams };
+    return { params: this.testParams, queryParams: this.testQueryParams };
   }
 }
 
