@@ -25,7 +25,8 @@
       "node",
       "source-map",
       "uglify-js",
-      "webpack"
+      "webpack",
+      "auth0-js"
     ]
   },
   "exclude": [

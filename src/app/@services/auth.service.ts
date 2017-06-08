@@ -10,6 +10,10 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 import { myConfig, postConfig, necessaryRoles } from '../@config/auth.config';
 
+interface SocialAuthorizeOptions extends Auth0.AuthorizeOptions {
+  connection: string;
+}
+
 @Injectable()
 export class Auth {
   public lock = new Auth0Lock(myConfig.clientID, myConfig.domain, myConfig.lock);
@@ -35,17 +39,25 @@ export class Auth {
   }
 
   public loginWithGoogle(): void {
-    this.auth0.authorize({
-      connection: 'google-oauth2',
-      redirect_uri: myConfig.redirectUri
-    });
+    const opts: SocialAuthorizeOptions = {
+      domain: myConfig.domain,
+      clientID: myConfig.clientID,
+      redirectUri: myConfig.redirectUri,
+      responseType: myConfig.responseType,
+      connection: 'google-oauth2'
+    };
+    this.auth0.authorize(opts);
   }
 
   public loginWithFacebook(): void {
-    this.auth0.authorize({
-      connection: 'facebook',
-      redirect_uri: myConfig.redirectUri
-    });
+    const opts: SocialAuthorizeOptions = {
+      domain: myConfig.domain,
+      clientID: myConfig.clientID,
+      redirectUri: myConfig.redirectUri,
+      responseType: myConfig.responseType,
+      connection: 'facebook'
+    };
+    this.auth0.authorize(opts);
   }
 
   public login(username?: string, password?: string): Promise<any> {
