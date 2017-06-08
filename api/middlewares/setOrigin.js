@@ -16,7 +16,7 @@ function setOrigin(req, res, next) {
     } else {
         _.set(req, 'origin', protocol + '://' + host);
     }
-
+    console.log('### ORIGIN: ' + req.origin);
     next();
 }
 
