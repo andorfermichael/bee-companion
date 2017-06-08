@@ -6,6 +6,7 @@ const whitelist = [
   'http://localhost:8000',
   'https://localhost:8000',
   'bee-companion.com',
+  'http://bee-companion.com',
   'https://bee-companion.com',
   'https://www.bee-companion.com',
   'http://localhost:8000/#/home/payment/approved',
@@ -15,6 +16,7 @@ const whitelist = [
 
 const options = {
   origin: function (origin, callback) {
+    console.log('#### ORIGIN: ' + origin);
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
