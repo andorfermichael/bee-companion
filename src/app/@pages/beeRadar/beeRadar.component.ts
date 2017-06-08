@@ -50,7 +50,8 @@ export class BeeRadarComponent implements OnInit {
   private BASE_URL: string =
   process.env.ENV === 'development' ? 'http://localhost:8000' : 'https://bee-companion.com';
 
-  private usersApiUrl: string = 'http://localhost:3000' + '/api/users';
+  private usersApiUrl: string =
+    process.env.ENV === 'development' ? 'http://localhost:3000/api/users' : 'https://bee-companion.com/api/users';
 
   constructor(public titleService: Title, public localStorage: LocalStorageService,
               public _eventsService: EventsService,
