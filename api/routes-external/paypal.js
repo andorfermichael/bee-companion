@@ -19,7 +19,6 @@ if (process.env.PAYPAL_LIVE_ENABLED === 'true') {
   });
 }
 
-router.use('/payment/prepare', cors(corsConfig));
 router.post('/payment/prepare', function(req, res) {
   // Define payment return and cancel urls for different environment
   let returnUrl = 'http://localhost:8000/#/home/payment/approved';
@@ -69,8 +68,6 @@ router.post('/payment/prepare', function(req, res) {
 });
 
 // Get payment details
-router.options('/payment/execute', cors(corsConfig));
-router.use('/payment/execute', cors(corsConfig));
 router.post('/payment/execute', function(req, res) {
   const payload = {
     payer_id: req.body.payerId
@@ -84,6 +81,12 @@ router.post('/payment/execute', function(req, res) {
     }
   });
 });
+
+if (process.env.NODE_ENV === 'development') {
+  router.use('/payment/prepare', cors(corsConfig));
+  router.options('/payment/execute', cors(corsConfig));
+  router.use('/payment/execute', cors(corsConfig));
+}
 
 module.exports = router;
 

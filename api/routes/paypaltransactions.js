@@ -5,7 +5,6 @@ const cors = require('cors');
 const corsConfig = require('../config/cors');
 
 // Save a transaction (payment)
-router.use('/create', cors(corsConfig));
 router.post('/create', function(req, res) {
   models.PaypalTransaction.create({
     paymentId: req.body.paymentId,
@@ -33,5 +32,9 @@ router.post('/create', function(req, res) {
     res.json(paypalTransaction);
   });
 });
+
+if (process.env.NODE_ENV === 'development') {
+  router.use('/create', cors(corsConfig));
+}
 
 module.exports = router;
