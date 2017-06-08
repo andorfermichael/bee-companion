@@ -148,7 +148,6 @@ router.get('/users', function(req, res) {
 });
 
 // Get specific user (only public data -> currently achieved by setting include_fields)
-router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
   models.User.findOne({
     where: {
@@ -182,7 +181,6 @@ router.get('/user/:id', function(req, res) {
 });
 
 // Get all user locations
-router.use('/users/locations', cors(corsConfig));
 router.post('/users/locations', function(req, res) {
   const a = req.body.bounds.southWestLng;
   const b = req.body.bounds.southWestLat;
@@ -214,5 +212,10 @@ router.post('/users/locations', function(req, res) {
     res.status(404).json({error: err});
   });
 });
+
+if (process.env.NODE_ENV === 'development') {
+  router.use('/user/:id', cors(corsConfig));
+  router.use('/users/locations', cors(corsConfig));
+}
 
 module.exports = router;

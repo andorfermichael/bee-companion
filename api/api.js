@@ -6,8 +6,6 @@ const express = require('express');
 const raven = require('raven');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const crypto = require('crypto');
-const setOrigin = require('./middlewares/setOrigin');
 
 // Express App
 const app = express();
@@ -25,7 +23,6 @@ app.use(raven.errorHandler());
 // Config
 app.use(bodyParser.json());
 app.use(helmet()); // Use default helmet packages for better security
-app.use(setOrigin);
 
 // Use Referrer Policy for more privacy about origin
 app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
