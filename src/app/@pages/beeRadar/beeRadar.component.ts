@@ -13,6 +13,8 @@ import { Title } from '@angular/platform-browser';
 import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { GeolocationOptions, MapStyles } from '../../@config/google-maps.config';
 
+const _ = require('lodash');
+
 // Interface for type safety
 interface Location {
   lat: number;
@@ -20,6 +22,7 @@ interface Location {
   label?: string;
   role: string;
   url: string;
+  username?: string;
 }
 
 @Component({
@@ -36,7 +39,7 @@ export class BeeRadarComponent implements OnInit {
   public disableDefaultUI: boolean = true;
   public mapDraggable: boolean = false;
   public disableDoubleClickZoom: boolean = true;
-  public scrollwheel: boolean = false;
+  public scrollwheel: boolean = true;
   public streetViewControl: boolean = false;
 
   public mapIsActive: boolean = true;
@@ -45,9 +48,9 @@ export class BeeRadarComponent implements OnInit {
   public displayFlag = 'map';
 
   private BASE_URL: string =
-  process.env.ENV === 'development' ? 'http://localhost:3000' : 'https://bee-companion.com';
+  process.env.ENV === 'development' ? 'http://localhost:8000' : 'https://bee-companion.com';
 
-  private usersApiUrl: string = this.BASE_URL + '/api/users';
+  private usersApiUrl: string = 'http://localhost:3000' + '/api/users';
 
   constructor(public titleService: Title, public localStorage: LocalStorageService,
               public _eventsService: EventsService,
@@ -60,7 +63,7 @@ export class BeeRadarComponent implements OnInit {
       () => {
         // Add current location
         this.locations.push(
-          {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/me'}
+          {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/#/user/me'}
         );
       },
       (err) => {
@@ -84,6 +87,7 @@ export class BeeRadarComponent implements OnInit {
 
     return this.http.post(this.usersApiUrl + '/locations', JSON.stringify(params), requestOptions)
       .map(this.extractData)
+      .toPromise()
       .catch(this.handleError);
   }
 
@@ -110,8 +114,9 @@ export class BeeRadarComponent implements OnInit {
 
   public onBoundsChangedRedirect(bounds: any) {
     // Generate and add other users' locations
-    const usersLocations = this.fetchUserLocations(bounds);
-    this.generateLocationsFromData(usersLocations);
+    this.fetchUserLocations(bounds)
+      .then((data) => { this.generateLocationsFromData(data); })
+      .catch((err) => { this.handleError(err); });
   }
 
   public toggleMap(): void {
@@ -121,14 +126,21 @@ export class BeeRadarComponent implements OnInit {
   }
 
   private generateLocationsFromData(data: any): void {
-    data.forEach((location) => {
-      const generatedLocation = {
-        lat: location[0].geographicLocation.coordinates[0],
-        lng: location[0].geographicLocation.coordinates[1],
-        role: location[0].role,
-        url: this.BASE_URL + '/' + location[0].username
-      };
-      this.locations.push(generatedLocation);
+    data.forEach((user) => {
+      if (user.geographicLocation) {
+        const generatedLocation = {
+          username: user.username,
+          lat: user.geographicLocation.coordinates[0],
+          lng: user.geographicLocation.coordinates[1],
+          role: user.role,
+          url: this.BASE_URL + '/#/user/' + user.username
+        };
+        if (!_.some(this.locations, generatedLocation)) {
+         this.locations.push(generatedLocation);
+         console.log('USER LOC');
+         console.log(generatedLocation);
+        }
+      }
     });
   }
 

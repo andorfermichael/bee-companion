@@ -184,10 +184,25 @@ router.get('/user/:id', function(req, res) {
 // Get all user locations
 router.use('/users/locations', cors(corsConfig));
 router.post('/users/locations', function(req, res) {
+  const a = req.body.bounds.southWestLng;
+  const b = req.body.bounds.southWestLat;
+  const c = req.body.bounds.northEastLng;
+  const d = req.body.bounds.northEastLat;
+  const e = 4326;
+
+  // var contains = sequelize.fn('ST_CONTAINS',
+  //   sequelize.fn('ST_MakeEnvelope', b, a, d, c, e),
+  //   sequelize.col('geographicLocation')
+  // );
+  
+  // models.User.findAll({
+  //   where: contains,
+  //   attributes: ['geographicLocation', 'role', 'username']
+  // })
   models.User.findAll({
     where: {
       geographicLocation: {
-        $overlap: sequelize.fn('ST_MakeEnvelope', req.body.bounds.southWestLng, req.body.bounds.southWestLat, req.body.bounds.northEastLng, req.body.bounds.northEastLat, 4326)
+        $overlap: sequelize.fn('ST_MakeEnvelope', b, a, d, c, e)
       }
     },
     attributes: ['geographicLocation', 'role', 'username']
