@@ -191,7 +191,7 @@ export class Auth {
       if (!this.checkUserHasRole(profile)) {
         this.router.navigate(['/signup/complete']);
       } else {
-        this.router.navigate(['/user/edit/me']);
+        this.router.navigate(['/user/me']);
       }
     });
   }
