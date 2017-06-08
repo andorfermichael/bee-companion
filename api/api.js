@@ -15,7 +15,7 @@ const app = express();
 // Env
 const PORT     = process.env.PORT || 3000;
 const NODE_ENV = process.env.NODE_ENV || 'development';
-const ravenDSN = NODE_ENV === 'development' ? process.env.SENTRY_RAVEN_DSN_PROD : process.env.SENTRY_RAVEN_DSN_DEV;
+const ravenDSN = NODE_ENV === 'development' ? process.env.SENTRY_RAVEN_DSN_DEV : process.env.SENTRY_RAVEN_DSN_PROD;
 raven.config(ravenDSN).install();
 // the request handler must be the first middleware on the app
 app.use(raven.requestHandler());
