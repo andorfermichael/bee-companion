@@ -1,4 +1,4 @@
-import { Directive, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Directive, EventEmitter, Input, OnInit, OnDestroy, Output, DoCheck } from '@angular/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Observable } from 'rxjs';
 
@@ -16,16 +16,34 @@ export declare const MarkerClusterer;
 @Directive({
   selector: 'marker-cluster'
 })
-export class MarkerClusterDirective implements OnInit {
+export class MarkerClusterDirective implements OnInit, OnDestroy, DoCheck {
   @Input() public locations: any[];
   @Output() public onBoundsChanged = new EventEmitter<any>();
   public markerCluster: any;
   public markers: any[] = [];
+  public subscription: any;
+  public numberOfLocations: number;
 
   constructor(private gmapsApi: GoogleMapsAPIWrapper) {}
 
+  public ngDoCheck() {
+    if (this.locations.length !== this.numberOfLocations) {
+      this.numberOfLocations = this.locations.length;
+      this.ngOnDestroy();
+      this.ngOnInit();
+    }
+  }
+
+  public ngOnDestroy() {
+    if(this.subscription) {
+      this.subscription.unsubscribe();
+      this.subscription = null;
+    }
+  }
+
   public ngOnInit() {
     this.gmapsApi.getNativeMap().then((map) => {
+      this.subscription =
       Observable
         .interval(500)
         .skipWhile((s) => this.locations == null || this.locations.length <= 0)
@@ -77,7 +95,9 @@ export class MarkerClusterDirective implements OnInit {
                 window.open(this.url);
               });
 
-              this.markers.push(marker);
+              if (!_.some(this.markers, ['url', marker.url])) {
+                this.markers.push(marker);
+              }
             }
           } else {
             this.markers = [];
