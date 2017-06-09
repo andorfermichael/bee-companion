@@ -50,10 +50,11 @@ describe(`PayPalFormComponent`, () => {
   it('executeDonation should prepare payment using paypal service and return response with payment id on success', (done) => {
     fixture.detectChanges();
     const amount = 15.00;
+    const username = 'mandorfer';
     spyOn(paypalService, 'preparePayment').and.returnValue(Observable.of({id: 'PAY-91W1857156818772ULEZ43II'}));
-    comp.executeDonation(amount);
+    comp.executeDonation(username, amount);
 
-    paypalService.preparePayment('beekeeper.pp@beecompanion.com', amount).subscribe((payment) => {
+    paypalService.preparePayment(username, amount).subscribe((payment) => {
       fixture.detectChanges();
       expect(paypalService.preparePayment).toHaveBeenCalledWith(jasmine.any(String), amount);
       expect(payment.id).toEqual('PAY-91W1857156818772ULEZ43II');
@@ -65,11 +66,12 @@ describe(`PayPalFormComponent`, () => {
     'if failed', async(() => {
     fixture.detectChanges();
     const amount = 15.00;
+    const username = 'mandorfer';
     spyOn(paypalService, 'preparePayment').and.returnValue(Observable.throw('error'));
     spyOn(console, 'error');
-    comp.executeDonation(amount);
+    comp.executeDonation(username, amount);
 
-    paypalService.preparePayment('beekeeper.pp@beecompanion.com', amount).subscribe(
+    paypalService.preparePayment(username, amount).subscribe(
       (payment) => {
         // nothing
       },
