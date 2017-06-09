@@ -50,12 +50,14 @@ export class HomeComponent implements OnInit, OnDestroy {
             (executedPaymentDetails) => {
               this.paypalService.storePaymentDetailsInDatabase(executedPaymentDetails).subscribe(
                 () => {
+                  this._eventsService.broadcast('loginSuccess');
                   // Remove state query param from url after a few seconds
                   this.timeout = setTimeout(() => {
                     this.location.replaceState('/home');
                   }, 4000);
                 },
                 (err) => {
+                  this._eventsService.broadcast('loginFail');
                   console.error(err);
                 });
             },

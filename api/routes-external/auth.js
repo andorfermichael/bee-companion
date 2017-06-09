@@ -449,6 +449,32 @@ function appendBuzzsToUser(user, buzzs) {
   return user;
 }
 
+function storePaypalTransaction(data) {
+  models.PaypalTransaction.create({
+    paymentId: data.paymentId,
+    intent: data.intent,
+    state: data.state,
+    paymentMethod: data.paymentMethod,
+    payerEmail: data.payerEmail,
+    payerFirstName: data.payerFirstName,
+    payerLastName: data.payerLastName,
+    payerId: data.payerId,
+    shippingAddressRecipientName: data.shippingAddressRecipientName,
+    shippingAddressStreet: data.shippingAddressStreet,
+    shippingAddressCadastral: data.shippingAddressCadastral,
+    shippingAddressCity: data.shippingAddressCity,
+    shippingAddressState: data.shippingAddressState,
+    shippingAddressPostalCode: data.shippingAddressPostalCode,
+    shippingAddressCountryCode: data.shippingAddressCountryCode,
+    payerCountryCode: data.payerCountryCode,
+    transactionTotalAmount: data.transactionTotalAmount,
+    transactionCurrency: data.transactionCurrency,
+    createTime: data.createTime,
+    ReceiverId: data.ReceiverId,
+    PayerId: data.PayerId
+  })
+}
+
 const userColumnFilter = ['given_name','family_name','username','description',
   'interests','birthday','role','gender','picture','email','paypal','phone','street',
   'street_number','postal_code','city','country'];
@@ -573,6 +599,37 @@ router.post('/buzz/:id/update', checkJwt, function(req, res) {
       })
   });
 });
+
+// Save a transaction (payment)
+router.post('/paypaltransaction/create', function(req, res) {
+  jwtToken = getJWTToken(req);
+    auth0.tokens.getInfo(jwtToken, function(err, userInfo){
+      const user_id = userInfo.user_id;
+      models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((sender) => {
+          const data = req.body;
+          data.SenderId = sender.id;
+          models.User.findOne({ where: { paypal: req.body.payerEmail }})
+            .then((receiver) => {
+              data.ReceiverId = receiver.id;
+              storePaypalTransaction(data)
+                .then((paypalTransaction) => {
+                  res.json(paypalTransaction);
+                });
+            })
+        })
+        .catch((error) => {
+          res.status(400).json({error});
+        });
+    })
+    .catch((err) => {
+      res.status(400).json({error});
+    });
+});
+
+if (process.env.NODE_ENV === 'development') {
+  router.use('/paypaltransaction/create', cors(corsConfig));
+}
 
 if (process.env.NODE_ENV === 'development') {
   router.use('/user/:id', cors(corsConfig));

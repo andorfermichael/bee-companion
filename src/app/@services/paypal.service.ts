@@ -5,15 +5,18 @@ import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 
+import { AuthHttp } from 'angular2-jwt';
+import { EventsService } from './events.service';
+
 @Injectable()
 export class PayPalService {
   private BASE_URL: string = process.env.ENV === 'development' ? 'http://localhost:3000'
     : 'https://bee-companion.com';
 
   private paypalApiUrl: string = this.BASE_URL + '/api/paypal';
-  private paypalDBApiUrl: string = this.BASE_URL + '/api/paypaltransaction';
+  private paypalDBApiUrl: string = this.BASE_URL + '/api/auth/paypaltransaction';
 
-  constructor(public http: Http) {}
+  constructor(public http: Http, private authHttp: AuthHttp, public _eventsService: EventsService) {}
 
   public preparePayment(receiverUsername: string, amount: number): Observable<any> {
     const headers = new Headers({
@@ -28,6 +31,8 @@ export class PayPalService {
     const requestOptions = new RequestOptions({
       headers
     });
+
+    this._eventsService.broadcast('loginStart');
 
     return this.http.post(this.paypalApiUrl + '/payment/prepare', JSON.stringify(params),
       requestOptions)
@@ -86,9 +91,11 @@ export class PayPalService {
       headers
     });
 
-    return this.http.post(this.paypalDBApiUrl + '/create', JSON.stringify(params), requestOptions)
-      .map(this.extractData)
-      .catch(this.handleError);
+    // return this.http.post(this.paypalDBApiUrl + '/create', JSON.stringify(params), requestOptions)
+    //   .map(this.extractData)
+    //   .catch(this.handleError);
+
+    return this.authHttp.post(this.paypalDBApiUrl + '/create', JSON.stringify(params), requestOptions);
   }
 
   private extractData(res: Response) {

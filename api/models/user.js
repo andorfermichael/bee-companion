@@ -31,7 +31,7 @@ module.exports = function(sequelize, DataTypes) {
         models.User.Mentions = models.User.hasMany(models.Buzz, {foreignKey: 'mentionId'});
         models.User.TransactionsIn = models.User.hasMany(models.PaypalTransaction, {foreignKey: 'receiverId'});
         models.User.TransactionsOut = models.User.hasMany(models.PaypalTransaction, {foreignKey: 'senderId'});
-        models.User.Likes = models.User.hasMany(models.Likes, {foreignKey: 'UserId'})
+        models.User.Likes = models.User.hasMany(models.Like, {foreignKey: 'UserId'});
       }
     }
   });
