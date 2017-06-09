@@ -41,6 +41,10 @@
     			                    <h3><strong>Age</strong></h3>
     			                    <p>{{calculateAge(localUser.birthday)}}</p>
                                 </div>
+                                <div *ngIf="userRole === 'Beekeeper'">
+                                    <hr>
+                                    <paypalForm [username]="localUser.username"></paypalForm>
+                                </div>
       						</div>
   						</div>
 					</div>

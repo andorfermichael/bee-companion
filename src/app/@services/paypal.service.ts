@@ -15,13 +15,13 @@ export class PayPalService {
 
   constructor(public http: Http) {}
 
-  public preparePayment(receiverEmail: string, amount: number): Observable<any> {
+  public preparePayment(receiverUsername: string, amount: number): Observable<any> {
     const headers = new Headers({
       'Content-Type': 'application/json'
     });
 
     const params = {
-      receiverEmail,
+      receiverUsername,
       amount
     };
 

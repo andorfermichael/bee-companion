@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const corsConfig = require('../config/cors');
+const models  = require('../models');
 
 const paypal = require('paypal-rest-sdk');
 
@@ -27,44 +28,57 @@ router.post('/payment/prepare', function(req, res) {
     returnUrl = 'https://bee-companion.com/#/home/payment/approved';
     cancelUrl = 'https://bee-companion.com/#/home/payment/cancelled';
   }
-
-  const payload = {
-    intent: 'authorize',
-    payer: {
-      payment_method: 'paypal'
-    },
-    redirect_urls: {
-      return_url: returnUrl,
-      cancel_url: cancelUrl
-    },
-    transactions: [{
-      payee: {
-        email: req.body.receiverEmail
-      },
-      item_list: {
-        items: [{
-          name: 'donation to beekeeper',
-          sku: 'donation',
-          price: req.body.amount,
-          currency: 'EUR',
-          quantity: 1
-        }]
-      },
-      amount: {
-        currency: 'EUR',
-        total: req.body.amount
-      },
-      description: 'Donation'
-    }]
-  };
-
-  paypal.payment.create(payload, function (error, response) {
-    if (error) {
-      return res.json(error.response);
-    } else {
-      return res.json(response);
-    }
-  });
+  const receiverUsername = req.body.receiverUsername;
+  const amount = req.body.amount;
+  if (!receiverUsername || !amount) {
+    res.status(400).json({error: 'Invalid Request, missing parameters!'});
+  }
+  models.User.findOne({ where: { auth_user_id: user_id }})
+        .then((user) => {
+          const receiverEmail = user.paypal;
+          if (!user.paypal) {
+            throw new Exception();
+          }
+          const payload = {
+            intent: 'authorize',
+            payer: {
+              payment_method: 'paypal'
+            },
+            redirect_urls: {
+              return_url: returnUrl,
+              cancel_url: cancelUrl
+            },
+            transactions: [{
+              payee: {
+                email: receiverEmail
+              },
+              item_list: {
+                items: [{
+                  name: 'donation to beekeeper',
+                  sku: 'donation',
+                  price: amount,
+                  currency: 'EUR',
+                  quantity: 1
+                }]
+              },
+              amount: {
+                currency: 'EUR',
+                total: amount
+              },
+              description: 'Donation'
+            }]
+          };
+          paypal.payment.create(payload, function (error, response) {
+            if (error) {
+              return res.json(error.response);
+            } else {
+              return res.json(response);
+            }
+          });
+        })
+        .catch((error) => { 
+          res.status(404).json({error: 'User not found or invalid!'});
+        })
 });
 
 // Get payment details
