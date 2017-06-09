@@ -24,8 +24,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        PaypalTransaction.User = models.PaypalTransaction.belongsTo(models.User, {as: 'ReceiverId'});
-        PaypalTransaction.User = models.PaypalTransaction.belongsTo(models.User, {as: 'PayerId'});
+        models.PaypalTransaction.sender = models.PaypalTransaction.belongsTo(models.User, {as: 'SenderId'});
+        models.PaypalTransaction.receiver = models.PaypalTransaction.belongsTo(models.User, {as: 'ReceiverId'});
       }
     }
   });

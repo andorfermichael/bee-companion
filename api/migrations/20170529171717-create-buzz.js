@@ -12,10 +12,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      mentioned: {
-        allowNull: true,
-        type: Sequelize.ARRAY(Sequelize.STRING)
-      },
       message: {
         allowNull: true,
         type: Sequelize.STRING
@@ -44,10 +40,19 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         default: false
       },
-      UserId: {
+      OwnerId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         onDelete: 'CASCADE',
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
+      MentionId: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        onDelete: 'SET NULL',
         references: {
           model: 'Users',
           key: 'id'
