@@ -33,7 +33,7 @@ router.post('/payment/prepare', function(req, res) {
   if (!receiverUsername || !amount) {
     res.status(400).json({error: 'Invalid Request, missing parameters!'});
   }
-  models.User.findOne({ where: { auth_user_id: user_id }})
+  models.User.findOne({ where: { username:receiverUsername }})
         .then((user) => {
           const receiverEmail = user.paypal;
           if (!user.paypal) {
@@ -76,7 +76,7 @@ router.post('/payment/prepare', function(req, res) {
             }
           });
         })
-        .catch((error) => { 
+        .catch((error) => {
           res.status(404).json({error: 'User not found or invalid!'});
         })
 });
