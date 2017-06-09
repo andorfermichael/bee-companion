@@ -15,16 +15,17 @@ const whitelist = [
 ];
 
 const options = {
-  origin: function (origin, callback) {
+  /*origin: function (origin, callback) {
     console.log('#### origin at cors: ' + origin);
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true)
     } else {
       callback(new Error('Not allowed by CORS: ' + origin))
     }
-  },
-  methods: ['GET', 'PUT', 'POST'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  },*/
+  origin: '*',
+  methods: ['GET', 'PUT', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Accept', 'Content-Type', 'Authorization', 'Origin'],
   credentials: true,
   optionsSuccessStatus: 200
 };

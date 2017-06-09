@@ -4,6 +4,7 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import * as _ from 'lodash';
 
 import { LocalStorageService } from 'ngx-webstorage';
 import { EventsService } from '../../@services/events.service';
@@ -61,17 +62,25 @@ export class BeeRadarComponent implements OnInit {
   public ngOnInit() {
     this.titleService.setTitle(PageTitlePrefix + PageTitles.BeeRadarComponent);
 
-    this.fetchCurrentLocation().subscribe(
-      () => {
-        // Add current location
-        this.locations.push(
-          {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/#/user/me'}
-        );
-      },
-      (err) => {
-        console.error(err);
-      }
-    );
+    let currentLocation = {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/#/user/me'};
+
+    if (!_.some(this.locations, currentLocation)) {
+      this.fetchCurrentLocation().subscribe(
+        (response) => {
+          // Add current location
+          this.lat = response.latitude;
+          this.lng = response.longitude;
+          currentLocation = {lat: this.lat, lng: this.lng, role: 'Current', url: this.BASE_URL + '/#/user/me'};
+
+          if (!_.some(this.locations, ['role', 'Current'])) {
+            this.locations.push(currentLocation);
+          }
+        },
+        (err) => {
+          console.error(err);
+        }
+      );
+    }
   }
 
   public fetchUserLocations(bounds: any): any {
@@ -139,8 +148,6 @@ export class BeeRadarComponent implements OnInit {
         };
         if (!_.some(this.locations, generatedLocation)) {
          this.locations.push(generatedLocation);
-         console.log('USER LOC');
-         console.log(generatedLocation);
         }
       }
     });
