@@ -47,7 +47,7 @@ describe('PayPalService', () => {
       expect(connection.request.headers.get('Content-Type')).toEqual('application/json');
       expect(JSON.parse(connection.request.getBody())).toEqual(
         {
-          receiverEmail: 'beekeeper.pp@beecompanion.com',
+          receiverUsername: 'mandorfer',
           amount: 15.00,
         }
       );
@@ -59,7 +59,7 @@ describe('PayPalService', () => {
       connection.mockRespond(new Response(OPTS));
     });
 
-    paypalService.preparePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe(() => {
+    paypalService.preparePayment('mandorfer', 15.00).subscribe(() => {
       done();
     });
   });
@@ -74,7 +74,7 @@ describe('PayPalService', () => {
         connection.mockRespond(new Response(options));
       });
 
-      paypalService.preparePayment('beekeeper.pp@beecompanion.com', 15.00).subscribe((response) => {
+      paypalService.preparePayment('mandorfer', 15.00).subscribe((response) => {
         expect(response.id).toBeDefined();
         expect(response.intent).toEqual('authorize');
         expect(response.state).toEqual('created');
@@ -98,7 +98,7 @@ describe('PayPalService', () => {
 
     spyOn(console, 'error');
 
-    paypalService.preparePayment('beekeeper.pp@beecompanion.com', 1.00).subscribe((response) => {
+    paypalService.preparePayment('mandorfer', 1.00).subscribe((response) => {
       console.log(response); // Object{error: 'Some strange error'}
     }, () => {
       expect(console.error).toHaveBeenCalledWith('404 -  Some error occured!');
