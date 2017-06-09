@@ -215,6 +215,7 @@ router.post('/users/locations', function(req, res) {
 
 if (process.env.NODE_ENV === 'development') {
   router.use('/user/:id', cors(corsConfig));
+  router.options('/users/locations', cors(corsConfig));
   router.use('/users/locations', cors(corsConfig));
 }
 
