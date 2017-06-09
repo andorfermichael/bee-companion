@@ -8,6 +8,24 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      senderId: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        onDelete: 'SET NULL',
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
+      receiverId: {
+        allowNull: true,
+        type: Sequelize.INTEGER,
+        onDelete: 'SET NULL',
+        references: {
+          model: 'Users',
+          key: 'id'
+        }
+      },
       paymentId: {
         allowNull: false,
         type: Sequelize.STRING

@@ -2,7 +2,6 @@
 module.exports = function(sequelize, DataTypes) {
   const Buzz = sequelize.define('Buzz', {
     trigger: DataTypes.STRING,
-    mentioned: DataTypes.ARRAY(DataTypes.STRING),
     message: DataTypes.STRING,
     resource: DataTypes.STRING,
     likes: DataTypes.INTEGER,
@@ -13,7 +12,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        Buzz.User = models.Buzz.belongsTo(models.User);
+        models.Buzz.owner = models.Buzz.belongsTo(models.User, {as: 'OwnerId', foreignKey: 'id'});
+        models.Buzz.mentioned = models.Buzz.belongsTo(models.User, {as: 'MentionId', foreignKey: 'id'});     
       }
     }
   });
