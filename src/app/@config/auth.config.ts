@@ -24,7 +24,7 @@ export const myConfig: AuthConfiguration = {
   lock: {
     socialButtonStyle: 'small',
     theme: {
-      logo: '../assets/img/BeeCompanion_mainlogo.png',
+      logo: '../assets/img/mainlogo_hd.png',
       primaryColor: '#F6DD3B',
       foregroundColor: '#000000',
       labeledSubmitButton: false

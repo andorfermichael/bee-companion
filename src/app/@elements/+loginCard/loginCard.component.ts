@@ -98,7 +98,6 @@ export class LoginCardComponent implements OnInit, OnDestroy {
       this.auth.login(username, password).then(
         () => {
           this._eventsService.broadcast('loginSuccess');
-          this.router.navigate(['/restricted']);
         },
         (error) => {
           this._eventsService.broadcast('loginFail', error, {username, password});

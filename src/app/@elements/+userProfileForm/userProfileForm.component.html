@@ -176,6 +176,7 @@
     <div class="col-8">
       <div class="form-group">
         <label for="paypal"><i class="fa fa-asterisk error-message" aria-hidden="true" *ngIf="!localUser.paypal && errorMessage"></i> PayPal Email Adress:</label>
+        <label class="pull-right"><a href="https://www.paypal.com/signup/account" target="blank">SignUp for free at PayPal</a></label>
         <input type="paypal" class="form-control" id="paypal" aria-describedby="paypalHelp" placeholder="your@emailaddress.com" name="paypal" [(ngModel)]="user.paypal">
         <small id="paypalHelp" class="form-text text-muted">You need to specify a registered paypal email-address to be able to receive donations!</small>
       </div>
