@@ -14,8 +14,6 @@ import { Title } from '@angular/platform-browser';
 import { PageTitlePrefix, PageTitles } from '../../@config/meta.config';
 import { GeolocationOptions, MapStyles } from '../../@config/google-maps.config';
 
-const _ = require('lodash');
-
 // Interface for type safety
 interface Location {
   lat: number;
