@@ -1,6 +1,7 @@
 import { Directive, EventEmitter, Input, OnInit, OnDestroy, Output, DoCheck } from '@angular/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 import { Observable } from 'rxjs';
+import * as _ from 'lodash';
 
 import {
   MarkerIconBeekeeper,
