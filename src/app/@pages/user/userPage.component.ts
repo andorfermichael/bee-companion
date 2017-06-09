@@ -16,6 +16,7 @@ import * as _ from 'lodash';
 })
 export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
   public inEditMode: boolean;
+  public initialSetupMode: boolean = false;
   public id: string;
   public localUser: any;
   private sub: any;
@@ -51,6 +52,17 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
     this.ngOnInit();
   }
 
+  private checkUserData(userData: any): void {
+    if (!_.get(userData, 'username') && !this.initialSetupMode) {
+      this.inEditMode = true;
+      this.initialSetupMode = true;
+      return;
+    }
+    if (_.get(userData, 'username') && this.initialSetupMode) {
+      this.inEditMode = true;
+    }
+  }
+
   private processUserData(data: any): void {
     let userData;
     try {
@@ -60,6 +72,7 @@ export class UserPageComponent implements OnInit, OnChanges, OnDestroy {
     }
     if (userData) {
       this.localUser = userData;
+      this.checkUserData(userData);
     } else {
       setTimeout(() => {
         this.router.navigate(['/home']);

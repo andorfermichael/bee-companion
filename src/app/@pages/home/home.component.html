@@ -6,18 +6,6 @@
 				<h1 class="card-title" *ngIf="!auth.isAuthenticated() || !auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span></h1><br>
 				<h1 class="card-title" *ngIf="auth.isAuthenticated() && auth.userProfile">Welcome to <span class="txt-bee">Bee</span><span class="txt-companion">Companion</span><br><span class="txt-bee">{{auth.userProfile.name || auth.userProfile.nickname}}</span></h1><br>
 				<div *ngIf="auth.isAuthenticated() && auth.userProfile && !auth.signUpIncomplete" class="user-logged-in">
-				    <div class="row">
-				      <div class="col-md-6">
-				        <h3>Your Profile:</h3>
-				        <imageRatio [url]="auth.userProfile.picture"></imageRatio>
-				        <p><strong>Name: </strong> {{auth.userProfile.name}}</p>
-				        <p><strong>Email: </strong> {{auth.userProfile.email}}</p>
-				        <p><strong>Nickname: </strong> {{auth.userProfile.nickname}}</p>
-				        <p><strong>Created At: </strong> {{auth.userProfile.created_at}}</p>
-				        <p><strong>Updated At: </strong> {{auth.userProfile.updated_at}}</p>
-              			<paypalForm></paypalForm>
-				      </div>
-				    </div>
 			  	</div>
 			  	<div *ngIf="auth.signUpIncomplete">
 				  	<h3>Please complete your SignUp Process <a [routerLink]="['/signup/complete']"><span class="txt-bee">now</span></a>.</h3>

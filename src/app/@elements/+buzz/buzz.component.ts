@@ -85,6 +85,6 @@ export class SingleBuzzComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe(
         (data) => { console.log('Buzz Scope updated successfully.'); },
         (error) => { console.log(error); } );
-      return false;
+    return false;
   }
 }

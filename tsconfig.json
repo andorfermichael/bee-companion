@@ -11,6 +11,7 @@
     "noEmitHelpers": true,
     "importHelpers": true,
     "strictNullChecks": false,
+    "allowJs": true,
     "lib": [
       "dom",
       "es6"
@@ -24,7 +25,8 @@
       "node",
       "source-map",
       "uglify-js",
-      "webpack"
+      "webpack",
+      "auth0-js"
     ]
   },
   "exclude": [

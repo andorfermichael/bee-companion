@@ -31,7 +31,8 @@
 			}
 		}
 		.user-profile-left {
-		    margin-top: .5em;
+      z-index: 15;
+      margin-top: .5em;
 			float: none;
 			.card-img-top {
 			    margin: .5em;

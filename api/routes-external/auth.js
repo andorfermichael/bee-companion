@@ -187,7 +187,6 @@ function buildColumnFilterBasedOnScope(scope, privacyRules) {
 }
 
 // Get specific user (only public data -> currently achieved by setting include_fields)
-router.use('/user/:id', cors(corsConfig));
 router.get('/user/:id', function(req, res) {
   jwtToken = getJWTToken(req);
   auth0.tokens.getInfo(jwtToken, function(err, userInfo) {
@@ -334,7 +333,6 @@ router.get('/user/:id', function(req, res) {
 // moved to user.js
 
 // get userPrivacy
-router.use('/user/:id/userPrivacy/', cors(corsConfig));
 router.get('/user/:id/userPrivacy/', checkJwt, function(req, res) {
     jwtToken = getJWTToken(req);
     auth0.tokens.getInfo(jwtToken, function(err, userInfo){
@@ -351,7 +349,6 @@ router.get('/user/:id/userPrivacy/', checkJwt, function(req, res) {
 
 
 // Set the role of a user
-router.use('/user/set/role/:role', cors(corsConfig));
 router.get('/user/set/role/:role', checkJwt, function(req, res) {
   const role = req.params.role;
   if (!role || (role !== 'Supporter' && role !== 'Beekeeper')) {
@@ -464,7 +461,6 @@ const columnNameMap = {
 const auth0ColumnFilter = ['email' ];
 
 // Update a user
-router.use('/user/:id/update', cors(corsConfig));
 router.post('/user/:id/update', cors(), function(req, res) {
   const preventBuzzFlag = _.get(req.body, 'preventBuzzFlag');
   const newUserData = _.pick(req.body, userColumnFilter);
@@ -526,7 +522,6 @@ router.post('/user/:id/update', cors(), function(req, res) {
 });
 
 // create a userPrivacy Dataset
-router.use('/userPrivacy/create', cors(corsConfig));
 router.post('/userPrivacy/create', cors(), function(req, res) {
   jwtToken = getJWTToken(req);
     auth0.tokens.getInfo(jwtToken, function(err, userInfo){
@@ -544,7 +539,6 @@ router.post('/userPrivacy/create', cors(), function(req, res) {
 });
 
 // Create a new user
-router.use('/user/create', cors(corsConfig));
 router.post('/user/create', cors(), function(req, res) {
   models.User.create(_.pick(req.body, userColumnFilter)).then(function(user) {
     res.json(user);
@@ -552,8 +546,6 @@ router.post('/user/create', cors(), function(req, res) {
 });
 
 // Signup Process
-router.options('/signup', cors(corsConfig));
-router.use('/signup', cors(corsConfig));
 router.post('/signup', function(req, res) {
   const userdata = _.get(req, 'body.user');
   const opts = getSignupOpts(userdata);
@@ -563,7 +555,7 @@ router.post('/signup', function(req, res) {
       res.status(400).json({ error }); });
 });
 
-router.use('/buzz/:id/update', cors(corsConfig));
+// Update post
 router.post('/buzz/:id/update', checkJwt, function(req, res) {
   const id = req.params.id;
   const buzzUpdate = req.body;
@@ -581,5 +573,17 @@ router.post('/buzz/:id/update', checkJwt, function(req, res) {
       })
   });
 });
+
+if (process.env.NODE_ENV === 'development') {
+  router.use('/user/:id', cors(corsConfig));
+  router.use('/user/:id/userPrivacy/', cors(corsConfig));
+  router.use('/user/set/role/:role', cors(corsConfig));
+  router.use('/user/:id/update', cors(corsConfig));
+  router.use('/userPrivacy/create', cors(corsConfig));
+  router.use('/user/create', cors(corsConfig));
+  router.options('/signup', cors(corsConfig));
+  router.use('/signup', cors(corsConfig));
+  router.use('/buzz/:id/update', cors(corsConfig));
+}
 
 module.exports = router;
