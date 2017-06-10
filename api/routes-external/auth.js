@@ -206,10 +206,13 @@ router.get('/user/:id', function(req, res) {
               .then((userPrivacy) => {
                 const attachedData = _.assign({}, userInfo, user.get({plain: true}), { privacy: userPrivacy.get({plain: true})});
                 /* ............................. Buzzes */
-                user.getBuzzs({raw: true})
+                models.Buzz.findAll({ where: { OwnerId: user.id }})
                   .then((data) => {
+                    console.log(data);
                     res.status(200).json(appendBuzzsToUser(attachedData,data));
-                  }).catch((error) => { });
+                  }).catch((error) => {
+                  console.log(error);
+                });
               })
           } else {
             // fallback because username is not settable on auth0
@@ -427,7 +430,7 @@ function createProfileUpdateBuzzFeed(trigger, user, diff) {
   message += _.get(user, 'gender') === 'female' ? 'her ' : (_.get(user, 'gender') === 'male' ? 'his ' : 'his/her ');
   message += diff.length ? diff.join(', ') : ' Profile.';
   return {
-    UserId: user.id,
+    OwnerId: user.id,
     trigger: 'Profile Update',
     message: message,
     resource: '/user/' + _.get(user, 'username'),

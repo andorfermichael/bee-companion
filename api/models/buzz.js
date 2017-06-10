@@ -12,8 +12,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        models.Buzz.owner = models.Buzz.belongsTo(models.User, {as: 'OwnerId', foreignKey: 'id'});
-        models.Buzz.mentioned = models.Buzz.belongsTo(models.User, {as: 'MentionId', foreignKey: 'id'});     
+        models.Buzz.owner = models.Buzz.belongsTo(models.User, {as: 'Owner', foreignKey: 'id'});
+        models.Buzz.mentioned = models.Buzz.belongsTo(models.User, {as: 'Mentioned', foreignKey: 'id'});
       }
     }
   });

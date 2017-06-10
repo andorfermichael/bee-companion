@@ -5,8 +5,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         // associations can be defined here
-        models.Like.likedBy = models.Like.belongsTo(models.User, {as: 'UserId'});
-        models.Like.Buzz = models.Like.belongsTo(models.Buzz, {as: 'BuzzId'});     
+        models.Like.likedBy = models.Like.belongsTo(models.User, {as: 'likedBy'});
+        models.Like.Buzz = models.Like.belongsTo(models.Buzz, {as: 'Buzz'});
       }
     }
   });

@@ -27,8 +27,8 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         // associations can be defined here
         models.User.Privacy = models.User.hasOne(models.UserPrivacy);
-        models.User.Buzzes = models.User.hasMany(models.Buzz, {foreignKey: 'UserId'});
-        models.User.Mentions = models.User.hasMany(models.Buzz, {foreignKey: 'mentionId'});
+        models.User.Buzzes = models.User.hasMany(models.Buzz, {foreignKey: 'OwnerId'});
+        models.User.Mentions = models.User.hasMany(models.Buzz, {foreignKey: 'MentionId'});
         models.User.TransactionsIn = models.User.hasMany(models.PaypalTransaction, {foreignKey: 'receiverId'});
         models.User.TransactionsOut = models.User.hasMany(models.PaypalTransaction, {foreignKey: 'senderId'});
         models.User.Likes = models.User.hasMany(models.Like, {foreignKey: 'UserId'});
